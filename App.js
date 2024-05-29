@@ -7,41 +7,57 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // Screens
 import HomeScreen from "./screens/Dashboard";
 
-import { AntDesign } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer styles={styles.container}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
-            // let iconName;
+            let iconName;
 
-            // if (route.name === "Home") {
-            //   iconName = "home";
-            // } else if (route.name === "Search") {
-            //   iconName = "search";
-            // } else if (route.name === "Notifications") {
-            //   iconName = "notifications";
-            // } else if (route.name === "Profile") {
-            //   iconName = "person";
-            // }
+            if (route.name === "Home") {
+              iconName = "space-dashboard";
+            } else if (route.name === "Search") {
+              iconName = "credit-card-off";
+            } else if (route.name === "Notifications") {
+              iconName = "add-circle";
+            } else if (route.name === "Profile") {
+              iconName = "attach-money";
+            } else if (route.name === "Settings") {
+              iconName = "settings";
+            }
 
-            // You can return any component that you like here!
             return (
-              // <Icon name={iconName} type="material" color={color} size={size} />
-              <AntDesign name="home" size={24} color="black" />
+              <MaterialIcons
+                name={iconName}
+                size={24}
+                color={focused ? color : color}
+              />
             );
           },
+          tabBarActiveTintColor: "blue",
+          tabBarInactiveTintColor: "gray",
+          tabBarStyle: [
+            {
+              paddingBottom: 20,
+              paddingTop: 20,
+              height: 70,
+            },
+            null,
+          ],
+          headerShown: false,
+          tabBarShowLabel: false,
         })}
-        tabBarOptions={{
-          activeTintColor: "#6200ee",
-          inactiveTintColor: "gray",
-        }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Search" component={HomeScreen} />
+        <Tab.Screen name="Notifications" component={HomeScreen} />
+        <Tab.Screen name="Profile" component={HomeScreen} />
+        <Tab.Screen name="Settings" component={HomeScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
@@ -50,7 +66,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "red",
     alignItems: "center",
     justifyContent: "center",
   },

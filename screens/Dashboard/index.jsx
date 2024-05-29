@@ -1,10 +1,15 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+
+// Components
+import Navbar from "../../components/Navbar";
+import DashboardCard from "../../components/DashboardCard";
 
 export default function HomeScreen() {
   return (
-    <View style={styles.screen}>
-      <Text>Home Screen</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Navbar />
+      <DashboardCard />
+    </SafeAreaView>
   );
 }
 
@@ -12,7 +17,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
