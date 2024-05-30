@@ -32,11 +32,11 @@ export default function Navbar() {
       <View style={styles.container_three}>
         <MaterialIcons
           name="dark-mode"
-          size={24}
+          size={28}
           color="black"
           style={{ marginRight: 20 }}
         />
-        <MaterialIcons name="settings" size={24} color="black" />
+        {/* <MaterialIcons name="settings" size={24} color="black" /> */}
       </View>
     </SafeAreaView>
   );

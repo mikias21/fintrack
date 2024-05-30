@@ -34,7 +34,7 @@ export default function App() {
             return (
               <MaterialIcons
                 name={iconName}
-                size={24}
+                size={28}
                 color={focused ? color : color}
               />
             );
