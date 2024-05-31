@@ -16,7 +16,9 @@
     "react": "18.2.0",
     "react-native": "0.74.1",
     "react-native-elements": "^3.4.3",
-    "react-native-vector-icons": "^10.1.0"
+    "react-native-sqlite-storage": "^6.0.1",
+    "react-native-vector-icons": "^10.1.0",
+    "expo-sqlite": "~14.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

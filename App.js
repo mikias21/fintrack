@@ -1,13 +1,12 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialIcons } from "@expo/vector-icons";
 
 // Screens
 import HomeScreen from "./screens/Dashboard";
-
-import { MaterialIcons } from "@expo/vector-icons";
+import AddNew from "./components/AddExpenseForm";
 
 const Tab = createBottomTabNavigator();
 
@@ -55,7 +54,7 @@ export default function App() {
       >
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Search" component={HomeScreen} />
-        <Tab.Screen name="Notifications" component={HomeScreen} />
+        <Tab.Screen name="Notifications" component={AddNew} />
         <Tab.Screen name="Profile" component={HomeScreen} />
         <Tab.Screen name="Settings" component={HomeScreen} />
       </Tab.Navigator>
