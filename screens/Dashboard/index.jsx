@@ -43,7 +43,7 @@ export default function HomeScreen() {
     <>
       <View style={styles.logo_container}>
         <Image
-          source={require("../../assets/logo.png")}
+          source={require("../../assets/logo2.jpg")}
           style={styles.logo_image}
         />
         <MaterialIcons
