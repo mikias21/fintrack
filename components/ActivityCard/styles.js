@@ -14,6 +14,19 @@ export default styles = StyleSheet.create({
     elevation: 3,
   },
 
+  container_two: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
+  container_three: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
   text_one: {
     fontSize: 16,
     fontWeight: "bold",

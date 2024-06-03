@@ -13,7 +13,7 @@ export default function DashboardCard({ intro_text, amount, image, color }) {
         <Text style={styles.text_one}>
           {intro_text} {getFormattedDate()}
         </Text>
-        <Text style={styles.text_two}>{amount}</Text>
+        <Text style={styles.text_two}>{amount} &#165;</Text>
         <Text style={styles.text_three}>{getReadableDateTime()}</Text>
       </View>
       <Image source={image} style={styles.image_one} />

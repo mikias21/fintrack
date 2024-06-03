@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import ModalSelector from "react-native-modal-selector";
 import {
   TextInput,
   View,
@@ -16,6 +17,9 @@ import styles from "./styles";
 // Service
 import { insertExpense } from "../../services/expenses";
 import { addExpense } from "../../slices/expenseSlice";
+
+// Constants
+import { reasonData } from "../../utils/constants";
 
 export default function AddNewExpense() {
   const [expenseAmount, setExpenseAmount] = useState("");
@@ -108,12 +112,27 @@ export default function AddNewExpense() {
           onConfirm={handleDatePicked}
           onCancel={hideDateTimePicker}
         />
-        <TextInput
+        {/* <TextInput
           style={styles.input}
           placeholder="Reason *"
           value={expenseReason}
           onChangeText={setExpenseReason}
-        />
+        /> */}
+        <ModalSelector
+          data={reasonData}
+          initValue="Select Reason *"
+          onChange={(option) => setExpenseReason(option.label)}
+          style={styles.input_select}
+          // initValueTextStyle={{ color: "#000" }}
+          selectTextStyle={{ endFillColor: "#000" }}
+        >
+          <TextInput
+            style={[styles.input, { marginLeft: -7 }]}
+            editable={false}
+            placeholder="Select Reason *"
+            value={expenseReason}
+          />
+        </ModalSelector>
         <TextInput
           style={[styles.input, { height: 60 }]}
           placeholder="Comment (optional)"

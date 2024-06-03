@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View, FlatList, SafeAreaView, Text, Image } from "react-native";
@@ -13,39 +14,25 @@ import DashboardCard from "../../components/DashboardCard";
 // Style
 import styles from "./styles";
 
-const recentActivities = [
-  {
-    id: "1",
-    title: "Expense Added",
-    details: "Added $50 to groceries",
-    timestamp: "Today, 2:00 PM",
-  },
-  {
-    id: "2",
-    title: "Investment",
-    details: "Invested $200 in stocks",
-    timestamp: "Today, 10:30 AM",
-  },
-  {
-    id: "3",
-    title: "Expense Added",
-    details: "Added $30 to entertainment",
-    timestamp: "Yesterday, 8:45 PM",
-  },
-  {
-    id: "4",
-    title: "Income Added",
-    details: "Received $500 from freelance work",
-    timestamp: "Yesterday, 3:00 PM",
-  },
-];
-
 // Redux
 import { fetchExpenses } from "../../slices/expenseSlice";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
   const expenses = useSelector((state) => state.expenses.expenses);
+  const currentMonth = dayjs().month();
+  const currentYear = dayjs().year();
+
+  const currentMonthExpenses = expenses.filter((expense) => {
+    const expenseDate = dayjs(expense.expense_date_time);
+    return (
+      expenseDate.month() === currentMonth && expenseDate.year() === currentYear
+    );
+  });
+
+  const totalAmountOfExpense = currentMonthExpenses.reduce((sum, expense) => {
+    return sum + expense.expense_amount;
+  }, 0);
 
   useEffect(() => {
     dispatch(fetchExpenses());
@@ -69,7 +56,7 @@ export default function HomeScreen() {
       <View style={styles.container_one}>
         <DashboardCard
           intro_text="Expenses as of"
-          amount="3000 RMB"
+          amount={totalAmountOfExpense}
           image={require("../../assets/costs.png")}
           color="#FC819E"
         />
@@ -77,7 +64,7 @@ export default function HomeScreen() {
       <View style={styles.container_two}>
         <DashboardCard
           intro_text="Saving as of"
-          amount="2000 RMB"
+          amount="2000"
           image={require("../../assets/piggy-bank.png")}
           color="#00A9FF"
         />

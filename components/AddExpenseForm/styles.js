@@ -31,6 +31,17 @@ export default styles = StyleSheet.create({
     width: 280,
   },
 
+  input_select: {
+    height: 40,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    borderRadius: 5,
+    // borderWidth: 1,
+    // borderColor: "#e0e0e0",
+    width: 300,
+    color: "#000",
+  },
+
   button_one: {
     width: 30,
     height: 30,

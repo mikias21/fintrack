@@ -8,15 +8,25 @@ export default styles = StyleSheet.create({
   },
 
   container_one: {
-    marginTop: 40,
+    padding: 18,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   container_two: {
-    padding: 18,
+    paddingHorizontal: 18,
+  },
+
+  header_image: {
+    height: 40,
+    width: 40,
+    marginRight: 10,
   },
 
   list_one: {
-    marginTop: 20,
+    marginVertical: -15,
+    marginBottom: 10,
   },
 
   list_two: {
@@ -47,6 +57,7 @@ export default styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
   },
+
   paginationDot: {
     width: 8,
     height: 8,
@@ -54,10 +65,16 @@ export default styles = StyleSheet.create({
     backgroundColor: "#ccc",
     marginHorizontal: 5,
   },
+
   paginationDotActive: {
     backgroundColor: "#3498db",
   },
+
   listFooter: {
     width: 100,
+  },
+
+  touchableArea: {
+    padding: 5,
   },
 });
