@@ -112,12 +112,6 @@ export default function AddNewExpense() {
           onConfirm={handleDatePicked}
           onCancel={hideDateTimePicker}
         />
-        {/* <TextInput
-          style={styles.input}
-          placeholder="Reason *"
-          value={expenseReason}
-          onChangeText={setExpenseReason}
-        /> */}
         <ModalSelector
           data={reasonData}
           initValue="Select Reason *"

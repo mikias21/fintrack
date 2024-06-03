@@ -8,6 +8,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 // Screens
 import HomeScreen from "./screens/Dashboard";
 import AddItem from "./screens/AddItems";
+import Expenses from "./screens/Expenses";
 
 // Redux
 import store from "./store";
@@ -60,7 +61,7 @@ export default function App() {
           <Tab.Screen name="Home" component={HomeScreen} />
           <Tab.Screen name="Search" component={HomeScreen} />
           <Tab.Screen name="Notifications" component={AddItem} />
-          <Tab.Screen name="Profile" component={HomeScreen} />
+          <Tab.Screen name="Profile" component={Expenses} />
           <Tab.Screen name="Settings" component={HomeScreen} />
         </Tab.Navigator>
       </NavigationContainer>
