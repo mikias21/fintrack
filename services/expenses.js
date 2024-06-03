@@ -1,21 +1,23 @@
-import * as SQLite from "expo-sqlite";
-import { openDatabase } from "../db/connection";
+const api_url = "https://fintrack-api-gmpu.onrender.com/api/v1/expenses/";
 
-async function insertData(data) {
-  await openDatabase(); // Open the database if not already open
-  await SQLite.transactionAsync((db) => {
-    // Use transactionAsync
-    db.executeSql(
-      // Use executeSql for statements
-      `INSERT INTO expenses_data (expense_amount, expense_date, reason, comment) VALUES (?, ?, ?, ?)`,
-      [
-        data.expense_amount,
-        data.expense_date,
-        data.expenseReason,
-        data.expenseComment,
-      ]
-    );
-  });
-}
+const insertExpense = async (newExpense) => {
+  try {
+    const response = await fetch(api_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newExpense),
+    });
 
-export { insertData };
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
+export { insertExpense };

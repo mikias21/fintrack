@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { View, FlatList, SafeAreaView, Text, Image } from "react-native";
 
 // Icons
@@ -38,12 +40,22 @@ const recentActivities = [
   },
 ];
 
+// Redux
+import { fetchExpenses } from "../../slices/expenseSlice";
+
 export default function HomeScreen() {
+  const dispatch = useDispatch();
+  const expenses = useSelector((state) => state.expenses.expenses);
+
+  useEffect(() => {
+    dispatch(fetchExpenses());
+  }, [dispatch]);
+
   const renderHeader = () => (
     <>
       <View style={styles.logo_container}>
         <Image
-          source={require("../../assets/logo.png")}
+          source={require("../../assets/logo2.jpg")}
           style={styles.logo_image}
         />
         <MaterialIcons
@@ -77,11 +89,12 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={recentActivities}
+        data={expenses}
         renderItem={({ item }) => <ActivityCard activity={item} />}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         ListHeaderComponent={renderHeader}
         contentContainerStyle={styles.list_one}
+        showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );

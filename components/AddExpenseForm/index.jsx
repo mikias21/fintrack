@@ -1,97 +1,133 @@
-import * as SQLite from "expo-sqlite";
 import { useState, useEffect } from "react";
-import { SafeAreaView, TextInput, View, Button, Text } from "react-native";
+import { useDispatch } from "react-redux";
+import {
+  TextInput,
+  View,
+  Text,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
+import DateTimePicker from "react-native-modal-datetime-picker";
+import dayjs from "dayjs";
 
 // Style
 import styles from "./styles";
 
-export default function AddNew() {
+// Service
+import { insertExpense } from "../../services/expenses";
+import { addExpense } from "../../slices/expenseSlice";
+
+export default function AddNewExpense() {
   const [expenseAmount, setExpenseAmount] = useState("");
-  const [expenseDate, setExpenseDate] = useState("");
+  const [expenseDate, setExpenseDate] = useState(null);
   const [expenseReason, setExpenseReason] = useState("");
   const [expenseComment, setExpenseComment] = useState("");
-  const [expenses, setExpenses] = useState([]);
-
-  const db = SQLite.openDatabaseSync("fintrack.db");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDateTimePickerVisible, setisDateTimePickerVisible] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    initExpenseTable();
-    loadExpensesData();
+    return () => {
+      setErrorMessage("");
+    };
   }, []);
 
-  const initExpenseTable = () => {
-    db.execSync(
-      `CREATE TABLE IF NOT EXISTS expenses_data (
-        expense_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        expense_amount REAL NOT NULL,
-        expense_date TEXT NOT NULL,
-        reason TEXT NOT NULL,
-        comment TEXT,
-        expense_added_date_time TEXT DEFAULT (datetime('now', 'localtime')) NOT NULL
-      )`
-    );
+  const showDateTimePicker = () => {
+    setisDateTimePickerVisible(true);
   };
 
-  const loadExpensesData = async () => {
-    // Use async/await if applicable
-    try {
-      const all = await db.getAllSync("SELECT * FROM expenses_data"); // Handle potential errors
-      setExpenses(all);
-    } catch (error) {
-      console.error("Error fetching expenses:", error);
-    }
+  const hideDateTimePicker = () => {
+    setisDateTimePickerVisible(false);
   };
 
-  const handleAddExpense = async () => {
-    try {
-      const res = await db.runAsync(
-        "INSERT INTO expenses_data(expense_amount, expense_date, reason, comment) VALUES (?, ?, ?, ?)",
-        expenseAmount,
-        expenseDate,
-        expenseReason,
-        expenseComment
-      );
-      console.log(res);
+  const handleDatePicked = (date) => {
+    setExpenseDate(dayjs(date).format("YYYY-MM-DD"));
+    hideDateTimePicker();
+  };
 
-      setExpenseAmount("");
-      setExpenseDate("");
-      setExpenseReason("");
-      setExpenseComment("");
-    } catch (error) {
-      console.error("Error adding expense: ", error);
-    }
+  const handleAddExpense = () => {
+    setErrorMessage("");
+    setIsLoading(true);
+
+    const newExpense = {
+      expense_amount: parseFloat(expenseAmount),
+      expense_date: expenseDate,
+      expense_reason: expenseReason,
+      expense_comment: expenseComment,
+    };
+
+    insertExpense(newExpense)
+      .then((res) => {
+        if (res._id) {
+          dispatch(addExpense(res));
+          setExpenseAmount("");
+          setExpenseDate(null);
+          setExpenseReason("");
+          setExpenseComment("");
+          setIsError(false);
+          setErrorMessage("Expense addedd successfully.");
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        setIsError(true);
+        setErrorMessage("There was a problem, when adding expense.");
+        setIsLoading(false);
+      });
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container_one}>
+    <>
+      <View style={styles.container_two}>
+        <Text style={styles.text_two}>Add Expense</Text>
+        {errorMessage !== "" ? (
+          <Text style={[styles.text_one, { color: isError ? "red" : "green" }]}>
+            {errorMessage}
+          </Text>
+        ) : (
+          ""
+        )}
         <TextInput
           style={styles.input}
-          placeholder="Expense Amount"
+          placeholder="Expense Amount *"
           keyboardType="numeric"
           value={expenseAmount}
           onChangeText={setExpenseAmount}
         />
         <TextInput
           style={styles.input}
-          placeholder="Expense Date (YYYY-MM-DD)"
+          placeholder="Expense Date (YYYY-MM-DD) *"
           value={expenseDate}
-          onChangeText={setExpenseDate}
+          onFocus={showDateTimePicker}
+          onPress={showDateTimePicker}
+        />
+        <DateTimePicker
+          isVisible={isDateTimePickerVisible}
+          onConfirm={handleDatePicked}
+          onCancel={hideDateTimePicker}
         />
         <TextInput
           style={styles.input}
-          placeholder="Reason"
+          placeholder="Reason *"
           value={expenseReason}
           onChangeText={setExpenseReason}
         />
         <TextInput
-          style={styles.input}
-          placeholder="Comment"
+          style={[styles.input, { height: 60 }]}
+          placeholder="Comment (optional)"
           value={expenseComment}
           onChangeText={setExpenseComment}
         />
-        <Button title="Add Expense" onPress={handleAddExpense} />
+        <Pressable style={styles.button_one} onPress={handleAddExpense}>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text style={styles.text_three}>&#x2713;</Text>
+          )}
+        </Pressable>
       </View>
-    </SafeAreaView>
+    </>
   );
 }
