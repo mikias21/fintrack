@@ -16,10 +16,12 @@ import styles from "./styles";
 
 // Redux
 import { fetchExpenses } from "../../slices/expenseSlice";
+import { fetchIncomes } from "../../slices/incomeSlice";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
   const expenses = useSelector((state) => state.expenses.expenses);
+  const incomes = useSelector((state) => state.incomes.incomes);
   const currentMonth = dayjs().month();
   const currentYear = dayjs().year();
 
@@ -30,12 +32,27 @@ export default function HomeScreen() {
     );
   });
 
+  const currentMonthIncome = incomes.filter((income) => {
+    const incomeDate = dayjs(income.income_date_time);
+    return (
+      incomeDate.month() === currentMonth && incomeDate.year() === currentYear
+    );
+  });
+
   const totalAmountOfExpense = currentMonthExpenses.reduce((sum, expense) => {
     return sum + expense.expense_amount;
   }, 0);
 
+  let incomeCalculated =
+    currentMonthIncome.reduce((sum, income) => {
+      return sum + income.income_amount;
+    }, 0) - totalAmountOfExpense;
+
+  const totalAmountOfIncome = incomeCalculated < 0 ? 0 : incomeCalculated;
+
   useEffect(() => {
     dispatch(fetchExpenses());
+    dispatch(fetchIncomes());
   }, [dispatch]);
 
   const renderHeader = () => (
@@ -63,8 +80,8 @@ export default function HomeScreen() {
       </View>
       <View style={styles.container_two}>
         <DashboardCard
-          intro_text="Saving as of"
-          amount="2000"
+          intro_text="Income as of"
+          amount={totalAmountOfIncome}
           image={require("../../assets/piggy-bank.png")}
           color="#00A9FF"
         />

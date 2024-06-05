@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 // Style
 import styles from "./styles";
 
-// Service
+// Redux
 import { addExpense } from "../../slices/expenseSlice";
 
 // Constants

@@ -23,11 +23,18 @@ const screenWidth = Dimensions.get("window").width;
 
 export default function AddItem() {
   const expenses = useSelector((state) => state.expenses.expenses);
+  const incomes = useSelector((state) => state.incomes.incomes);
   const [currentPage, setCurrentPage] = useState(0);
   const flatListRef = useRef(null);
 
+  console.log(incomes);
+
   const sortedExpenses = expenses.slice().sort((a, b) => {
     return new Date(b.expense_date_time) - new Date(a.expense_date_time);
+  });
+
+  const sortedIncomes = incomes.slice().sort((a, b) => {
+    return new Date(b.income_date_time) - new Date(a.income_date_time);
   });
 
   const recentActivities = sortedExpenses.slice(0, 3);

@@ -6,4 +6,12 @@ const reasonData = [
   { key: 4, label: "Others" },
 ];
 
-export { reasonData };
+const incomeSourceData = [
+  { key: 0, label: "Salary" },
+  { key: 1, label: "Part time gick" },
+  { key: 2, label: "Meal Money" },
+  { key: 3, label: "Business" },
+  { key: 4, label: "Others" },
+];
+
+export { reasonData, incomeSourceData };
