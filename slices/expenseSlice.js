@@ -46,6 +46,29 @@ export const addExpense = createAsyncThunk(
   }
 );
 
+// Async thunk to delete an expense
+export const deleteExpense = createAsyncThunk(
+  "expenses/deleteExpense",
+  async (expenseId, thunkAPI) => {
+    try {
+      const response = await fetch(
+        `https://fintrack-api-gmpu.onrender.com/api/v1/expenses/${expenseId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete expense");
+      }
+
+      return expenseId; // Return the deleted expense ID for potential UI updates
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const expenseSlice = createSlice({
   name: "expenses",
   initialState,
@@ -66,6 +89,21 @@ const expenseSlice = createSlice({
       })
       .addCase(addExpense.fulfilled, (state, action) => {
         state.expenses.push(action.payload);
+      })
+      .addCase(deleteExpense.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteExpense.fulfilled, (state, action) => {
+        const expenseId = action.payload;
+        state.expenses = state.expenses.filter(
+          (expense) => expense._id !== expenseId
+        );
+        state.loading = false;
+      })
+      .addCase(deleteExpense.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

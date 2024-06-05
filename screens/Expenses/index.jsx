@@ -40,7 +40,6 @@ export default function Expenses() {
           />
           <Text style={styles.text_one}>Expenses</Text>
         </View>
-
         <View style={styles.container_two}>
           <DashboardCard
             intro_text="Expenses as of"
@@ -49,9 +48,7 @@ export default function Expenses() {
             color="#FC819E"
           />
         </View>
-
         <Table data={sortedExpenses} />
-
         <CalendarChart data={sortedExpenses} />
       </ScrollView>
     </SafeAreaView>

@@ -19,6 +19,12 @@ export default styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
+  container_three: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
   headerContainer: {
     flexDirection: "row",
     backgroundColor: "#00A9FF",
@@ -31,25 +37,55 @@ export default styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
+
   rowContainer: {
     flexDirection: "row",
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#f1f1f1",
   },
+
   rowText: {
     flex: 1,
   },
+
   paginationContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 10,
   },
+
   paginationText: {
     fontSize: 16,
     color: "#007BFF",
   },
+
   disabledText: {
     color: "#CCC",
+  },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: "space-start",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+  },
+
+  modalContent: {
+    backgroundColor: "whitesmoke",
+    padding: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    borderWidth: 1,
+    marginTop: 150,
+  },
+
+  modalButtonContainer: {
+    marginTop: 20,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

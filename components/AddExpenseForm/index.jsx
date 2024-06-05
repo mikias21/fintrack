@@ -15,7 +15,6 @@ import dayjs from "dayjs";
 import styles from "./styles";
 
 // Service
-import { insertExpense } from "../../services/expenses";
 import { addExpense } from "../../slices/expenseSlice";
 
 // Constants

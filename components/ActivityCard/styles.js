@@ -43,4 +43,29 @@ export default styles = StyleSheet.create({
     color: "#aaa",
     marginTop: 10,
   },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: "space-start",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+  },
+
+  modalContent: {
+    backgroundColor: "whitesmoke",
+    padding: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    borderWidth: 1,
+    marginTop: 150,
+  },
+
+  modalButtonContainer: {
+    marginTop: 20,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });

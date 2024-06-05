@@ -29,7 +29,7 @@ export default function CalendarChart({ data }) {
           {monthlyData.expenseAmounts.slice(1, 9).map((amount, index) => (
             <View key={index + 1} style={[styles.box, styles.firstBox]}>
               <Text style={styles.month}>{monthlyData.labels[index + 1]}</Text>
-              <Text style={styles.amount}>${amount.toFixed(2)}</Text>
+              <Text style={styles.amount}>&#165; {amount.toFixed(2)}</Text>
             </View>
           ))}
         </View>
