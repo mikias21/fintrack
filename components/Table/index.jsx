@@ -54,7 +54,8 @@ export default function Table({ data }) {
 
   return (
     <View style={styles.tableContainer}>
-      {/* {renderHeader()} */}
+      <Text style={styles.text_one}>Expense Table</Text>
+
       <FlatList
         data={paginatedData}
         renderItem={renderItem}
@@ -73,9 +74,9 @@ export default function Table({ data }) {
             <AntDesign name="arrowleft" size={24} />
           </Text>
         </Pressable>
-        <Text style={styles.paginationText}>
+        {/* <Text style={styles.paginationText}>
           {currentPage + 1} of {totalPages}
-        </Text>
+        </Text> */}
         <Pressable
           onPress={handleNextPage}
           disabled={currentPage >= totalPages - 1}

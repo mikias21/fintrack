@@ -7,7 +7,7 @@ import styles from "./styles";
 
 // Components
 import Table from "../../components/Table";
-import Chart from "../../components/Chart";
+import CalendarChart from "../../components/CalendarChart";
 import DashboardCard from "../../components/DashboardCard";
 
 export default function Expenses() {
@@ -52,7 +52,7 @@ export default function Expenses() {
 
         <Table data={sortedExpenses} />
 
-        <Chart data={sortedExpenses} />
+        <CalendarChart data={sortedExpenses} />
       </ScrollView>
     </SafeAreaView>
   );
