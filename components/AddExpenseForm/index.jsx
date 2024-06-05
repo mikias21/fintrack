@@ -62,22 +62,21 @@ export default function AddNewExpense() {
       expense_comment: expenseComment,
     };
 
-    insertExpense(newExpense)
+    dispatch(addExpense(newExpense))
+      .unwrap()
       .then((res) => {
-        if (res._id) {
-          dispatch(addExpense(res));
-          setExpenseAmount("");
-          setExpenseDate(null);
-          setExpenseReason("");
-          setExpenseComment("");
-          setIsError(false);
-          setErrorMessage("Expense addedd successfully.");
-          setIsLoading(false);
-        }
+        setExpenseAmount("");
+        setExpenseDate(null);
+        setExpenseReason("");
+        setExpenseComment("");
+        setIsError(false);
+        setErrorMessage("Expense added successfully.");
       })
       .catch((err) => {
         setIsError(true);
-        setErrorMessage("There was a problem, when adding expense.");
+        setErrorMessage("There was a problem adding the expense.");
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
@@ -112,12 +111,6 @@ export default function AddNewExpense() {
           onConfirm={handleDatePicked}
           onCancel={hideDateTimePicker}
         />
-        {/* <TextInput
-          style={styles.input}
-          placeholder="Reason *"
-          value={expenseReason}
-          onChangeText={setExpenseReason}
-        /> */}
         <ModalSelector
           data={reasonData}
           initValue="Select Reason *"
