@@ -17,6 +17,7 @@ import styles from "./styles";
 // Components
 import AddNewExpense from "../../components/AddExpenseForm";
 import AddIncomeForm from "../../components/AddIncomeForm";
+import AddDebtForm from "../../components/AddDebtForm";
 import ActivityCard from "../../components/ActivityCard";
 
 const screenWidth = Dimensions.get("window").width;
@@ -54,7 +55,7 @@ export default function AddItem() {
       <View style={[styles.formContainer, { width: screenWidth - 36 }]}>
         {id === 0 && <AddNewExpense />}
         {id === 1 && <AddIncomeForm />}
-        {id === 2 && <AddNewExpense />}
+        {id === 2 && <AddDebtForm />}
       </View>
     </>
   );

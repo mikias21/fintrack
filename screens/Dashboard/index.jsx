@@ -17,6 +17,7 @@ import styles from "./styles";
 // Redux
 import { fetchExpenses } from "../../slices/expenseSlice";
 import { fetchIncomes } from "../../slices/incomeSlice";
+import { fetchDebts } from "../../slices/debtSlice";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ export default function HomeScreen() {
   useEffect(() => {
     dispatch(fetchExpenses());
     dispatch(fetchIncomes());
+    dispatch(fetchDebts());
   }, [dispatch]);
 
   const renderHeader = () => (

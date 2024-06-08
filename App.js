@@ -10,6 +10,7 @@ import HomeScreen from "./screens/Dashboard";
 import AddItem from "./screens/AddItems";
 import Expenses from "./screens/Expenses";
 import IncomeSaving from "./screens/IncomeSaving";
+import Debt from "./screens/Debt";
 
 // Redux
 import store from "./store";
@@ -33,7 +34,7 @@ export default function App() {
                 iconName = "add-circle";
               } else if (route.name === "Expenses") {
                 iconName = "attach-money";
-              } else if (route.name === "Settings") {
+              } else if (route.name === "Debt") {
                 iconName = "settings";
               }
 
@@ -63,7 +64,7 @@ export default function App() {
           <Tab.Screen name="Income" component={IncomeSaving} />
           <Tab.Screen name="Add" component={AddItem} />
           <Tab.Screen name="Expenses" component={Expenses} />
-          <Tab.Screen name="Settings" component={HomeScreen} />
+          <Tab.Screen name="Debt" component={Debt} />
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>
