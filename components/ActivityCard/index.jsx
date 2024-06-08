@@ -21,11 +21,14 @@ import { formatDate } from "../../utils/utils";
 
 // Redux
 import { deleteExpense } from "../../slices/expenseSlice";
+import { deleteIncome } from "../../slices/incomeSlice";
 
 export default function ActivityCard({ activity }) {
   const [showComment, setShowComment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
 
   const handleCommentSwitch = () => {
@@ -40,18 +43,35 @@ export default function ActivityCard({ activity }) {
     setIsModalVisible(false);
     setIsLoading(true);
 
-    dispatch(deleteExpense(activity._id))
-      .unwrap()
-      .then((res) => {
-        console.log("deleted.");
-      })
-      .catch((err) => {
-        setIsError(true);
-        setErrorMessage("There was a problem deleting the expense.");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    if (activity.update_from === "EXP") {
+      dispatch(deleteExpense(activity._id))
+        .unwrap()
+        .then((res) => {
+          console.log("deleted.");
+        })
+        .catch((err) => {
+          setIsError(true);
+          setErrorMessage("There was a problem deleting the expense.");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+
+    if (activity.update_from === "INC") {
+      dispatch(deleteIncome(activity._id))
+        .unwrap()
+        .then((res) => {
+          console.log("deleted.");
+        })
+        .catch((err) => {
+          setIsError(true);
+          setErrorMessage("There was a problem deleting the expense.");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
 
   return (
@@ -84,7 +104,12 @@ export default function ActivityCard({ activity }) {
           </View>
         </Modal>
 
-        <Text style={styles.text_one}>Expense Added</Text>
+        {activity.update_from === "EXP" && (
+          <Text style={styles.text_one}>Expense Added</Text>
+        )}
+        {activity.update_from === "INC" && (
+          <Text style={styles.text_one}>Income Added</Text>
+        )}
         <View style={styles.container_three}>
           <TouchableOpacity onPress={handleCommentSwitch}>
             {showComment ? (
@@ -116,15 +141,31 @@ export default function ActivityCard({ activity }) {
         </View>
       </View>
       <Text style={styles.text_two}>
-        Added {activity.expense_amount} &#165; to {activity.expense_reason}
+        Added {activity.expense_amount || activity.income_amount} &#165; to{" "}
+        {activity.expense_reason || activity.income_reason}
       </Text>
-      {showComment &&
-        (activity.expense_comment ? (
-          <Text style={styles.text_two}>{activity.expense_comment}</Text>
-        ) : (
-          <Text style={styles.text_two}>No comment</Text>
-        ))}
-      <Text style={styles.text_three}>{formatDate(activity.expense_date)}</Text>
+      {showComment && (
+        <>
+          {activity.expense_comment && (
+            <Text style={styles.text_two}>{activity.expense_comment}</Text>
+          )}
+          {!activity.expense_comment && activity.income_comment && (
+            <Text style={styles.text_two}>{activity.income_comment}</Text>
+          )}
+          {!activity.expense_comment && !activity.income_comment && (
+            <Text style={styles.text_two}>No comment</Text>
+          )}
+        </>
+      )}
+
+      {activity.expense_date && (
+        <Text style={styles.text_three}>
+          {formatDate(activity.expense_date)}
+        </Text>
+      )}
+      {activity.income_date && (
+        <Text style={styles.text_three}>{activity.income_date}</Text>
+      )}
     </View>
   );
 }

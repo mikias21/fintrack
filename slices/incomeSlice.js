@@ -23,7 +23,7 @@ export const fetchIncomes = createAsyncThunk(
   }
 );
 
-// Async thunk to add an expense
+// Async thunk to add an income
 export const addIncome = createAsyncThunk(
   "incomes/addIncome",
   async (income, thunkAPI) => {
@@ -40,6 +40,29 @@ export const addIncome = createAsyncThunk(
       );
       const data = await response.json();
       return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Async thunk to delete an income
+export const deleteIncome = createAsyncThunk(
+  "incomes/deleteIncome",
+  async (incomeID, thunkAPI) => {
+    try {
+      const response = await fetch(
+        `https://fintrack-api-gmpu.onrender.com/api/v1/incomes/${incomeID}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete income");
+      }
+
+      return incomeID; // Return the deleted income ID for potential UI updates
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -66,6 +89,21 @@ const incomeSlice = createSlice({
       })
       .addCase(addIncome.fulfilled, (state, action) => {
         state.incomes.push(action.payload);
+      })
+      .addCase(deleteIncome.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteIncome.fulfilled, (state, action) => {
+        const incomeID = action.payload;
+        state.incomes = state.incomes.filter(
+          (income) => income._id !== incomeID
+        );
+        state.loading = false;
+      })
+      .addCase(deleteIncome.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

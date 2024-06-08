@@ -9,6 +9,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import HomeScreen from "./screens/Dashboard";
 import AddItem from "./screens/AddItems";
 import Expenses from "./screens/Expenses";
+import IncomeSaving from "./screens/IncomeSaving";
 
 // Redux
 import store from "./store";
@@ -26,11 +27,11 @@ export default function App() {
 
               if (route.name === "Home") {
                 iconName = "space-dashboard";
-              } else if (route.name === "Search") {
+              } else if (route.name === "Income") {
                 iconName = "credit-card-off";
-              } else if (route.name === "Notifications") {
+              } else if (route.name === "Add") {
                 iconName = "add-circle";
-              } else if (route.name === "Profile") {
+              } else if (route.name === "Expenses") {
                 iconName = "attach-money";
               } else if (route.name === "Settings") {
                 iconName = "settings";
@@ -59,9 +60,9 @@ export default function App() {
           })}
         >
           <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Search" component={HomeScreen} />
-          <Tab.Screen name="Notifications" component={AddItem} />
-          <Tab.Screen name="Profile" component={Expenses} />
+          <Tab.Screen name="Income" component={IncomeSaving} />
+          <Tab.Screen name="Add" component={AddItem} />
+          <Tab.Screen name="Expenses" component={Expenses} />
           <Tab.Screen name="Settings" component={HomeScreen} />
         </Tab.Navigator>
       </NavigationContainer>

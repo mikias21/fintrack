@@ -27,8 +27,6 @@ export default function AddItem() {
   const [currentPage, setCurrentPage] = useState(0);
   const flatListRef = useRef(null);
 
-  console.log(incomes);
-
   const sortedExpenses = expenses.slice().sort((a, b) => {
     return new Date(b.expense_date_time) - new Date(a.expense_date_time);
   });
