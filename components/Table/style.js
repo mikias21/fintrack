@@ -74,18 +74,41 @@ export default styles = StyleSheet.create({
   modalContent: {
     backgroundColor: "whitesmoke",
     padding: 22,
-    justifyContent: "center",
-    alignItems: "center",
+    // justifyContent: "center",
+    // alignItems: "center",
     borderRadius: 4,
     borderColor: "rgba(0, 0, 0, 0.1)",
     borderWidth: 1,
     marginTop: 150,
+    width: 300,
   },
 
   modalButtonContainer: {
     marginTop: 20,
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
+    justifyContent: "flex-end",
+    marginRight: 20,
+  },
+
+  modal_header_one: {
+    textAlign: "center",
+    fontSize: 20,
+    marginBottom: 10,
+  },
+
+  modal_expense_label: {
+    display: "flex",
+    flexDirection: "row",
+  },
+
+  modal_expense_label_text: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    fontWeight: "700",
+  },
+
+  modal_expense_label_value: {
+    paddingVertical: 10,
   },
 });

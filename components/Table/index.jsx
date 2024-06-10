@@ -20,6 +20,7 @@ import styles from "./style";
 
 // Redux
 import { deleteExpense } from "../../slices/expenseSlice";
+import style from "./style";
 
 const ITEMS_PER_PAGE = 7;
 
@@ -28,7 +29,9 @@ export default function Table({ data }) {
   const [showDetails, setShowDetails] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [dataId, setDataId] = useState("");
+  const [item, setItem] = useState(null);
   const dispatch = useDispatch();
 
   const showSuccessDeleteToast = () => {
@@ -42,6 +45,11 @@ export default function Table({ data }) {
   const toggleDeleteModal = (id) => {
     if (id !== "") setDataId(id);
     setIsDeleteModalVisible(!isDeleteModalVisible);
+  };
+
+  const toggleDetailsModal = (item) => {
+    if (item !== null) setItem(item);
+    setIsDetailsModalVisible(!isDetailsModalVisible);
   };
 
   const totalPages =
@@ -76,7 +84,7 @@ export default function Table({ data }) {
       <Text style={styles.rowText}>{item.expense_amount}</Text>
       <Text style={styles.rowText}>{item.expense_reason}</Text>
       <View style={styles.container_three}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => toggleDetailsModal(item)}>
           {showDetails ? (
             <MaterialIcons name="details" size={18} color="#00A9FF" />
           ) : (
@@ -128,6 +136,7 @@ export default function Table({ data }) {
 
   return (
     <View style={styles.tableContainer}>
+      {/* Delete modal */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -144,6 +153,63 @@ export default function Table({ data }) {
               </TouchableOpacity>
 
               <TouchableOpacity onPress={() => toggleDeleteModal("")}>
+                <AntDesign
+                  name="close"
+                  size={24}
+                  color="#afaeae"
+                  style={{ marginLeft: 50 }}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* View details modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isDetailsModalVisible}
+        onRequestClose={() => toggleDetailsModal("")}
+      >
+        <View style={styles.modalContainer}>
+          <ToastManager />
+          <View style={styles.modalContent}>
+            <Text style={style.modal_header_one}>Expense Details</Text>
+            <View>
+              <View style={[style.modal_expense_label]}>
+                <Text style={[style.modal_expense_label_text]}>
+                  Expense Date:{" "}
+                </Text>
+                <Text style={[style.modal_expense_label_value]}>
+                  {item?.expense_date}
+                </Text>
+              </View>
+              <View style={[style.modal_expense_label]}>
+                <Text style={[style.modal_expense_label_text]}>
+                  Expense Reason:{" "}
+                </Text>
+                <Text style={[style.modal_expense_label_value]}>
+                  {item?.expense_reason}
+                </Text>
+              </View>
+              <View style={[style.modal_expense_label]}>
+                <Text style={[style.modal_expense_label_text]}>
+                  Expense Amount:{" "}
+                </Text>
+                <Text style={[style.modal_expense_label_value]}>
+                  {item?.expense_amount}
+                </Text>
+              </View>
+              <View style={[style.modal_expense_label]}>
+                <Text style={[style.modal_expense_label_text]}>Comment: </Text>
+                <Text style={[style.modal_expense_label_value]}>
+                  {item?.expense_comment}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.modalButtonContainer}>
+              <TouchableOpacity onPress={() => toggleDetailsModal(null)}>
                 <AntDesign
                   name="close"
                   size={24}
