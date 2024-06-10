@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import ModalSelector from "react-native-modal-selector";
 import {
   TextInput,
   View,
@@ -8,6 +7,7 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
+import Toast from "react-native-toast-message";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import dayjs from "dayjs";
 
@@ -60,11 +60,19 @@ export default function AddDebtForm() {
         setDebtFrom("");
         setDebtComment("");
         setIsError(false);
-        setErrorMessage("Debt added successfully.");
+        // setErrorMessage("Debt added successfully.");
+        Toast.show({
+          type: "success",
+          text1: "Debt added successfully.",
+        });
       })
       .catch((err) => {
         setIsError(true);
-        setErrorMessage("There was a problem adding the debt.");
+        // setErrorMessage("There was a problem adding the debt.");
+        Toast.show({
+          type: "error",
+          text1: "There was a problem adding the debt.",
+        });
       })
       .finally(() => {
         setIsLoading(false);

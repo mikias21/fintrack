@@ -8,6 +8,7 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
+import Toast from "react-native-toast-message";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import dayjs from "dayjs";
 
@@ -69,11 +70,19 @@ export default function AddNewExpense() {
         setExpenseReason("");
         setExpenseComment("");
         setIsError(false);
-        setErrorMessage("Expense added successfully.");
+        // setErrorMessage("Expense added successfully.");
+        Toast.show({
+          type: "success",
+          text1: "Expense added successfully.",
+        });
       })
       .catch((err) => {
         setIsError(true);
-        setErrorMessage("There was a problem adding the expense.");
+        // setErrorMessage("There was a problem adding the expense.");
+        Toast.show({
+          type: "error",
+          text1: "There was a problem adding the expense.",
+        });
       })
       .finally(() => {
         setIsLoading(false);

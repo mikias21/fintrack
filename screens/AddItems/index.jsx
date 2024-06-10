@@ -97,6 +97,7 @@ export default function AddItem() {
                     keyExtractor={(item) => item.id.toString()}
                     horizontal
                     showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
                     pagingEnabled
                     snapToInterval={screenWidth - 36}
                     snapToAlignment="center"

@@ -1,5 +1,6 @@
 import { Provider } from "react-redux";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet } from "react-native";
+import Toast from "react-native-toast-message";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -67,6 +68,7 @@ export default function App() {
           <Tab.Screen name="Debt" component={Debt} />
         </Tab.Navigator>
       </NavigationContainer>
+      <Toast />
     </Provider>
   );
 }

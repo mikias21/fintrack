@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 export default styles = StyleSheet.create({
   container: {
@@ -14,6 +14,7 @@ export default styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    padding: Platform.OS === "ios" ? 18 : 0,
   },
 
   container_two: {
