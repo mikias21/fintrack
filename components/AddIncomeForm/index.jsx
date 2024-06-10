@@ -7,7 +7,9 @@ import {
   Text,
   Pressable,
   ActivityIndicator,
+  Platform,
 } from "react-native";
+import Toast from "react-native-toast-message";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import dayjs from "dayjs";
 
@@ -69,11 +71,19 @@ export default function AddIncomeForm() {
         setIncomeReason("");
         setIncomeComment("");
         setIsError(false);
-        setErrorMessage("Income added successfully.");
+        // setErrorMessage("Income added successfully.");
+        Toast.show({
+          type: "success",
+          text1: "Income added successfully.",
+        });
       })
       .catch((err) => {
         setIsError(true);
-        setErrorMessage("There was a problem adding the income.");
+        // setErrorMessage("There was a problem adding the income.");
+        Toast.show({
+          type: "error",
+          text1: "There was a problem adding the income.",
+        });
       })
       .finally(() => {
         setIsLoading(false);
@@ -105,11 +115,24 @@ export default function AddIncomeForm() {
           onFocus={showDateTimePicker}
           onPress={showDateTimePicker}
         />
-        <DateTimePicker
+        {/* <DateTimePicker
           isVisible={isDateTimePickerVisible}
           onConfirm={handleDatePicked}
           onCancel={hideDateTimePicker}
-        />
+        /> */}
+        {Platform.OS === "ios" ? (
+          <DateTimePicker
+            isVisible={isDateTimePickerVisible}
+            onConfirm={handleDatePicked}
+            onCancel={hideDateTimePicker}
+          />
+        ) : (
+          <DateTimePicker
+            isVisible={isDateTimePickerVisible}
+            onConfirm={handleDatePicked}
+            onCancel={hideDateTimePicker}
+          />
+        )}
         <ModalSelector
           data={incomeSourceData}
           initValue="Select income source *"

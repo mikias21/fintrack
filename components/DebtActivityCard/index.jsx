@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Modal,
 } from "react-native";
+import Toast from "react-native-toast-message";
 
 // Icons
 import { AntDesign } from "@expo/vector-icons";
@@ -47,11 +48,19 @@ export default function DebtActivityCard({ activity }) {
     dispatch(deleteDebt(activity._id))
       .unwrap()
       .then((res) => {
-        console.log("deleted.");
+        // console.log("deleted.");
+        Toast.show({
+          type: "success",
+          text1: "Debt has been deleted.",
+        });
       })
       .catch((err) => {
         setIsError(true);
-        setErrorMessage("There was a problem deleting the debt.");
+        // setErrorMessage("There was a problem deleting the debt.");
+        Toast.show({
+          type: "success",
+          text1: "There was a problem deleting the debt.",
+        });
       })
       .finally(() => {
         setIsLoading(false);
@@ -64,13 +73,21 @@ export default function DebtActivityCard({ activity }) {
     dispatch(payDebt(activity._id))
       .unwrap()
       .then((res) => {
-        console.log("payed.");
+        // console.log("payed.");
         setIsPayLoading(false);
+        Toast.show({
+          type: "success",
+          text1: "Debt has been updated.",
+        });
       })
       .catch((err) => {
         setIsError(true);
-        setErrorMessage("There was a problem paying the debt.");
-        console.log(err);
+        // setErrorMessage("There was a problem paying the debt.");
+        // console.log(err);
+        Toast.show({
+          type: "error",
+          text1: "There was a problem updating your debt.",
+        });
       })
       .finally(() => {
         setIsLoading(false);

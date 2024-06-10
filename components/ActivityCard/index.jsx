@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Modal,
 } from "react-native";
+import Toast from "react-native-toast-message";
 
 // Icons
 import { AntDesign } from "@expo/vector-icons";
@@ -47,11 +48,19 @@ export default function ActivityCard({ activity }) {
       dispatch(deleteExpense(activity._id))
         .unwrap()
         .then((res) => {
-          console.log("deleted.");
+          // console.log("deleted.");
+          Toast.show({
+            type: "success",
+            text1: "Expense has been deleted.",
+          });
         })
         .catch((err) => {
           setIsError(true);
-          setErrorMessage("There was a problem deleting the expense.");
+          // setErrorMessage("There was a problem deleting the expense.");
+          Toast.show({
+            type: "error",
+            text1: "There was a problem deleting the expense.",
+          });
         })
         .finally(() => {
           setIsLoading(false);
@@ -62,11 +71,19 @@ export default function ActivityCard({ activity }) {
       dispatch(deleteIncome(activity._id))
         .unwrap()
         .then((res) => {
-          console.log("deleted.");
+          // console.log("deleted.");
+          Toast.show({
+            type: "success",
+            text1: "Income has been deleted.",
+          });
         })
         .catch((err) => {
           setIsError(true);
-          setErrorMessage("There was a problem deleting the expense.");
+          // setErrorMessage("There was a problem deleting the expense.");
+          Toast.show({
+            type: "error",
+            text1: "There was a problem deleting the income.",
+          });
         })
         .finally(() => {
           setIsLoading(false);
@@ -164,7 +181,9 @@ export default function ActivityCard({ activity }) {
         </Text>
       )}
       {activity.income_date && (
-        <Text style={styles.text_three}>{activity.income_date}</Text>
+        <Text style={styles.text_three}>
+          {formatDate(activity.income_date)}
+        </Text>
       )}
     </View>
   );

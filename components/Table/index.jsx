@@ -146,7 +146,9 @@ export default function Table({ data }) {
         <View style={styles.modalContainer}>
           <ToastManager />
           <View style={styles.modalContent}>
-            <Text>Are you sure you want to delete ?</Text>
+            <Text style={style.modal_header_two}>
+              Are you sure you want to delete ?
+            </Text>
             <View style={styles.modalButtonContainer}>
               <TouchableOpacity onPress={handleDelete}>
                 <AntDesign name="delete" size={24} color="#FC819E" />
