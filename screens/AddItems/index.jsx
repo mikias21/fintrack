@@ -1,14 +1,13 @@
+import React, { useState, useRef } from "react";
 import {
   SafeAreaView,
-  ScrollView,
-  FlatList,
-  Dimensions,
   View,
   Text,
+  FlatList,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from "react-native";
-import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 
 // Styles
@@ -51,20 +50,14 @@ export default function AddItem() {
   };
 
   const renderForm = ({ item: { id } }) => (
-    <>
-      <View style={[styles.formContainer, { width: screenWidth - 36 }]}>
-        {id === 0 && <AddNewExpense />}
-        {id === 1 && <AddIncomeForm />}
-        {id === 2 && <AddDebtForm />}
-      </View>
-    </>
+    <View style={[styles.formContainer, { width: screenWidth - 36 }]}>
+      {id === 0 && <AddNewExpense />}
+      {id === 1 && <AddIncomeForm />}
+      {id === 2 && <AddDebtForm />}
+    </View>
   );
 
-  const renderRecentActivity = () => (
-    <>
-      <Text style={styles.text_two}>Recent Activities</Text>
-    </>
-  );
+  const renderRecentActivity = ({ item }) => <ActivityCard activity={item} />;
 
   const paginationDots = Array.from({ length: 3 }, (_, i) => (
     <TouchableOpacity
@@ -83,48 +76,63 @@ export default function AddItem() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container_one}>
-          <Image
-            source={require("../../assets/online-transfer.png")}
-            style={styles.header_image}
-          />
-          <Text style={styles.text_one}>Activities</Text>
-        </View>
-        <View style={styles.container_two}>
-          <FlatList
-            ref={flatListRef}
-            data={[{ id: 0 }, { id: 1 }, { id: 2 }]}
-            renderItem={renderForm}
-            keyExtractor={(item) => item.id.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled
-            snapToInterval={screenWidth - 36}
-            snapToAlignment="center"
-            contentContainerStyle={styles.list_one}
-            onMomentumScrollEnd={onMomentumScrollEnd}
-          />
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: 20,
-            }}
-          >
-            {paginationDots}
-          </View>
-        </View>
-        <View>
-          <FlatList
-            data={recentActivities}
-            renderItem={({ item }) => <ActivityCard activity={item} />}
-            keyExtractor={(item) => item._id}
-            ListHeaderComponent={renderRecentActivity}
-            contentContainerStyle={styles.list_two}
-          />
-        </View>
-      </ScrollView>
+      <FlatList
+        data={[{ key: "header" }, { key: "content" }]}
+        renderItem={({ item }) => {
+          if (item.key === "header") {
+            return (
+              <>
+                <View style={styles.container_one}>
+                  <Image
+                    source={require("../../assets/online-transfer.png")}
+                    style={styles.header_image}
+                  />
+                  <Text style={styles.text_one}>Activities</Text>
+                </View>
+                <View style={styles.container_two}>
+                  <FlatList
+                    ref={flatListRef}
+                    data={[{ id: 0 }, { id: 1 }, { id: 2 }]}
+                    renderItem={renderForm}
+                    keyExtractor={(item) => item.id.toString()}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    pagingEnabled
+                    snapToInterval={screenWidth - 36}
+                    snapToAlignment="center"
+                    contentContainerStyle={styles.list_one}
+                    onMomentumScrollEnd={onMomentumScrollEnd}
+                  />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      marginTop: 20,
+                    }}
+                  >
+                    {paginationDots}
+                  </View>
+                </View>
+              </>
+            );
+          } else if (item.key === "content") {
+            return (
+              <>
+                <Text style={styles.text_two}>Recent Activities</Text>
+                <FlatList
+                  data={recentActivities}
+                  renderItem={renderRecentActivity}
+                  keyExtractor={(item) => item._id}
+                  contentContainerStyle={styles.list_two}
+                />
+              </>
+            );
+          }
+          return null;
+        }}
+        keyExtractor={(item) => item.key}
+        showsVerticalScrollIndicator={false}
+      />
     </SafeAreaView>
   );
 }

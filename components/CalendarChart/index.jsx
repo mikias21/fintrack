@@ -20,7 +20,7 @@ export default function CalendarChart({ data }) {
           <View style={[styles.box, styles.firstBox]}>
             <Text style={styles.month}>{monthlyData.labels[0]}</Text>
             <Text style={styles.amount}>
-              ${monthlyData.expenseAmounts[0].toFixed(2)}
+              &#165; {monthlyData.expenseAmounts[0].toFixed(2)}
             </Text>
           </View>
         </View>
@@ -38,19 +38,19 @@ export default function CalendarChart({ data }) {
           <View style={[styles.box, styles.firstBox]}>
             <Text style={styles.month}>{monthlyData.labels[9]}</Text>
             <Text style={styles.amount}>
-              ${monthlyData.expenseAmounts[9].toFixed(2)}
+              &#165; {monthlyData.expenseAmounts[9].toFixed(2)}
             </Text>
           </View>
           <View style={[styles.box, styles.firstBox]}>
             <Text style={styles.month}>{monthlyData.labels[10]}</Text>
             <Text style={styles.amount}>
-              ${monthlyData.expenseAmounts[10].toFixed(2)}
+              &#165; {monthlyData.expenseAmounts[10].toFixed(2)}
             </Text>
           </View>
           <View style={[styles.box, styles.firstBox]}>
             <Text style={styles.month}>{monthlyData.labels[11]}</Text>
             <Text style={styles.amount}>
-              ${monthlyData.expenseAmounts[11].toFixed(2)}
+              &#165; {monthlyData.expenseAmounts[11].toFixed(2)}
             </Text>
           </View>
           <View style={[styles.box, styles.firstBox]}></View>

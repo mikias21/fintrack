@@ -19,10 +19,14 @@ import { fetchExpenses } from "../../slices/expenseSlice";
 import { fetchIncomes } from "../../slices/incomeSlice";
 import { fetchDebts } from "../../slices/debtSlice";
 
+// Util
+import { mergeAndSortItems } from "../../utils/utils";
+
 export default function HomeScreen() {
   const dispatch = useDispatch();
   const expenses = useSelector((state) => state.expenses.expenses);
   const incomes = useSelector((state) => state.incomes.incomes);
+  const debts = useSelector((state) => state.debts.debts);
   const currentMonth = dayjs().month();
   const currentYear = dayjs().year();
 
@@ -44,18 +48,23 @@ export default function HomeScreen() {
     return sum + expense.expense_amount;
   }, 0);
 
-  let incomeCalculated =
-    currentMonthIncome.reduce((sum, income) => {
-      return sum + income.income_amount;
-    }, 0) - totalAmountOfExpense;
+  let incomeCalculated = currentMonthIncome.reduce((sum, income) => {
+    return sum + income.income_amount;
+  }, 0);
 
   const totalAmountOfIncome = incomeCalculated < 0 ? 0 : incomeCalculated;
+  const reduced_income =
+    incomeCalculated - totalAmountOfExpense < 0
+      ? 0
+      : incomeCalculated - totalAmountOfExpense;
 
   useEffect(() => {
     dispatch(fetchExpenses());
     dispatch(fetchIncomes());
     dispatch(fetchDebts());
   }, [dispatch]);
+
+  const recentActivities = mergeAndSortItems(expenses, incomes, debts);
 
   const renderHeader = () => (
     <>
@@ -65,9 +74,9 @@ export default function HomeScreen() {
           style={styles.logo_image}
         />
         <MaterialIcons
-          name="dark-mode"
+          name="settings"
           size={28}
-          color="black"
+          color="#797979"
           style={{ marginRight: 20 }}
         />
       </View>
@@ -84,7 +93,7 @@ export default function HomeScreen() {
         <DashboardCard
           intro_text="Income as of"
           amount={totalAmountOfIncome}
-          image={require("../../assets/piggy-bank.png")}
+          image={require("../../assets/income.png")}
           color="#00A9FF"
         />
       </View>
@@ -95,7 +104,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={expenses}
+        data={recentActivities}
         renderItem={({ item }) => <ActivityCard activity={item} />}
         keyExtractor={(item) => item._id}
         ListHeaderComponent={renderHeader}

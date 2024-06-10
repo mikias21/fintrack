@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 // Screens
 import HomeScreen from "./screens/Dashboard";
@@ -27,21 +27,21 @@ export default function App() {
               let iconName;
 
               if (route.name === "Home") {
-                iconName = "space-dashboard";
+                iconName = "home";
               } else if (route.name === "Income") {
-                iconName = "credit-card-off";
+                iconName = "piggy-bank";
               } else if (route.name === "Add") {
-                iconName = "add-circle";
+                iconName = "plus-circle";
               } else if (route.name === "Expenses") {
-                iconName = "attach-money";
+                iconName = "chart-line";
               } else if (route.name === "Debt") {
-                iconName = "settings";
+                iconName = "money-check-alt";
               }
 
               return (
-                <MaterialIcons
+                <FontAwesome5
                   name={iconName}
-                  size={28}
+                  size={24}
                   color={focused ? color : color}
                 />
               );

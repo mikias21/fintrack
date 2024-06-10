@@ -74,8 +74,8 @@ export default styles = StyleSheet.create({
   modalContent: {
     backgroundColor: "whitesmoke",
     padding: 22,
-    // justifyContent: "center",
-    // alignItems: "center",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
     borderColor: "rgba(0, 0, 0, 0.1)",
     borderWidth: 1,
@@ -88,13 +88,17 @@ export default styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginRight: 20,
   },
 
   modal_header_one: {
     textAlign: "center",
     fontSize: 20,
     marginBottom: 10,
+  },
+
+  modal_header_two: {
+    textAlign: "center",
+    fontSize: 16,
   },
 
   modal_expense_label: {

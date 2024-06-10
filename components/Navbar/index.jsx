@@ -1,9 +1,6 @@
 import { Avatar } from "react-native-elements";
 import { View, Text, SafeAreaView } from "react-native";
 
-// Icons
-import { MaterialIcons } from "@expo/vector-icons";
-
 // Styles
 import styles from "./styles";
 
@@ -15,9 +12,7 @@ export default function Navbar() {
       <View style={styles.container_one}>
         <Avatar
           rounded
-          source={{
-            uri: "https://media.licdn.com/dms/image/C5603AQFi72nnJLHYYA/profile-displayphoto-shrink_800_800/0/1590515579343?e=1722470400&v=beta&t=LgwOBrvvMtFWh0Nl6rNbY8MePNZdHJ1bKf1Yoy2aE7w",
-          }}
+          source={require("../../assets/man.png")}
           size={50}
           containerStyle={{
             borderColor: focused ? "lightblue" : "blue",

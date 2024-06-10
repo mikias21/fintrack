@@ -37,4 +37,31 @@ function formatDate(dateString) {
   return formattedDate;
 }
 
-export { formatDate };
+const getMostRecentItems = (items, dateField, count = 3) => {
+  return items
+    .slice()
+    .sort((a, b) => new Date(b[dateField]) - new Date(a[dateField]))
+    .slice(0, count);
+};
+
+const mergeAndSortItems = (expenses, incomes) => {
+  const recentExpenses = getMostRecentItems(expenses, "expense_date");
+  const recentIncomes = getMostRecentItems(incomes, "income_date");
+
+  const mergedList = [
+    ...recentExpenses.map((item) => ({
+      ...item,
+      date: item.expense_date,
+      type: "expense",
+    })),
+    ...recentIncomes.map((item) => ({
+      ...item,
+      date: item.income_date,
+      type: "income",
+    })),
+  ];
+
+  return mergedList.sort((a, b) => new Date(b.date) - new Date(a.date));
+};
+
+export { formatDate, mergeAndSortItems };

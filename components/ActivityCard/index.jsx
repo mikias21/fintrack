@@ -164,7 +164,9 @@ export default function ActivityCard({ activity }) {
         </Text>
       )}
       {activity.income_date && (
-        <Text style={styles.text_three}>{activity.income_date}</Text>
+        <Text style={styles.text_three}>
+          {formatDate(activity.income_date)}
+        </Text>
       )}
     </View>
   );
