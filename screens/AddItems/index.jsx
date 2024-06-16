@@ -16,6 +16,7 @@ import styles from "./styles";
 // Components
 import AddNewExpense from "../../components/AddExpenseForm";
 import AddIncomeForm from "../../components/AddIncomeForm";
+import AddSavingsForm from "../../components/AddSavingForm";
 import AddDebtForm from "../../components/AddDebtForm";
 import ActivityCard from "../../components/ActivityCard";
 
@@ -54,12 +55,13 @@ export default function AddItem() {
       {id === 0 && <AddNewExpense />}
       {id === 1 && <AddIncomeForm />}
       {id === 2 && <AddDebtForm />}
+      {id === 3 && <AddSavingsForm />}
     </View>
   );
 
   const renderRecentActivity = ({ item }) => <ActivityCard activity={item} />;
 
-  const paginationDots = Array.from({ length: 3 }, (_, i) => (
+  const paginationDots = Array.from({ length: 4 }, (_, i) => (
     <TouchableOpacity
       key={i}
       onPress={() => handlePagination(i)}
@@ -92,7 +94,7 @@ export default function AddItem() {
                 <View style={styles.container_two}>
                   <FlatList
                     ref={flatListRef}
-                    data={[{ id: 0 }, { id: 1 }, { id: 2 }]}
+                    data={[{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }]}
                     renderItem={renderForm}
                     keyExtractor={(item) => item.id.toString()}
                     horizontal

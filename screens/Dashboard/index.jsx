@@ -27,6 +27,7 @@ export default function HomeScreen() {
   const expenses = useSelector((state) => state.expenses.expenses);
   const incomes = useSelector((state) => state.incomes.incomes);
   const debts = useSelector((state) => state.debts.debts);
+  const savings = useSelector((state) => state.savings.savings);
   const currentMonth = dayjs().month();
   const currentYear = dayjs().year();
 

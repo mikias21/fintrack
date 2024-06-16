@@ -19,6 +19,7 @@ import DashboardCard from "../../components/DashboardCard";
 export default function IncomeSaving() {
   const expenses = useSelector((state) => state.expenses.expenses);
   const incomes = useSelector((state) => state.incomes.incomes);
+  const savings = useSelector((state) => state.savings.savings);
   const currentMonth = dayjs().month();
   const currentYear = dayjs().year();
 
@@ -42,6 +43,10 @@ export default function IncomeSaving() {
 
   let incomeCalculated = currentMonthIncome.reduce((sum, income) => {
     return sum + income.income_amount;
+  }, 0);
+
+  const totalAmountOfSaving = savings.reduce((sum, saving) => {
+    return sum + saving.saving_amount;
   }, 0);
 
   const reduced_income =
@@ -75,7 +80,7 @@ export default function IncomeSaving() {
       <View style={styles.container_two}>
         <DashboardCard
           intro_text="Savings as of"
-          amount={0}
+          amount={totalAmountOfSaving}
           image={require("../../assets/piggy-bank.png")}
           color="#00A9FF"
         />
