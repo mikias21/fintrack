@@ -68,4 +68,38 @@ export default styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+
+  input: {
+    height: 40,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    width: 280,
+  },
+
+  container_two_form: {
+    marginTop: 20,
+  },
+
+  modalButtonContainerSpecial: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginLeft: 200,
+  },
+
+  button_one: {
+    width: 30,
+    height: 30,
+    backgroundColor: "#007bff",
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  text_four: {
+    fontSize: 20,
+    color: "#fff",
+  },
 });

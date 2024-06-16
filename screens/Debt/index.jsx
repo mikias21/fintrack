@@ -26,9 +26,30 @@ export default function Debt() {
     return debtDate.month() === currentMonth && debtDate.year() === currentYear;
   });
 
-  const totalAmountOfDebt = currentMonthDebt.reduce((sum, expense) => {
-    return sum + expense.debt_amount;
+  const totalDebtPaidInCurrentMonth = debts.reduce((totalPaid, debt) => {
+    if (debt.debt_paid_details && Array.isArray(debt.debt_paid_details)) {
+      const paidInCurrentMonth = debt.debt_paid_details.reduce(
+        (sum, payment) => {
+          const paymentDate = dayjs(payment.paid_date);
+          if (
+            paymentDate.month() === currentMonth &&
+            paymentDate.year() === currentYear
+          ) {
+            return sum + payment.paid_amount;
+          }
+          return sum;
+        },
+        0
+      );
+      return totalPaid + paidInCurrentMonth;
+    }
+    return totalPaid;
   }, 0);
+
+  const totalAmountOfDebt =
+    currentMonthDebt.reduce((sum, expense) => {
+      return sum + expense.debt_amount;
+    }, 0) - totalDebtPaidInCurrentMonth;
 
   const renderHeader = () => (
     <>
@@ -45,6 +66,14 @@ export default function Debt() {
           amount={totalAmountOfDebt}
           image={require("../../assets/debt.png")}
           color="#FC819E"
+        />
+      </View>
+      <View style={styles.container_two}>
+        <DashboardCard
+          intro_text="Total debt payed"
+          amount={totalDebtPaidInCurrentMonth}
+          image={require("../../assets/borrow.png")}
+          color="#00A9FF"
         />
       </View>
       <Text style={styles.text_two}>Recent Debts</Text>

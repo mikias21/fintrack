@@ -72,12 +72,16 @@ export const deleteDebt = createAsyncThunk(
 // Async thunk to pay off a debt
 export const payDebt = createAsyncThunk(
   "debts/payDebt",
-  async (debtID, thunkAPI) => {
+  async ({ debtID, debt_paid_amount, debt_paid_date }, thunkAPI) => {
     try {
       const response = await fetch(
         `https://fintrack-api-gmpu.onrender.com/api/v1/debts/pay/${debtID}`,
         {
           method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ debt_paid_amount, debt_paid_date }),
         }
       );
 
