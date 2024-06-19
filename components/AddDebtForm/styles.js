@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 export default styles = StyleSheet.create({
   text_two: {
@@ -29,6 +29,7 @@ export default styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e0e0e0",
     width: 280,
+    width: Platform.OS === "ios" ? 305 : 290,
   },
 
   input_select: {

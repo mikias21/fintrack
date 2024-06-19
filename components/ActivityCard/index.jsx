@@ -102,19 +102,23 @@ export default function ActivityCard({ activity }) {
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-              <Text>Are you sure you want to delete ?</Text>
+              <Text style={styles.modalTitle}>Confirm Deletion</Text>
+              <Text style={styles.modalText}>
+                Are you sure you want to delete this item?
+              </Text>
               <View style={styles.modalButtonContainer}>
-                <TouchableOpacity onPress={handleDelete}>
-                  <AntDesign name="delete" size={24} color="#FC819E" />
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={handleDelete}
+                >
+                  <Text style={styles.modalButtonText}>Delete</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={toggleModal}>
-                  <AntDesign
-                    name="close"
-                    size={24}
-                    color="#afaeae"
-                    style={{ marginLeft: 50 }}
-                  />
+                <TouchableOpacity
+                  style={styles.cancelButton}
+                  onPress={toggleModal}
+                >
+                  <Text style={styles.modalButtonText}>Cancel</Text>
                 </TouchableOpacity>
               </View>
             </View>

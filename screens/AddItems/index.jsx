@@ -105,6 +105,17 @@ export default function AddItem() {
                     snapToAlignment="center"
                     contentContainerStyle={styles.list_one}
                     onMomentumScrollEnd={onMomentumScrollEnd}
+                    bounces={false}
+                    scrollEventThrottle={16}
+                    onScroll={(event) => {
+                      const offsetY = event.nativeEvent.contentOffset.y;
+                      if (offsetY !== 0) {
+                        flatListRef.current.scrollToOffset({
+                          offset: 0,
+                          animated: false,
+                        });
+                      }
+                    }}
                   />
                   <View
                     style={{

@@ -6,10 +6,10 @@ export function getReadableDateTime() {
     year: "numeric",
     month: "long",
     day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: true,
+    // hour: "numeric",
+    // minute: "numeric",
+    // second: "numeric",
+    // hour12: true,
   });
 
   return readableDateTime; // e.g., "Thursday, May 30, 2024, 2:27:13 PM"

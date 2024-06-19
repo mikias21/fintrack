@@ -46,26 +46,60 @@ export default styles = StyleSheet.create({
 
   modalContainer: {
     flex: 1,
-    justifyContent: "space-start",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
-  },
-
-  modalContent: {
-    backgroundColor: "whitesmoke",
-    padding: 22,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 4,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: "80%",
+    backgroundColor: "whitesmoke",
+    padding: 20,
+    borderRadius: 10,
     borderColor: "rgba(0, 0, 0, 0.1)",
     borderWidth: 1,
-    marginTop: 150,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  modalButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  deleteButton: {
+    backgroundColor: "#FC819E",
+    paddingVertical: 8, // Reduced padding
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginHorizontal: 10,
   },
 
-  modalButtonContainer: {
-    marginTop: 20,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+  cancelButton: {
+    backgroundColor: "#afaeae",
+    paddingVertical: 8, // Reduced padding
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginHorizontal: 10,
+  },
+
+  modalButtonText: {
+    color: "#FFFFFF",
+    fontSize: 14, // Reduced font size
+    fontWeight: "bold",
   },
 });

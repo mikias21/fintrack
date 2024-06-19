@@ -22,16 +22,20 @@ export default styles = StyleSheet.create({
   row_first: {
     flexDirection: "row",
     justifyContent: "space-between",
+    flexWrap: "wrap",
+    // height: 1,
   },
 
   row_last: {
     marginTop: -38,
+    flexWrap: "wrap",
   },
 
   row: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
+    marginTop: -15,
   },
 
   text_one: {

@@ -64,4 +64,13 @@ const mergeAndSortItems = (expenses, incomes) => {
   return mergedList.sort((a, b) => new Date(b.date) - new Date(a.date));
 };
 
-export { formatDate, mergeAndSortItems };
+const formatMoneyAmount = (amount) => {
+  return amount.toFixed(2);
+};
+
+const formatDateForTable = (date) => {
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  return new Date(date).toLocaleDateString(undefined, options);
+};
+
+export { formatDate, mergeAndSortItems, formatMoneyAmount, formatDateForTable };

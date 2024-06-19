@@ -40,7 +40,7 @@ export default styles = StyleSheet.create({
   },
 
   image_one: {
-    height: 120,
-    width: 120,
+    height: 100,
+    width: 100,
   },
 });

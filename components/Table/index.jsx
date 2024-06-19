@@ -20,9 +20,10 @@ import styles from "./style";
 
 // Redux
 import { deleteExpense } from "../../slices/expenseSlice";
-import style from "./style";
 
-const ITEMS_PER_PAGE = 7;
+import { formatDateForTable } from "../../utils/utils";
+
+const ITEMS_PER_PAGE = 5;
 
 export default function Table({ data }) {
   const [currentPage, setCurrentPage] = useState(0);
@@ -78,38 +79,57 @@ export default function Table({ data }) {
     </View>
   );
 
-  const renderItem = ({ item }) => (
-    <View style={styles.rowContainer}>
-      <Text style={styles.rowText}>{item.expense_date}</Text>
-      <Text style={styles.rowText}>{item.expense_amount}</Text>
-      <Text style={styles.rowText}>{item.expense_reason}</Text>
-      <View style={styles.container_three}>
-        <TouchableOpacity onPress={() => toggleDetailsModal(item)}>
-          {showDetails ? (
-            <MaterialIcons name="details" size={18} color="#00A9FF" />
-          ) : (
-            <MaterialCommunityIcons name="details" size={18} color="#00A9FF" />
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => toggleDeleteModal(item._id)}>
-          {isLoading ? (
-            <ActivityIndicator
-              size={15}
-              color="#FC819E"
-              style={{ marginLeft: 15 }}
-            />
-          ) : (
-            <AntDesign
-              name="delete"
-              size={15}
-              color="#FC819E"
-              style={{ marginLeft: 15 }}
-            />
-          )}
-        </TouchableOpacity>
+  const renderItem = ({ item, index }) => {
+    const truncatedReason =
+      item.expense_reason.length > 6
+        ? `${item.expense_reason.slice(0, 6)}...`
+        : item.expense_reason;
+
+    const nextBgColor = index % 2 === 0 ? "'#FFFFFF'" : "#F0F8FF";
+
+    return (
+      <View style={[styles.rowContainer, { backgroundColor: nextBgColor }]}>
+        <Text style={[styles.rowText, { flex: 2 }]}>
+          {formatDateForTable(item.expense_date)}
+        </Text>
+        <Text style={[styles.rowText, { flex: 1, fontSize: 12 }]}>
+          {item.expense_amount.toFixed(2)}
+        </Text>
+        <Text style={[styles.rowText, { flex: 3, fontSize: 12 }]}>
+          {truncatedReason}
+        </Text>
+        <View style={styles.container_three}>
+          <TouchableOpacity onPress={() => toggleDetailsModal(item)}>
+            {showDetails ? (
+              <MaterialIcons name="details" size={18} color="#00A9FF" />
+            ) : (
+              <MaterialCommunityIcons
+                name="details"
+                size={18}
+                color="#00A9FF"
+              />
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => toggleDeleteModal(item._id)}>
+            {isLoading ? (
+              <ActivityIndicator
+                size={15}
+                color="#FC819E"
+                style={{ marginLeft: 15 }}
+              />
+            ) : (
+              <AntDesign
+                name="delete"
+                size={15}
+                color="#FC819E"
+                style={{ marginLeft: 15 }}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   const paginatedData = data
     .slice()
@@ -146,21 +166,21 @@ export default function Table({ data }) {
         <View style={styles.modalContainer}>
           <ToastManager />
           <View style={styles.modalContent}>
-            <Text style={style.modal_header_two}>
-              Are you sure you want to delete ?
+            <Text style={styles.modalHeader}>
+              Are you sure you want to delete?
             </Text>
             <View style={styles.modalButtonContainer}>
-              <TouchableOpacity onPress={handleDelete}>
-                <AntDesign name="delete" size={24} color="#FC819E" />
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={handleDelete}
+              >
+                <Text style={styles.modalButtonText}>Delete</Text>
               </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => toggleDeleteModal("")}>
-                <AntDesign
-                  name="close"
-                  size={24}
-                  color="#afaeae"
-                  style={{ marginLeft: 50 }}
-                />
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => toggleDeleteModal("")}
+              >
+                <Text style={styles.modalButtonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -174,50 +194,50 @@ export default function Table({ data }) {
         visible={isDetailsModalVisible}
         onRequestClose={() => toggleDetailsModal("")}
       >
-        <View style={styles.modalContainer}>
+        <View style={styles.detailsModalContainer}>
           <ToastManager />
-          <View style={styles.modalContent}>
-            <Text style={style.modal_header_one}>Expense Details</Text>
-            <View>
-              <View style={[style.modal_expense_label]}>
-                <Text style={[style.modal_expense_label_text]}>
-                  Expense Date:{" "}
+          <View style={styles.detailsModalContent}>
+            <Text style={styles.detailsModalHeader}>Expense Details</Text>
+            <View style={styles.detailsModalDetailsContainer}>
+              <View style={styles.detailsModalExpenseLabel}>
+                <Text style={styles.detailsModalExpenseLabelText}>
+                  Expense Date:
                 </Text>
-                <Text style={[style.modal_expense_label_value]}>
+                <Text style={styles.detailsModalExpenseLabelValue}>
                   {item?.expense_date}
                 </Text>
               </View>
-              <View style={[style.modal_expense_label]}>
-                <Text style={[style.modal_expense_label_text]}>
-                  Expense Reason:{" "}
+              <View style={styles.detailsModalExpenseLabel}>
+                <Text style={styles.detailsModalExpenseLabelText}>
+                  Expense Reason:
                 </Text>
-                <Text style={[style.modal_expense_label_value]}>
+                <Text style={styles.detailsModalExpenseLabelValue}>
                   {item?.expense_reason}
                 </Text>
               </View>
-              <View style={[style.modal_expense_label]}>
-                <Text style={[style.modal_expense_label_text]}>
-                  Expense Amount:{" "}
+              <View style={styles.detailsModalExpenseLabel}>
+                <Text style={styles.detailsModalExpenseLabelText}>
+                  Expense Amount:
                 </Text>
-                <Text style={[style.modal_expense_label_value]}>
+                <Text style={styles.detailsModalExpenseLabelValue}>
                   {item?.expense_amount}
                 </Text>
               </View>
-              <View style={[style.modal_expense_label]}>
-                <Text style={[style.modal_expense_label_text]}>Comment: </Text>
-                <Text style={[style.modal_expense_label_value]}>
+              <View style={styles.detailsModalExpenseLabel}>
+                <Text style={styles.detailsModalExpenseLabelText}>
+                  Comment:
+                </Text>
+                <Text style={styles.detailsModalExpenseLabelValue}>
                   {item?.expense_comment}
                 </Text>
               </View>
             </View>
-            <View style={styles.modalButtonContainer}>
-              <TouchableOpacity onPress={() => toggleDetailsModal(null)}>
-                <AntDesign
-                  name="close"
-                  size={24}
-                  color="#afaeae"
-                  style={{ marginLeft: 50 }}
-                />
+            <View style={styles.detailsModalButtonContainer}>
+              <TouchableOpacity
+                onPress={() => toggleDetailsModal(null)}
+                style={styles.detailsCloseButton}
+              >
+                <Text style={styles.detailsModalButtonText}>Close</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -244,9 +264,9 @@ export default function Table({ data }) {
             <AntDesign name="arrowleft" size={24} />
           </Text>
         </Pressable>
-        {/* <Text style={styles.paginationText}>
+        <Text style={styles.paginationText}>
           {currentPage + 1} of {totalPages}
-        </Text> */}
+        </Text>
         <Pressable
           onPress={handleNextPage}
           disabled={currentPage >= totalPages - 1}
