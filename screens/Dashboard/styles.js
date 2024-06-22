@@ -12,8 +12,8 @@ export default styles = StyleSheet.create({
   },
 
   logo_image: {
-    width: 200,
-    height: 50,
+    width: 70,
+    height: 70,
   },
 
   scrollViewContent: {

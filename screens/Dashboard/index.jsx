@@ -1,7 +1,14 @@
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { View, FlatList, SafeAreaView, Text, Image } from "react-native";
+import {
+  View,
+  FlatList,
+  SafeAreaView,
+  Text,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 
 // Icons
 import { MaterialIcons } from "@expo/vector-icons";
@@ -18,11 +25,12 @@ import styles from "./styles";
 import { fetchExpenses } from "../../slices/expenseSlice";
 import { fetchIncomes } from "../../slices/incomeSlice";
 import { fetchDebts } from "../../slices/debtSlice";
+import { logout } from "../../slices/userSlice";
 
 // Util
 import { mergeAndSortItems } from "../../utils/utils";
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const expenses = useSelector((state) => state.expenses.expenses);
   const incomes = useSelector((state) => state.incomes.incomes);
@@ -67,13 +75,19 @@ export default function HomeScreen() {
 
   const recentActivities = mergeAndSortItems(expenses, incomes, debts);
 
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   const renderHeader = () => (
     <>
       <View style={styles.logo_container}>
-        <Image
-          source={require("../../assets/logo2.jpg")}
-          style={styles.logo_image}
-        />
+        <TouchableOpacity onPress={handleLogout}>
+          <Image
+            source={require("../../assets/icon.png")}
+            style={styles.logo_image}
+          />
+        </TouchableOpacity>
         <MaterialIcons
           name="settings"
           size={28}
