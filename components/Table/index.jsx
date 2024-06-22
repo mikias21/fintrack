@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 import ToastManager, { Toast } from "toastify-react-native";
+import { useSelector } from "react-redux";
 
 // Icons
 import { AntDesign } from "@expo/vector-icons";
@@ -26,6 +27,7 @@ import { formatDateForTable } from "../../utils/utils";
 const ITEMS_PER_PAGE = 5;
 
 export default function Table({ data }) {
+  const user = useSelector((state) => state.user.user);
   const [currentPage, setCurrentPage] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -141,7 +143,8 @@ export default function Table({ data }) {
     setDataId("");
     setIsLoading(true);
 
-    dispatch(deleteExpense(dataId))
+    const deleteDetails = { expenseID: dataId, userID: user._id };
+    dispatch(deleteExpense(deleteDetails))
       .unwrap()
       .then((res) => {
         showSuccessDeleteToast();

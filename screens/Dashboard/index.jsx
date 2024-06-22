@@ -32,6 +32,7 @@ import { mergeAndSortItems } from "../../utils/utils";
 
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
   const expenses = useSelector((state) => state.expenses.expenses);
   const incomes = useSelector((state) => state.incomes.incomes);
   const debts = useSelector((state) => state.debts.debts);
@@ -68,9 +69,9 @@ export default function HomeScreen({ navigation }) {
       : incomeCalculated - totalAmountOfExpense;
 
   useEffect(() => {
-    dispatch(fetchExpenses());
-    dispatch(fetchIncomes());
-    dispatch(fetchDebts());
+    dispatch(fetchExpenses(user._id));
+    dispatch(fetchIncomes(user._id));
+    dispatch(fetchDebts(user._id));
   }, [dispatch]);
 
   const recentActivities = mergeAndSortItems(expenses, incomes, debts);

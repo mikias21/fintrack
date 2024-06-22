@@ -10,10 +10,10 @@ const initialState = {
 // Async thunk to fetch expenses
 export const fetchExpenses = createAsyncThunk(
   "expenses/fetchExpenses",
-  async (_, thunkAPI) => {
+  async (user_id, thunkAPI) => {
     try {
       const response = await fetch(
-        "https://fintrack-api-gmpu.onrender.com/api/v1/expenses/"
+        `https://fintrack-api-gmpu.onrender.com/api/v1/expenses/${user_id}`
       );
       const data = await response.json();
       return data;
@@ -49,20 +49,20 @@ export const addExpense = createAsyncThunk(
 // Async thunk to delete an expense
 export const deleteExpense = createAsyncThunk(
   "expenses/deleteExpense",
-  async (expenseId, thunkAPI) => {
+  async ({ expenseID, userID }, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/expenses/${expenseId}`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/expenses/${expenseID}/${userID}`,
         {
           method: "DELETE",
         }
       );
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error("Failed to delete expense");
       }
 
-      return expenseId; // Return the deleted expense ID for potential UI updates
+      return expenseID; // Return the deleted expense ID for potential UI updates
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

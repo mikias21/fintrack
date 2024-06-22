@@ -10,6 +10,7 @@ import {
 import Toast from "react-native-toast-message";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
 
 // Styles
 import styles from "./styles";
@@ -18,6 +19,7 @@ import styles from "./styles";
 import { addDebt } from "../../slices/debtSlice";
 
 export default function AddDebtForm() {
+  const user = useSelector((state) => state.user.user);
   const [debtAmount, setDebtAmount] = useState("");
   const [debtDate, setDebtDate] = useState(null);
   const [debtFrom, setDebtFrom] = useState("");
@@ -50,6 +52,7 @@ export default function AddDebtForm() {
       debt_date: debtDate,
       debt_from: debtFrom,
       debt_comment: debtComment,
+      user_id: user._id,
     };
 
     dispatch(addDebt(newDebt))

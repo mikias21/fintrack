@@ -12,6 +12,7 @@ import {
 import Toast from "react-native-toast-message";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
 
 // Style
 import styles from "./styles";
@@ -23,6 +24,7 @@ import { incomeSourceData } from "../../utils/constants";
 import { addIncome } from "../../slices/incomeSlice";
 
 export default function AddIncomeForm() {
+  const user = useSelector((state) => state.user.user);
   const [incomeAmount, setIncomeAmount] = useState("");
   const [incomeDate, setIncomeDate] = useState(null);
   const [incomeReason, setIncomeReason] = useState("");
@@ -61,6 +63,7 @@ export default function AddIncomeForm() {
       income_date: incomeDate,
       income_reason: incomeReason,
       income_comment: incomeComment,
+      user_id: user._id,
     };
 
     dispatch(addIncome(newIncome))

@@ -8,6 +8,7 @@ import {
   Modal,
 } from "react-native";
 import Toast from "react-native-toast-message";
+import { useSelector } from "react-redux";
 
 // Icons
 import { AntDesign } from "@expo/vector-icons";
@@ -25,6 +26,7 @@ import { deleteExpense } from "../../slices/expenseSlice";
 import { deleteIncome } from "../../slices/incomeSlice";
 
 export default function ActivityCard({ activity }) {
+  const user = useSelector((state) => state.user.user);
   const [showComment, setShowComment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -45,7 +47,8 @@ export default function ActivityCard({ activity }) {
     setIsLoading(true);
 
     if (activity.update_from === "EXP") {
-      dispatch(deleteExpense(activity._id))
+      const deleteDetails = { expenseID: activity._id, userID: user._id };
+      dispatch(deleteExpense(deleteDetails))
         .unwrap()
         .then((res) => {
           // console.log("deleted.");
@@ -68,7 +71,8 @@ export default function ActivityCard({ activity }) {
     }
 
     if (activity.update_from === "INC") {
-      dispatch(deleteIncome(activity._id))
+      const deleteDetails = { incomeID: activity._id, userID: user._id };
+      dispatch(deleteIncome(deleteDetails))
         .unwrap()
         .then((res) => {
           // console.log("deleted.");
