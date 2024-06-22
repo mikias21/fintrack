@@ -10,10 +10,10 @@ const initialState = {
 // Async thunk to fetch incomes
 export const fetchIncomes = createAsyncThunk(
   "incomes/fetchIncomes",
-  async (_, thunkAPI) => {
+  async (user_id, thunkAPI) => {
     try {
       const response = await fetch(
-        "https://fintrack-api-gmpu.onrender.com/api/v1/incomes/"
+        `https://fintrack-api-gmpu.onrender.com/api/v1/incomes/${user_id}`
       );
       const data = await response.json();
       return data;
@@ -49,16 +49,17 @@ export const addIncome = createAsyncThunk(
 // Async thunk to delete an income
 export const deleteIncome = createAsyncThunk(
   "incomes/deleteIncome",
-  async (incomeID, thunkAPI) => {
+  async ({ incomeID, userID }, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/incomes/${incomeID}`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/incomes/${incomeID}/${userID}`,
         {
           method: "DELETE",
         }
       );
 
       if (!response.ok) {
+        console.log(response);
         throw new Error("Failed to delete income");
       }
 

@@ -11,6 +11,7 @@ import {
 import Toast from "react-native-toast-message";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
 
 // Style
 import styles from "./styles";
@@ -22,6 +23,7 @@ import { addExpense } from "../../slices/expenseSlice";
 import { reasonData } from "../../utils/constants";
 
 export default function AddNewExpense() {
+  const user = useSelector((state) => state.user.user);
   const [expenseAmount, setExpenseAmount] = useState("");
   const [expenseDate, setExpenseDate] = useState(null);
   const [expenseReason, setExpenseReason] = useState("");
@@ -60,6 +62,7 @@ export default function AddNewExpense() {
       expense_date: expenseDate,
       expense_reason: expenseReason,
       expense_comment: expenseComment,
+      user_id: user._id,
     };
 
     dispatch(addExpense(newExpense))

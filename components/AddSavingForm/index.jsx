@@ -11,6 +11,7 @@ import {
 import Toast from "react-native-toast-message";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
 
 // Style
 import styles from "./styles";
@@ -19,6 +20,7 @@ import styles from "./styles";
 import { addSaving } from "../../slices/savingSlice";
 
 export default function AddSavingsForm() {
+  const user = useSelector((state) => state.user.user);
   const [savingAmount, setSavingAmount] = useState("");
   const [savingDate, setSavingDate] = useState(null);
   const [savingComment, setSavingComment] = useState("");
@@ -55,6 +57,7 @@ export default function AddSavingsForm() {
       saving_amount: parseFloat(savingAmount),
       saving_date: savingDate,
       saving_comment: savingComment,
+      user_id: user._id,
     };
 
     dispatch(addSaving(newSaving))

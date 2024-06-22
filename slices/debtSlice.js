@@ -10,10 +10,10 @@ const initialState = {
 // Async thunk to fetch debts
 export const fetchDebts = createAsyncThunk(
   "debts/fetchDebts",
-  async (_, thunkAPI) => {
+  async (id, thunkAPI) => {
     try {
       const response = await fetch(
-        "https://fintrack-api-gmpu.onrender.com/api/v1/debts/"
+        `https://fintrack-api-gmpu.onrender.com/api/v1/debts/${id}`
       );
       const data = await response.json();
       return data;
@@ -49,10 +49,10 @@ export const addDebt = createAsyncThunk(
 // Async thunk to delete an debt
 export const deleteDebt = createAsyncThunk(
   "debts/deleteDebt",
-  async (debtID, thunkAPI) => {
+  async ({ debtID, userID }, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/debts/${debtID}`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/debts/${debtID}/${userID}`,
         {
           method: "DELETE",
         }
@@ -72,10 +72,10 @@ export const deleteDebt = createAsyncThunk(
 // Async thunk to pay off a debt
 export const payDebt = createAsyncThunk(
   "debts/payDebt",
-  async ({ debtID, debt_paid_amount, debt_paid_date }, thunkAPI) => {
+  async ({ debtID, debt_paid_amount, debt_paid_date, user_id }, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/debts/pay/${debtID}`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/debts/pay/${debtID}/${user_id}`,
         {
           method: "PUT",
           headers: {

@@ -12,6 +12,7 @@ import {
 import Toast from "react-native-toast-message";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
 
 // Icons
 import { AntDesign } from "@expo/vector-icons";
@@ -29,6 +30,7 @@ import { deleteDebt } from "../../slices/debtSlice";
 import { payDebt } from "../../slices/debtSlice";
 
 export default function DebtActivityCard({ activity }) {
+  const user = useSelector((state) => state.user.user);
   const [showComment, setShowComment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isPayLoading, setIsPayLoading] = useState(false);
@@ -70,7 +72,9 @@ export default function DebtActivityCard({ activity }) {
     setIsModalVisible(false);
     setIsLoading(true);
 
-    dispatch(deleteDebt(activity._id))
+    const deleteDetails = { debtID: activity._id, userID: user._id };
+
+    dispatch(deleteDebt(deleteDetails))
       .unwrap()
       .then((res) => {
         Toast.show({
@@ -98,6 +102,7 @@ export default function DebtActivityCard({ activity }) {
       debtID: activity._id,
       debt_paid_amount: parseFloat(payAmount),
       debt_paid_date: payDate,
+      user_id: user._id,
     };
 
     dispatch(payDebt(paymentDetails))

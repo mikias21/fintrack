@@ -10,10 +10,10 @@ const initialState = {
 // Async thunk to fetch savings
 export const fetchSavings = createAsyncThunk(
   "savings/fetchSavings",
-  async (_, thunkAPI) => {
+  async (userID, thunkAPI) => {
     try {
       const response = await fetch(
-        "https://fintrack-api-gmpu.onrender.com/api/v1/savings/"
+        `https://fintrack-api-gmpu.onrender.com/api/v1/savings/${userID}`
       );
       const data = await response.json();
       return data;
