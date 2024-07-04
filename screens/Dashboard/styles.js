@@ -1,9 +1,18 @@
 import { StyleSheet } from "react-native";
 
 export default styles = StyleSheet.create({
+  main_logo_container: {
+    position: "absolute",
+    top: 10,
+    width: "100%",
+    zIndex: 1,
+    backgroundColor: "#fff",
+    // elevation: 5,
+  },
+
   logo_container: {
     marginTop: 10,
-    marginBottom: 90,
+    // marginBottom: 90,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -29,6 +38,10 @@ export default styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingTop: 40,
+  },
+
+  container_one: {
+    marginTop: 70,
   },
 
   container_two: {

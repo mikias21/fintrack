@@ -62,28 +62,23 @@ export default function IncomeSaving() {
 
   const renderHeader = () => (
     <>
-      <View style={styles.container_one}>
-        <Image
-          source={require("../../assets/income.png")}
-          style={styles.header_image}
-        />
-        <Text style={styles.text_one}>Incomes &amp; Savings</Text>
-      </View>
-      <View style={styles.container_two}>
-        <DashboardCard
-          intro_text="Income as of"
-          amount={totalAmountOfIncome}
-          image={require("../../assets/income.png")}
-          color="#4CCD99"
-        />
-      </View>
-      <View style={styles.container_two}>
-        <DashboardCard
-          intro_text="Savings as of"
-          amount={totalAmountOfSaving}
-          image={require("../../assets/piggy-bank.png")}
-          color="#00A9FF"
-        />
+      <View style={styles.container_two_main}>
+        <View style={styles.container_two}>
+          <DashboardCard
+            intro_text="Income as of"
+            amount={totalAmountOfIncome}
+            image={require("../../assets/income.png")}
+            color="#4CCD99"
+          />
+        </View>
+        <View style={styles.container_two}>
+          <DashboardCard
+            intro_text="Savings as of"
+            amount={totalAmountOfSaving}
+            image={require("../../assets/piggy-bank.png")}
+            color="#00A9FF"
+          />
+        </View>
       </View>
       <Text style={styles.text_two}>Recent Incomes</Text>
     </>
@@ -91,6 +86,15 @@ export default function IncomeSaving() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.container_main_one}>
+        <View style={styles.container_one}>
+          <Image
+            source={require("../../assets/income.png")}
+            style={styles.header_image}
+          />
+          <Text style={styles.text_one}>Incomes &amp; Savings</Text>
+        </View>
+      </View>
       <FlatList
         data={sortedIncomes}
         renderItem={({ item }) => <ActivityCard activity={item} />}

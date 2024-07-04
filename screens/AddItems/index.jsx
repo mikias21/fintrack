@@ -78,19 +78,21 @@ export default function AddItem() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.container_main_one}>
+        <View style={styles.container_one}>
+          <Image
+            source={require("../../assets/online-transfer.png")}
+            style={styles.header_image}
+          />
+          <Text style={styles.text_one}>Activities</Text>
+        </View>
+      </View>
       <FlatList
         data={[{ key: "header" }, { key: "content" }]}
         renderItem={({ item }) => {
           if (item.key === "header") {
             return (
               <>
-                <View style={styles.container_one}>
-                  <Image
-                    source={require("../../assets/online-transfer.png")}
-                    style={styles.header_image}
-                  />
-                  <Text style={styles.text_one}>Activities</Text>
-                </View>
                 <View style={styles.container_two}>
                   <FlatList
                     ref={flatListRef}

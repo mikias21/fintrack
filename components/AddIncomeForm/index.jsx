@@ -10,7 +10,8 @@ import {
   Platform,
 } from "react-native";
 import Toast from "react-native-toast-message";
-import DateTimePicker from "react-native-modal-datetime-picker";
+// import DateTimePicker from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 
@@ -26,7 +27,11 @@ import { addIncome } from "../../slices/incomeSlice";
 export default function AddIncomeForm() {
   const user = useSelector((state) => state.user.user);
   const [incomeAmount, setIncomeAmount] = useState("");
-  const [incomeDate, setIncomeDate] = useState(null);
+  let date = Date.now();
+  const [incomeDate, setIncomeDate] = useState(new Date(date));
+  const [incomeDateReal, setIncomeDateReal] = useState("");
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
   const [incomeReason, setIncomeReason] = useState("");
   const [incomeComment, setIncomeComment] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -41,17 +46,20 @@ export default function AddIncomeForm() {
     };
   }, []);
 
-  const showDateTimePicker = () => {
-    setisDateTimePickerVisible(true);
+  const handleDatePicked = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setIncomeDate(currentDate);
+    setIncomeDateReal(dayjs(currentDate).format("YYYY-MM-DD"));
   };
 
-  const hideDateTimePicker = () => {
-    setisDateTimePickerVisible(false);
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
   };
 
-  const handleDatePicked = (date) => {
-    setIncomeDate(dayjs(date).format("YYYY-MM-DD"));
-    hideDateTimePicker();
+  const showDatepicker = () => {
+    showMode("date");
   };
 
   const handleAddIncome = () => {
@@ -60,7 +68,7 @@ export default function AddIncomeForm() {
 
     const newIncome = {
       income_amount: parseFloat(incomeAmount),
-      income_date: incomeDate,
+      income_date: incomeDateReal,
       income_reason: incomeReason,
       income_comment: incomeComment,
       user_id: user._id,
@@ -70,7 +78,7 @@ export default function AddIncomeForm() {
       .unwrap()
       .then((res) => {
         setIncomeAmount("");
-        setIncomeDate(null);
+        setIncomeDateReal("");
         setIncomeReason("");
         setIncomeComment("");
         setIsError(false);
@@ -114,26 +122,21 @@ export default function AddIncomeForm() {
         <TextInput
           style={styles.input}
           placeholder="Income Date (YYYY-MM-DD) *"
-          value={incomeDate}
-          onFocus={showDateTimePicker}
-          onPress={showDateTimePicker}
+          value={incomeDateReal}
+          onFocus={showDatepicker}
+          onPress={showDatepicker}
         />
         {/* <DateTimePicker
           isVisible={isDateTimePickerVisible}
           onConfirm={handleDatePicked}
           onCancel={hideDateTimePicker}
         /> */}
-        {Platform.OS === "ios" ? (
+        {show && (
           <DateTimePicker
-            isVisible={isDateTimePickerVisible}
-            onConfirm={handleDatePicked}
-            onCancel={hideDateTimePicker}
-          />
-        ) : (
-          <DateTimePicker
-            isVisible={isDateTimePickerVisible}
-            onConfirm={handleDatePicked}
-            onCancel={hideDateTimePicker}
+            testID="dateTimePicker"
+            value={incomeDate}
+            mode={mode}
+            onChange={handleDatePicked}
           />
         )}
         <ModalSelector

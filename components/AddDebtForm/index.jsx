@@ -8,7 +8,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Toast from "react-native-toast-message";
-import DateTimePicker from "react-native-modal-datetime-picker";
+// import DateTimePicker from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 
@@ -21,7 +22,11 @@ import { addDebt } from "../../slices/debtSlice";
 export default function AddDebtForm() {
   const user = useSelector((state) => state.user.user);
   const [debtAmount, setDebtAmount] = useState("");
-  const [debtDate, setDebtDate] = useState(null);
+  let date = Date.now();
+  const [debtDate, setDebtDate] = useState(new Date(date));
+  const [debtDateReal, setDebtDateReal] = useState("");
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
   const [debtFrom, setDebtFrom] = useState("");
   const [debtComment, setDebtComment] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -30,17 +35,20 @@ export default function AddDebtForm() {
   const [isDateTimePickerVisible, setisDateTimePickerVisible] = useState(false);
   const dispatch = useDispatch();
 
-  const showDateTimePicker = () => {
-    setisDateTimePickerVisible(true);
+  const handleDatePicked = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDebtDate(currentDate);
+    setDebtDateReal(dayjs(currentDate).format("YYYY-MM-DD"));
   };
 
-  const hideDateTimePicker = () => {
-    setisDateTimePickerVisible(false);
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
   };
 
-  const handleDatePicked = (date) => {
-    setDebtDate(dayjs(date).format("YYYY-MM-DD"));
-    hideDateTimePicker();
+  const showDatepicker = () => {
+    showMode("date");
   };
 
   const handleAddDebt = () => {
@@ -49,7 +57,7 @@ export default function AddDebtForm() {
 
     const newDebt = {
       debt_amount: parseFloat(debtAmount),
-      debt_date: debtDate,
+      debt_date: debtDateReal,
       debt_from: debtFrom,
       debt_comment: debtComment,
       user_id: user._id,
@@ -59,7 +67,8 @@ export default function AddDebtForm() {
       .unwrap()
       .then((res) => {
         setDebtAmount("");
-        setDebtDate(null);
+        // setDebtDate(new Date(date));
+        setDebtDateReal("");
         setDebtFrom("");
         setDebtComment("");
         setIsError(false);
@@ -102,15 +111,18 @@ export default function AddDebtForm() {
         <TextInput
           style={styles.input}
           placeholder="Debt taken Date (YYYY-MM-DD) *"
-          value={debtDate}
-          onFocus={showDateTimePicker}
-          onPress={showDateTimePicker}
+          value={debtDateReal}
+          onFocus={showDatepicker}
+          onPress={showDatepicker}
         />
-        <DateTimePicker
-          isVisible={isDateTimePickerVisible}
-          onConfirm={handleDatePicked}
-          onCancel={hideDateTimePicker}
-        />
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={debtDate}
+            mode={mode}
+            onChange={handleDatePicked}
+          />
+        )}
         <TextInput
           style={styles.input}
           placeholder="Debt taken from"

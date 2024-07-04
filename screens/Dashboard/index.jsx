@@ -82,20 +82,6 @@ export default function HomeScreen({ navigation }) {
 
   const renderHeader = () => (
     <>
-      <View style={styles.logo_container}>
-        <TouchableOpacity onPress={handleLogout}>
-          <Image
-            source={require("../../assets/icon.png")}
-            style={styles.logo_image}
-          />
-        </TouchableOpacity>
-        <MaterialIcons
-          name="settings"
-          size={28}
-          color="#797979"
-          style={{ marginRight: 20 }}
-        />
-      </View>
       <Navbar />
       <View style={styles.container_one}>
         <DashboardCard
@@ -119,6 +105,22 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.main_logo_container}>
+        <View style={styles.logo_container}>
+          <TouchableOpacity onPress={handleLogout}>
+            <Image
+              source={require("../../assets/icon.png")}
+              style={styles.logo_image}
+            />
+          </TouchableOpacity>
+          <MaterialIcons
+            name="settings"
+            size={28}
+            color="#797979"
+            style={{ marginRight: 20 }}
+          />
+        </View>
+      </View>
       <FlatList
         data={recentActivities}
         renderItem={({ item }) => <ActivityCard activity={item} />}

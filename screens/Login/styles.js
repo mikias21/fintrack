@@ -8,7 +8,7 @@ export default styles = StyleSheet.create({
   },
 
   header: {
-    marginTop: 150,
+    marginTop: 80,
     padding: 10,
   },
 

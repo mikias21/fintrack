@@ -7,11 +7,24 @@ export default styles = StyleSheet.create({
     paddingTop: 40,
   },
 
+  container_main_one: {
+    position: "absolute",
+    top: 10,
+    width: "100%",
+    zIndex: 1,
+    backgroundColor: "#fff",
+  },
+
+  formContainer: {
+    marginTop: 70,
+  },
+
   container_one: {
     padding: 18,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    marginTop: 10,
   },
 
   container_two: {

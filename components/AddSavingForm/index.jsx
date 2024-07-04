@@ -9,7 +9,8 @@ import {
   Platform,
 } from "react-native";
 import Toast from "react-native-toast-message";
-import DateTimePicker from "react-native-modal-datetime-picker";
+// import DateTimePicker from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 
@@ -22,12 +23,15 @@ import { addSaving } from "../../slices/savingSlice";
 export default function AddSavingsForm() {
   const user = useSelector((state) => state.user.user);
   const [savingAmount, setSavingAmount] = useState("");
-  const [savingDate, setSavingDate] = useState(null);
+  let date = Date.now();
+  const [savingDate, setSavingDate] = useState(new Date(date));
+  const [savingDateReal, setSavingDateReal] = useState("");
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
   const [savingComment, setSavingComment] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDateTimePickerVisible, setisDateTimePickerVisible] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,17 +40,20 @@ export default function AddSavingsForm() {
     };
   }, []);
 
-  const showDateTimePicker = () => {
-    setisDateTimePickerVisible(true);
+  const handleDatePicked = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setSavingDate(currentDate);
+    setSavingDateReal(dayjs(savingDate).format("YYYY-MM-DD"));
   };
 
-  const hideDateTimePicker = () => {
-    setisDateTimePickerVisible(false);
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
   };
 
-  const handleDatePicked = (date) => {
-    setSavingDate(dayjs(date).format("YYYY-MM-DD"));
-    hideDateTimePicker();
+  const showDatepicker = () => {
+    showMode("date");
   };
 
   const handleAddSaving = () => {
@@ -55,7 +62,7 @@ export default function AddSavingsForm() {
 
     const newSaving = {
       saving_amount: parseFloat(savingAmount),
-      saving_date: savingDate,
+      saving_date: savingDateReal,
       saving_comment: savingComment,
       user_id: user._id,
     };
@@ -64,7 +71,8 @@ export default function AddSavingsForm() {
       .unwrap()
       .then((res) => {
         setSavingAmount("");
-        setSavingDate(null);
+        // setSavingDate(new Date(date));
+        setSavingDateReal("");
         setSavingComment("");
         setIsError(false);
         // setErrorMessage("Income added successfully.");
@@ -107,21 +115,16 @@ export default function AddSavingsForm() {
         <TextInput
           style={styles.input}
           placeholder="Saving Date (YYYY-MM-DD) *"
-          value={savingDate}
-          onFocus={showDateTimePicker}
-          onPress={showDateTimePicker}
+          value={savingDateReal}
+          onFocus={showDatepicker}
+          onPress={showDatepicker}
         />
-        {Platform.OS === "ios" ? (
+        {show && (
           <DateTimePicker
-            isVisible={isDateTimePickerVisible}
-            onConfirm={handleDatePicked}
-            onCancel={hideDateTimePicker}
-          />
-        ) : (
-          <DateTimePicker
-            isVisible={isDateTimePickerVisible}
-            onConfirm={handleDatePicked}
-            onCancel={hideDateTimePicker}
+            testID="dateTimePicker"
+            value={savingDate}
+            mode={mode}
+            onChange={handleDatePicked}
           />
         )}
         <TextInput

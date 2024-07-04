@@ -39,13 +39,6 @@ export default function Expenses() {
 
   const renderHeader = () => (
     <>
-      <View style={styles.container_one}>
-        <Image
-          source={require("../../assets/spending.png")}
-          style={styles.header_image}
-        />
-        <Text style={styles.text_one}>Expenses</Text>
-      </View>
       <View style={styles.container_two}>
         <DashboardCard
           intro_text="Expenses as of"
@@ -61,6 +54,15 @@ export default function Expenses() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.container_one_main}>
+        <View style={styles.container_one}>
+          <Image
+            source={require("../../assets/spending.png")}
+            style={styles.header_image}
+          />
+          <Text style={styles.text_one}>Expenses</Text>
+        </View>
+      </View>
       <FlatList
         data={[{ key: "header" }]} // Dummy data for FlatList with a key
         renderItem={() => renderHeader()} // Render the header directly

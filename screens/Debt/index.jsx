@@ -47,34 +47,29 @@ export default function Debt() {
   }, 0);
 
   const totalAmountOfDebt =
-    currentMonthDebt.reduce((sum, expense) => {
+    debts.reduce((sum, expense) => {
       return sum + expense.debt_amount;
     }, 0) - totalDebtPaidInCurrentMonth;
 
   const renderHeader = () => (
     <>
-      <View style={styles.container_one}>
-        <Image
-          source={require("../../assets/credit-card-payment.png")}
-          style={styles.header_image}
-        />
-        <Text style={styles.text_one}>Your Debts</Text>
-      </View>
-      <View style={styles.container_two}>
-        <DashboardCard
-          intro_text="Your Debt as of"
-          amount={totalAmountOfDebt}
-          image={require("../../assets/debt.png")}
-          color="#FC819E"
-        />
-      </View>
-      <View style={styles.container_two}>
-        <DashboardCard
-          intro_text="Total debt payed"
-          amount={totalDebtPaidInCurrentMonth}
-          image={require("../../assets/borrow.png")}
-          color="#00A9FF"
-        />
+      <View style={styles.card_container}>
+        <View style={styles.container_two}>
+          <DashboardCard
+            intro_text="Your Debt as of"
+            amount={totalAmountOfDebt}
+            image={require("../../assets/debt.png")}
+            color="#FC819E"
+          />
+        </View>
+        <View style={styles.container_two}>
+          <DashboardCard
+            intro_text="Total debt payed"
+            amount={totalDebtPaidInCurrentMonth}
+            image={require("../../assets/borrow.png")}
+            color="#00A9FF"
+          />
+        </View>
       </View>
       <Text style={styles.text_two}>Recent Debts</Text>
     </>
@@ -82,6 +77,15 @@ export default function Debt() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.container_main_one}>
+        <View style={styles.container_one}>
+          <Image
+            source={require("../../assets/credit-card-payment.png")}
+            style={styles.header_image}
+          />
+          <Text style={styles.text_one}>Your Debts</Text>
+        </View>
+      </View>
       <FlatList
         data={[{ key: "header" }]} // Dummy data for FlatList with a key
         renderItem={() => renderHeader()} // Render the header directly

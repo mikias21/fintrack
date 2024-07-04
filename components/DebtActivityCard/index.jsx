@@ -10,7 +10,8 @@ import {
   Pressable,
 } from "react-native";
 import Toast from "react-native-toast-message";
-import DateTimePicker from "react-native-modal-datetime-picker";
+// import DateTimePicker from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 
@@ -40,20 +41,26 @@ export default function DebtActivityCard({ activity }) {
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const [payAmount, setPayAmount] = useState("");
-  const [payDate, setPayDate] = useState(null);
-  const [isDateTimePickerVisible, setisDateTimePickerVisible] = useState(false);
+  let date = Date.now();
+  const [payDate, setPayDate] = useState(new Date(date));
+  const [payDateReal, setPayDateReal] = useState("");
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
 
-  const showDateTimePicker = () => {
-    setisDateTimePickerVisible(true);
+  const handleDatePicked = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setPayDate(currentDate);
+    setPayDateReal(dayjs(currentDate).format("YYYY-MM-DD"));
   };
 
-  const hideDateTimePicker = () => {
-    setisDateTimePickerVisible(false);
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
   };
 
-  const handleDatePicked = (date) => {
-    setPayDate(dayjs(date).format("YYYY-MM-DD"));
-    hideDateTimePicker();
+  const showDatepicker = () => {
+    showMode("date");
   };
 
   const handleCommentSwitch = () => {
@@ -101,7 +108,7 @@ export default function DebtActivityCard({ activity }) {
     const paymentDetails = {
       debtID: activity._id,
       debt_paid_amount: parseFloat(payAmount),
-      debt_paid_date: payDate,
+      debt_paid_date: payDateReal,
       user_id: user._id,
     };
 
@@ -144,19 +151,23 @@ export default function DebtActivityCard({ activity }) {
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-              <Text>Are you sure you want to delete ?</Text>
+              <Text style={styles.modalTitle}>Confirm Deletion</Text>
+              <Text style={styles.modalText}>
+                Are you sure you want to delete this item?
+              </Text>
               <View style={styles.modalButtonContainer}>
-                <TouchableOpacity onPress={handleDelete}>
-                  <AntDesign name="delete" size={24} color="#ec5074" />
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={handleDelete}
+                >
+                  <Text style={styles.modalButtonText}>Delete</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={toggleModal}>
-                  <AntDesign
-                    name="close"
-                    size={24}
-                    color="#afaeae"
-                    style={{ marginLeft: 50 }}
-                  />
+                <TouchableOpacity
+                  style={styles.cancelButton}
+                  onPress={toggleModal}
+                >
+                  <Text style={styles.modalButtonText}>Cancel</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -196,32 +207,33 @@ export default function DebtActivityCard({ activity }) {
                 <TextInput
                   style={styles.input}
                   placeholder="Debt pay date (YYYY-MM-DD) *"
-                  value={payDate}
-                  onFocus={showDateTimePicker}
-                  onPress={showDateTimePicker}
+                  value={payDateReal}
+                  onFocus={showDatepicker}
+                  onPress={showDatepicker}
                 />
-                <DateTimePicker
-                  isVisible={isDateTimePickerVisible}
-                  onConfirm={handleDatePicked}
-                  onCancel={hideDateTimePicker}
-                />
-                <Pressable style={styles.button_one} onPress={handlePayDebt}>
-                  {isLoading ? (
-                    <ActivityIndicator size="small" color="#fff" />
-                  ) : (
-                    <Text style={styles.text_four}>&#x2713;</Text>
-                  )}
-                </Pressable>
-              </View>
-              <View style={styles.modalButtonContainerSpecial}>
-                <TouchableOpacity onPress={togglePayDebtModal}>
-                  <AntDesign
-                    name="close"
-                    size={24}
-                    color="#afaeae"
-                    style={{ marginLeft: 50 }}
+                {show && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={payDate}
+                    mode={mode}
+                    onChange={handleDatePicked}
                   />
-                </TouchableOpacity>
+                )}
+                <View style={styles.button_container_two}>
+                  <Pressable style={styles.button_one} onPress={handlePayDebt}>
+                    {isLoading ? (
+                      <ActivityIndicator size="small" color="#fff" />
+                    ) : (
+                      <Text style={styles.text_four}>&#x2713;</Text>
+                    )}
+                  </Pressable>
+                  <Pressable
+                    style={styles.button_two}
+                    onPress={togglePayDebtModal}
+                  >
+                    <AntDesign name="close" style={styles.text_five} />
+                  </Pressable>
+                </View>
               </View>
             </View>
           </View>

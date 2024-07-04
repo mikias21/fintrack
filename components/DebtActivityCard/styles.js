@@ -44,31 +44,6 @@ export default styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  modalContainer: {
-    flex: 1,
-    justifyContent: "space-start",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
-  },
-
-  modalContent: {
-    backgroundColor: "whitesmoke",
-    padding: 22,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)",
-    borderWidth: 1,
-    marginTop: 150,
-  },
-
-  modalButtonContainer: {
-    marginTop: 20,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
   input: {
     height: 40,
     marginBottom: 12,
@@ -76,7 +51,7 @@ export default styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#e0e0e0",
-    width: 280,
+    width: 245,
   },
 
   container_two_form: {
@@ -89,6 +64,14 @@ export default styles = StyleSheet.create({
     marginLeft: 200,
   },
 
+  button_container_two: {
+    marginTop: 10,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
   button_one: {
     width: 30,
     height: 30,
@@ -98,8 +81,86 @@ export default styles = StyleSheet.create({
     justifyContent: "center",
   },
 
+  button_two: {
+    width: 30,
+    height: 30,
+    backgroundColor: "red",
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
   text_four: {
     fontSize: 20,
     color: "#fff",
+  },
+
+  text_five: {
+    fontSize: 20,
+    color: "#fff",
+  },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+
+  modalContent: {
+    width: "80%",
+    backgroundColor: "whitesmoke",
+    padding: 20,
+    borderRadius: 10,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+
+  modalText: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+
+  modalButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+
+  deleteButton: {
+    backgroundColor: "#FC819E",
+    paddingVertical: 8, // Reduced padding
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginHorizontal: 10,
+  },
+
+  cancelButton: {
+    backgroundColor: "#afaeae",
+    paddingVertical: 8, // Reduced padding
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginHorizontal: 10,
+  },
+
+  modalButtonText: {
+    color: "#FFFFFF",
+    fontSize: 14, // Reduced font size
+    fontWeight: "bold",
   },
 });

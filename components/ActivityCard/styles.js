@@ -50,6 +50,7 @@ export default styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
+
   modalContent: {
     width: "80%",
     backgroundColor: "whitesmoke",
@@ -66,21 +67,25 @@ export default styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
   },
+
   modalText: {
     fontSize: 16,
     marginBottom: 20,
     textAlign: "center",
   },
+
   modalButtonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
+
   deleteButton: {
     backgroundColor: "#FC819E",
     paddingVertical: 8, // Reduced padding

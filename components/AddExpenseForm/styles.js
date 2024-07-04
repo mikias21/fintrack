@@ -11,6 +11,10 @@ export default styles = StyleSheet.create({
     color: "black",
   },
 
+  formContainer: {
+    // height: 500,
+  },
+
   container_two: {
     justifyContent: "center",
     marginTop: 20,
@@ -19,6 +23,7 @@ export default styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#e0e0e0",
+    height: 350,
   },
 
   input: {

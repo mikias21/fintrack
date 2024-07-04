@@ -77,7 +77,7 @@ function LoginScreen({ navigation }) {
 
       <View style={styles.welcome_text}>
         <Text style={styles.tagline}>
-          Welcome back, manage you expenses wit ease.
+          Welcome back, manage you expenses with ease.
         </Text>
       </View>
 
@@ -86,7 +86,7 @@ function LoginScreen({ navigation }) {
           <Text style={[styles.notice_message, { color: "red" }]}>{error}</Text>
         ) : (
           <Text style={styles.notice_message}>
-            Give us a unique name and password to identify you.
+            Fill in your account credentials.
           </Text>
         )}
         <TextInput
