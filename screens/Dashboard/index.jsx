@@ -8,6 +8,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { BarChart } from "react-native-gifted-charts";
@@ -20,6 +21,8 @@ import Navbar from "../../components/Navbar";
 import ActivityCard from "../../components/ActivityCard";
 import DashboardCard from "../../components/DashboardCard";
 import DebtActivityCard from "../../components/DebtActivityCard";
+import ExpenseActivityCard from "../../components/ExpenseActivityCard";
+import IncomeAcivityCard from "../../components/IncomeActivityCard";
 
 // Style
 import styles from "./styles";
@@ -50,6 +53,21 @@ export default function HomeScreen({ navigation }) {
   const savings = useSelector((state) => state.savings.savings);
   const currentMonth = dayjs().month();
   const currentYear = dayjs().year();
+
+  const getTwoLatestExpenses = (expenses) => {
+    return [...expenses]
+      .sort((a, b) => new Date(b.expense_date) - new Date(a.expense_date))
+      .slice(0, 2);
+  };
+
+  const getTwoLatestIncomes = (incomes) => {
+    return [...incomes]
+      .sort((a, b) => new Date(b.income_date) - new Date(a.income_date))
+      .slice(0, 2);
+  };
+
+  const latestExpenses = getTwoLatestExpenses(expenses);
+  const latestIncomes = getTwoLatestIncomes(incomes);
 
   const currentMonthExpenses = expenses.filter((expense) => {
     const expenseDate = dayjs(expense.expense_date_time);
@@ -166,11 +184,6 @@ export default function HomeScreen({ navigation }) {
           hideRules
           hideYAxisText
           initialSpacing={10}
-          // barMarginBottom={10}
-          // barMarginTop={20}
-          // isAnimated
-          // isThreeD
-          // height={120}
         />
       </View>
       <Text style={styles.text_one}>Recent Activities</Text>
@@ -196,13 +209,20 @@ export default function HomeScreen({ navigation }) {
         </View>
       </View>
       <FlatList
-        data={recentActivities}
-        renderItem={({ item }) => <ActivityCard activity={item} />}
+        data={latestExpenses}
+        renderItem={({ item }) => <ExpenseActivityCard activity={item} />}
         keyExtractor={(item) => item._id}
         ListHeaderComponent={renderHeader}
         contentContainerStyle={styles.list_one}
         showsVerticalScrollIndicator={false}
       />
+      {/* <FlatList
+        data={latestIncomes}
+        renderItem={({ item }) => <IncomeAcivityCard activity={item} />}
+        keyExtractor={(item) => item._id}
+        contentContainerStyle={styles.list_one}
+        showsVerticalScrollIndicator={false}
+      /> */}
     </SafeAreaView>
   );
 }
