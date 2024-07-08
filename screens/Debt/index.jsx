@@ -8,6 +8,7 @@ import {
   Text,
   FlatList,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 // Styles
 import styles from "./styles";
@@ -101,6 +102,7 @@ export default function Debt() {
           </View>
         )}
       />
+      <StatusBar style="auto" />
     </SafeAreaView>
   );
 }

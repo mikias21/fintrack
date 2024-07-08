@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -115,6 +116,7 @@ function SignupScreen({ navigation }) {
           <Text style={styles.registerLink}>Sign in</Text>
         </TouchableOpacity>
       </View>
+      <StatusBar style="auto" />
     </View>
   );
 }

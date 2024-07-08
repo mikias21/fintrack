@@ -9,6 +9,8 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { BarChart } from "react-native-gifted-charts";
 
 // Icons
 import { MaterialIcons } from "@expo/vector-icons";
@@ -17,6 +19,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Navbar from "../../components/Navbar";
 import ActivityCard from "../../components/ActivityCard";
 import DashboardCard from "../../components/DashboardCard";
+import DebtActivityCard from "../../components/DebtActivityCard";
 
 // Style
 import styles from "./styles";
@@ -29,6 +32,14 @@ import { logout } from "../../slices/userSlice";
 
 // Util
 import { mergeAndSortItems } from "../../utils/utils";
+
+import {
+  startOfWeek,
+  endOfWeek,
+  parseISO,
+  format,
+  isWithinInterval,
+} from "date-fns";
 
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -80,6 +91,49 @@ export default function HomeScreen({ navigation }) {
     dispatch(logout());
   };
 
+  const getFrontColor = (amount) => {
+    if (amount <= 100) return "#9FBB73";
+    if (amount <= 300) return "#FB8B24";
+    return "#F7418F";
+  };
+
+  const aggregateWeeklyExpenses = (data) => {
+    const now = new Date();
+    const weekStart = startOfWeek(now, { weekStartsOn: 1 }); // Week starts on Monday
+    const weekEnd = endOfWeek(now, { weekStartsOn: 1 });
+
+    const daysOfWeek = ["Mon", "Thu", "Wed", "Thur", "Fri", "Sat", "Sun"];
+    const aggregatedData = Array(7).fill(0);
+
+    data.forEach((item) => {
+      const expenseDate = parseISO(item.expense_date);
+      if (isWithinInterval(expenseDate, { start: weekStart, end: weekEnd })) {
+        const dayIndex = expenseDate.getDay() - 1;
+        aggregatedData[dayIndex] += item.expense_amount;
+      }
+    });
+
+    return aggregatedData.map((value, index) => ({
+      value,
+      label: daysOfWeek[index],
+      frontColor: getFrontColor(value),
+      topLabelComponent: () => (
+        <Text
+          style={{
+            color: "#3E3232",
+            fontSize: 10,
+            marginBottom: 2,
+            fontWeight: "800",
+          }}
+        >
+          {value}
+        </Text>
+      ),
+    }));
+  };
+
+  const barData = aggregateWeeklyExpenses(expenses);
+
   const renderHeader = () => (
     <>
       <Navbar />
@@ -97,6 +151,26 @@ export default function HomeScreen({ navigation }) {
           amount={totalAmountOfIncome}
           image={require("../../assets/income.png")}
           color="#00A9FF"
+        />
+      </View>
+      <Text style={styles.text_one}>Weekly expense Summary</Text>
+      <View style={styles.bar_chart_container}>
+        <BarChart
+          barWidth={22}
+          noOfSections={3}
+          barBorderRadius={4}
+          frontColor="lightgray"
+          data={barData}
+          yAxisThickness={0}
+          xAxisThickness={0}
+          hideRules
+          hideYAxisText
+          initialSpacing={10}
+          // barMarginBottom={10}
+          // barMarginTop={20}
+          // isAnimated
+          // isThreeD
+          // height={120}
         />
       </View>
       <Text style={styles.text_one}>Recent Activities</Text>

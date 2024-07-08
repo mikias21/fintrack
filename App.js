@@ -78,7 +78,9 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user?._id ? (
-        <Stack.Screen name="Main" component={MainTabs} />
+        <>
+          <Stack.Screen name="Main" component={MainTabs} />
+        </>
       ) : (
         <>
           <Stack.Screen name="Login" component={LoginScreen} />

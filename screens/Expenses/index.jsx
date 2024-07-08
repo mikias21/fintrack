@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 // Style
 import styles from "./styles";
@@ -69,6 +70,7 @@ export default function Expenses() {
         keyExtractor={(item) => item.key} // Key extractor for dummy data
         showsVerticalScrollIndicator={false} // Disable scroll indicator
       />
+      <StatusBar style="auto" />
     </SafeAreaView>
   );
 }
