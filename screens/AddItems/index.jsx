@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import { useSelector } from "react-redux";
+import { StatusBar } from "expo-status-bar";
 
 // Styles
 import styles from "./styles";
@@ -149,6 +150,7 @@ export default function AddItem() {
         keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
       />
+      <StatusBar style="auto" />
     </SafeAreaView>
   );
 }

@@ -8,6 +8,7 @@ import {
   Text,
   FlatList,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 // Style
 import styles from "./styles";
@@ -31,7 +32,7 @@ export default function IncomeSaving() {
   });
 
   const currentMonthIncome = incomes.filter((income) => {
-    const incomeDate = dayjs(income.income_date_time);
+    const incomeDate = dayjs(income.income_date);
     return (
       incomeDate.month() === currentMonth && incomeDate.year() === currentYear
     );
@@ -104,6 +105,7 @@ export default function IncomeSaving() {
         contentContainerStyle={styles.list_two}
         showsVerticalScrollIndicator={false}
       />
+      <StatusBar style="auto" />
     </SafeAreaView>
   );
 }

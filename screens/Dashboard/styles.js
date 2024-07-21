@@ -64,4 +64,22 @@ export default styles = StyleSheet.create({
   list_one: {
     paddingBottom: 20,
   },
+
+  bar_chart_container: {
+    padding: 8,
+    marginBottom: 10,
+    backgroundColor: "#F6F5F2",
+    marginHorizontal: 20,
+    borderRadius: 20,
+    paddingBottom: 20,
+    paddingTop: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
 });

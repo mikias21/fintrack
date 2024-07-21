@@ -141,11 +141,11 @@ export default function AddNewExpense() {
             initValue="Select Reason *"
             onChange={(option) => setExpenseReason(option.label)}
             style={styles.input_select}
-            // initValueTextStyle={{ color: "#000" }}
+            initValueTextStyle={{ color: "#000" }}
             selectTextStyle={{ endFillColor: "#000" }}
           >
             <TextInput
-              style={[styles.input, { marginLeft: -7 }]}
+              style={[styles.input, { marginLeft: -7, color: "#111" }]}
               editable={false}
               placeholder="Select Reason *"
               value={expenseReason}

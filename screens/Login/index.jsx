@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Toast from "react-native-toast-message";
+import { StatusBar } from "expo-status-bar";
 
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -117,6 +118,7 @@ function LoginScreen({ navigation }) {
           <Text style={styles.registerLink}>Register Now</Text>
         </TouchableOpacity>
       </View>
+      <StatusBar style="auto" />
     </View>
   );
 }

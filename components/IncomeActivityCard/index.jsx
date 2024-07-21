@@ -21,7 +21,6 @@ import styles from "./styles";
 import { formatDate } from "../../utils/utils";
 
 // Redux
-import { deleteExpense } from "../../slices/expenseSlice";
 import { deleteIncome } from "../../slices/incomeSlice";
 
 export default function ActivityCard({ activity }) {
@@ -45,53 +44,26 @@ export default function ActivityCard({ activity }) {
     setIsModalVisible(false);
     setIsLoading(true);
 
-    if (activity.update_from === "EXP") {
-      const deleteDetails = { expenseID: activity._id, userID: user._id };
-      dispatch(deleteExpense(deleteDetails))
-        .unwrap()
-        .then((res) => {
-          // console.log("deleted.");
-          Toast.show({
-            type: "success",
-            text1: "Expense has been deleted.",
-          });
-        })
-        .catch((err) => {
-          setIsError(true);
-          // setErrorMessage("There was a problem deleting the expense.");
-          Toast.show({
-            type: "error",
-            text1: "There was a problem deleting the expense.",
-          });
-        })
-        .finally(() => {
-          setIsLoading(false);
+    const deleteDetails = { incomeID: activity._id, userID: user._id };
+    dispatch(deleteIncome(deleteDetails))
+      .unwrap()
+      .then((res) => {
+        // console.log("deleted.");
+        Toast.show({
+          type: "success",
+          text1: "Income has been deleted.",
         });
-    }
-
-    if (activity.update_from === "INC") {
-      const deleteDetails = { incomeID: activity._id, userID: user._id };
-      dispatch(deleteIncome(deleteDetails))
-        .unwrap()
-        .then((res) => {
-          // console.log("deleted.");
-          Toast.show({
-            type: "success",
-            text1: "Income has been deleted.",
-          });
-        })
-        .catch((err) => {
-          setIsError(true);
-          // setErrorMessage("There was a problem deleting the expense.");
-          Toast.show({
-            type: "error",
-            text1: "There was a problem deleting the income.",
-          });
-        })
-        .finally(() => {
-          setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsError(true);
+        Toast.show({
+          type: "error",
+          text1: "There was a problem deleting the income.",
         });
-    }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -128,12 +100,7 @@ export default function ActivityCard({ activity }) {
           </View>
         </Modal>
 
-        {activity.update_from === "EXP" && (
-          <Text style={styles.text_one}>Expense Added</Text>
-        )}
-        {activity.update_from === "INC" && (
-          <Text style={styles.text_one}>Income Added</Text>
-        )}
+        <Text style={styles.text_one}>Income Added</Text>
         <View style={styles.container_three}>
           <TouchableOpacity onPress={handleCommentSwitch}>
             {showComment ? (
@@ -165,27 +132,17 @@ export default function ActivityCard({ activity }) {
         </View>
       </View>
       <Text style={styles.text_two}>
-        Added {activity.expense_amount || activity.income_amount} &#165; to{" "}
-        {activity.expense_reason || activity.income_reason}
+        Added {activity.income_amount} &#165; to {activity.income_reason}
       </Text>
       {showComment && (
         <>
-          {activity.expense_comment && (
-            <Text style={styles.text_two}>{activity.expense_comment}</Text>
-          )}
-          {!activity.expense_comment && activity.income_comment && (
+          {activity.income_comment && (
             <Text style={styles.text_two}>{activity.income_comment}</Text>
           )}
-          {!activity.expense_comment && !activity.income_comment && (
+          {!activity.income_comment && (
             <Text style={styles.text_two}>No comment</Text>
           )}
         </>
-      )}
-
-      {activity.expense_date && (
-        <Text style={styles.text_three}>
-          {formatDate(activity.expense_date)}
-        </Text>
       )}
       {activity.income_date && (
         <Text style={styles.text_three}>
