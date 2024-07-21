@@ -28,7 +28,7 @@ export default function Expenses() {
   });
 
   const currentMonthExpenses = expenses.filter((expense) => {
-    const expenseDate = dayjs(expense.expense_date_time);
+    const expenseDate = dayjs(expense.expense_date);
     return (
       expenseDate.month() === currentMonth && expenseDate.year() === currentYear
     );
@@ -65,10 +65,10 @@ export default function Expenses() {
         </View>
       </View>
       <FlatList
-        data={[{ key: "header" }]} // Dummy data for FlatList with a key
-        renderItem={() => renderHeader()} // Render the header directly
-        keyExtractor={(item) => item.key} // Key extractor for dummy data
-        showsVerticalScrollIndicator={false} // Disable scroll indicator
+        data={[{ key: "header" }]}
+        renderItem={() => renderHeader()}
+        keyExtractor={(item) => item.key}
+        showsVerticalScrollIndicator={false}
       />
       <StatusBar style="auto" />
     </SafeAreaView>

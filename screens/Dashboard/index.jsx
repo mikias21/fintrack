@@ -68,16 +68,17 @@ export default function HomeScreen({ navigation }) {
 
   const latestExpenses = getTwoLatestExpenses(expenses);
   const latestIncomes = getTwoLatestIncomes(incomes);
+  const combinedLatestInfo = [...latestExpenses, ...latestIncomes];
 
   const currentMonthExpenses = expenses.filter((expense) => {
-    const expenseDate = dayjs(expense.expense_date_time);
+    const expenseDate = dayjs(expense.expense_date);
     return (
       expenseDate.month() === currentMonth && expenseDate.year() === currentYear
     );
   });
 
   const currentMonthIncome = incomes.filter((income) => {
-    const incomeDate = dayjs(income.income_date_time);
+    const incomeDate = dayjs(income.income_date);
     return (
       incomeDate.month() === currentMonth && incomeDate.year() === currentYear
     );
@@ -190,6 +191,8 @@ export default function HomeScreen({ navigation }) {
     </>
   );
 
+  console.log(combinedLatestInfo);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.main_logo_container}>
@@ -209,20 +212,21 @@ export default function HomeScreen({ navigation }) {
         </View>
       </View>
       <FlatList
-        data={latestExpenses}
-        renderItem={({ item }) => <ExpenseActivityCard activity={item} />}
+        data={combinedLatestInfo}
+        renderItem={({ item }) => {
+          if (item?.update_from === "EXP") {
+            return <ExpenseActivityCard activity={item} />;
+          } else if (item?.update_from === "INC") {
+            return <IncomeAcivityCard activity={item} />;
+          } else {
+            return null;
+          }
+        }}
         keyExtractor={(item) => item._id}
         ListHeaderComponent={renderHeader}
         contentContainerStyle={styles.list_one}
         showsVerticalScrollIndicator={false}
       />
-      {/* <FlatList
-        data={latestIncomes}
-        renderItem={({ item }) => <IncomeAcivityCard activity={item} />}
-        keyExtractor={(item) => item._id}
-        contentContainerStyle={styles.list_one}
-        showsVerticalScrollIndicator={false}
-      /> */}
     </SafeAreaView>
   );
 }

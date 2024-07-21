@@ -32,7 +32,7 @@ export default function IncomeSaving() {
   });
 
   const currentMonthIncome = incomes.filter((income) => {
-    const incomeDate = dayjs(income.income_date_time);
+    const incomeDate = dayjs(income.income_date);
     return (
       incomeDate.month() === currentMonth && incomeDate.year() === currentYear
     );

@@ -23,7 +23,7 @@ export default function Debt() {
   const currentYear = dayjs().year();
 
   const currentMonthDebt = debts.filter((debt) => {
-    const debtDate = dayjs(debt.debt_date_time);
+    const debtDate = dayjs(debt.debt_date);
     return debtDate.month() === currentMonth && debtDate.year() === currentYear;
   });
 
@@ -47,10 +47,9 @@ export default function Debt() {
     return totalPaid;
   }, 0);
 
-  const totalAmountOfDebt =
-    debts.reduce((sum, expense) => {
-      return sum + expense.debt_amount;
-    }, 0) - totalDebtPaidInCurrentMonth;
+  const totalAmountOfDebt = debts.reduce((sum, expense) => {
+    return sum + expense.debt_amount;
+  }, 0);
 
   const renderHeader = () => (
     <>
@@ -88,10 +87,10 @@ export default function Debt() {
         </View>
       </View>
       <FlatList
-        data={[{ key: "header" }]} // Dummy data for FlatList with a key
-        renderItem={() => renderHeader()} // Render the header directly
-        keyExtractor={(item) => item.key} // Key extractor for dummy data
-        showsVerticalScrollIndicator={false} // Disable scroll indicator
+        data={[{ key: "header" }]}
+        renderItem={() => renderHeader()}
+        keyExtractor={(item) => item.key}
+        showsVerticalScrollIndicator={false}
         ListFooterComponent={() => (
           <View style={styles.list_two}>
             <FlatList

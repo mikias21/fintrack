@@ -31,6 +31,7 @@ export default function Table({ data }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingItemID, setLoadingItemID] = useState(null);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [dataId, setDataId] = useState("");
@@ -113,7 +114,7 @@ export default function Table({ data }) {
             )}
           </TouchableOpacity>
           <TouchableOpacity onPress={() => toggleDeleteModal(item._id)}>
-            {isLoading ? (
+            {loadingItemID === item._id ? (
               <ActivityIndicator
                 size={15}
                 color="#FC819E"
@@ -142,6 +143,7 @@ export default function Table({ data }) {
     setIsDeleteModalVisible(false);
     setDataId("");
     setIsLoading(true);
+    setLoadingItemID(dataId);
 
     const deleteDetails = { expenseID: dataId, userID: user._id };
     dispatch(deleteExpense(deleteDetails))
