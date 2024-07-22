@@ -9,7 +9,7 @@ export default styles = StyleSheet.create({
 
   container_main_one: {
     position: "absolute",
-    top: 10,
+    top: -30,
     width: "100%",
     zIndex: 1,
     backgroundColor: "#fff",
@@ -20,7 +20,7 @@ export default styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 20,
   },
 
   container_two_main: {

@@ -49,10 +49,10 @@ export const addSaving = createAsyncThunk(
 // Async thunk to delete a saving
 export const deleteSaving = createAsyncThunk(
   "savings/deleteSaving",
-  async (savingID, thunkAPI) => {
+  async ({ savingID, userID }, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/savings/${savingID}`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/savings/${savingID}/${userID}`,
         {
           method: "DELETE",
         }
@@ -63,6 +63,33 @@ export const deleteSaving = createAsyncThunk(
       }
 
       return savingID; // Return the deleted saving ID for potential UI updates
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deductSaving = createAsyncThunk(
+  "savings/deductSaving",
+  async (spending, thunkAPI) => {
+    try {
+      const spendingData = {
+        spending_amount: spending.spending_amount,
+        spending_date: spending.spending_date,
+        spending_comment: spending.spending_comment,
+      };
+      const response = await fetch(
+        `https://fintrack-api-gmpu.onrender.com/api/v1/saving/deduct/${spending.user_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(spendingData),
+        }
+      );
+      const data = await response.json();
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

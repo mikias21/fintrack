@@ -31,6 +31,7 @@ import styles from "./styles";
 import { fetchExpenses } from "../../slices/expenseSlice";
 import { fetchIncomes } from "../../slices/incomeSlice";
 import { fetchDebts } from "../../slices/debtSlice";
+import { fetchSavings } from "../../slices/savingSlice";
 import { logout } from "../../slices/userSlice";
 
 // Util
@@ -99,9 +100,10 @@ export default function HomeScreen({ navigation }) {
       : incomeCalculated - totalAmountOfExpense;
 
   useEffect(() => {
-    dispatch(fetchExpenses(user._id));
-    dispatch(fetchIncomes(user._id));
-    dispatch(fetchDebts(user._id));
+    dispatch(fetchExpenses(user?._id));
+    dispatch(fetchIncomes(user?._id));
+    dispatch(fetchDebts(user?._id));
+    dispatch(fetchSavings(user?._id));
   }, [dispatch]);
 
   const recentActivities = mergeAndSortItems(expenses, incomes, debts);
@@ -190,8 +192,6 @@ export default function HomeScreen({ navigation }) {
       <Text style={styles.text_one}>Recent Activities</Text>
     </>
   );
-
-  console.log(combinedLatestInfo);
 
   return (
     <SafeAreaView style={styles.container}>

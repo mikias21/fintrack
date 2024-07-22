@@ -1,13 +1,6 @@
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  View,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  Text,
-  FlatList,
-} from "react-native";
+import { View, SafeAreaView, Image, Text, FlatList } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 // Style
@@ -16,6 +9,8 @@ import styles from "./styles";
 // Components
 import ActivityCard from "../../components/ActivityCard";
 import DashboardCard from "../../components/DashboardCard";
+import SavingActivityCard from "../../components/SavingsActivityCard";
+import DeductSavingsForm from "../../components/DeductSavingsForm";
 
 export default function IncomeSaving() {
   const expenses = useSelector((state) => state.expenses.expenses);
@@ -57,12 +52,22 @@ export default function IncomeSaving() {
 
   const totalAmountOfIncome = incomeCalculated < 0 ? 0 : incomeCalculated;
 
-  const sortedIncomes = incomes.slice().sort((a, b) => {
+  const sortedIncomes = incomes.slice(0, 2).sort((a, b) => {
     return new Date(b.income_date_time) - new Date(a.income_date_time);
   });
 
   const renderHeader = () => (
     <>
+      <View style={styles.container_main_one}>
+        <View style={styles.container_one}>
+          <Image
+            source={require("../../assets/income.png")}
+            style={styles.header_image}
+          />
+          <Text style={styles.text_one}>Incomes &amp; Savings</Text>
+        </View>
+      </View>
+
       <View style={styles.container_two_main}>
         <View style={styles.container_two}>
           <DashboardCard
@@ -81,27 +86,36 @@ export default function IncomeSaving() {
           />
         </View>
       </View>
+
+      <View>
+        <DeductSavingsForm />
+      </View>
+
       <Text style={styles.text_two}>Recent Incomes</Text>
+    </>
+  );
+
+  const renderFooter = () => (
+    <>
+      <Text style={styles.text_two}>Recent Savings</Text>
+      <FlatList
+        data={savings}
+        renderItem={({ item }) => <SavingActivityCard activity={item} />}
+        keyExtractor={(item) => item._id}
+        contentContainerStyle={styles.list_two}
+        showsVerticalScrollIndicator={false}
+      />
     </>
   );
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.container_main_one}>
-        <View style={styles.container_one}>
-          <Image
-            source={require("../../assets/income.png")}
-            style={styles.header_image}
-          />
-          <Text style={styles.text_one}>Incomes &amp; Savings</Text>
-        </View>
-      </View>
       <FlatList
         data={sortedIncomes}
         renderItem={({ item }) => <ActivityCard activity={item} />}
         keyExtractor={(item) => item._id}
         ListHeaderComponent={renderHeader}
-        // ListFooterComponent={renderRecentActivity}
+        ListFooterComponent={renderFooter}
         contentContainerStyle={styles.list_two}
         showsVerticalScrollIndicator={false}
       />

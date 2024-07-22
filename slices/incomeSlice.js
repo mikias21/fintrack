@@ -59,7 +59,6 @@ export const deleteIncome = createAsyncThunk(
       );
 
       if (!response.ok) {
-        console.log(response);
         throw new Error("Failed to delete income");
       }
 
