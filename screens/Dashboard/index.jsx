@@ -32,6 +32,7 @@ import { fetchExpenses } from "../../slices/expenseSlice";
 import { fetchIncomes } from "../../slices/incomeSlice";
 import { fetchDebts } from "../../slices/debtSlice";
 import { fetchSavings } from "../../slices/savingSlice";
+import { fetchSavingsDeductions } from "../../slices/savingSlice";
 import { logout } from "../../slices/userSlice";
 
 // Util
@@ -51,7 +52,6 @@ export default function HomeScreen({ navigation }) {
   const expenses = useSelector((state) => state.expenses.expenses);
   const incomes = useSelector((state) => state.incomes.incomes);
   const debts = useSelector((state) => state.debts.debts);
-  const savings = useSelector((state) => state.savings.savings);
   const currentMonth = dayjs().month();
   const currentYear = dayjs().year();
 
@@ -104,6 +104,7 @@ export default function HomeScreen({ navigation }) {
     dispatch(fetchIncomes(user?._id));
     dispatch(fetchDebts(user?._id));
     dispatch(fetchSavings(user?._id));
+    dispatch(fetchSavingsDeductions(user?._id));
   }, [dispatch]);
 
   const recentActivities = mergeAndSortItems(expenses, incomes, debts);

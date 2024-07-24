@@ -11,11 +11,15 @@ import ActivityCard from "../../components/ActivityCard";
 import DashboardCard from "../../components/DashboardCard";
 import SavingActivityCard from "../../components/SavingsActivityCard";
 import DeductSavingsForm from "../../components/DeductSavingsForm";
+import DeductionActvityCard from "../../components/DeductionActivityCard";
 
 export default function IncomeSaving() {
   const expenses = useSelector((state) => state.expenses.expenses);
   const incomes = useSelector((state) => state.incomes.incomes);
   const savings = useSelector((state) => state.savings.savings);
+  const savingDeductions = useSelector(
+    (state) => state.savings.savingDeductions
+  );
   const currentMonth = dayjs().month();
   const currentYear = dayjs().year();
 
@@ -25,6 +29,15 @@ export default function IncomeSaving() {
       expenseDate.month() === currentMonth && expenseDate.year() === currentYear
     );
   });
+
+  const getThreeLatestDeductions = (deductions) => {
+    return [...deductions]
+      .sort((a, b) => new Date(b.spending_date) - new Date(a.spending_date))
+      ?.slice(0, 2);
+  };
+
+  const latestDeductions = getThreeLatestDeductions(savingDeductions);
+  console.log(latestDeductions);
 
   const currentMonthIncome = incomes.filter((income) => {
     const incomeDate = dayjs(income.income_date);
@@ -37,13 +50,18 @@ export default function IncomeSaving() {
     return sum + expense.expense_amount;
   }, 0);
 
+  const totalAmountOfDeduction = savingDeductions.reduce((sum, deduction) => {
+    return sum + deduction.spending_amount;
+  }, 0);
+
   let incomeCalculated = currentMonthIncome.reduce((sum, income) => {
     return sum + income.income_amount;
   }, 0);
 
-  const totalAmountOfSaving = savings.reduce((sum, saving) => {
-    return sum + saving.saving_amount;
-  }, 0);
+  const totalAmountOfSaving =
+    savings.reduce((sum, saving) => {
+      return sum + saving.saving_amount;
+    }, 0) - totalAmountOfDeduction;
 
   const reduced_income =
     incomeCalculated - totalAmountOfExpense < 0
@@ -91,12 +109,6 @@ export default function IncomeSaving() {
         <DeductSavingsForm />
       </View>
 
-      <Text style={styles.text_two}>Recent Incomes</Text>
-    </>
-  );
-
-  const renderFooter = () => (
-    <>
       <Text style={styles.text_two}>Recent Savings</Text>
       <FlatList
         data={savings}
@@ -105,6 +117,25 @@ export default function IncomeSaving() {
         contentContainerStyle={styles.list_two}
         showsVerticalScrollIndicator={false}
       />
+
+      <Text style={styles.text_two}>Recent Incomes</Text>
+    </>
+  );
+
+  const renderFooter = () => (
+    <>
+      {latestDeductions && (
+        <>
+          <Text style={styles.text_two}>Recent Saving Expenses</Text>
+          <FlatList
+            data={latestDeductions}
+            renderItem={({ item }) => <DeductionActvityCard activity={item} />}
+            keyExtractor={(item) => item._id}
+            contentContainerStyle={styles.list_two}
+            showsVerticalScrollIndicator={false}
+          />
+        </>
+      )}
     </>
   );
 

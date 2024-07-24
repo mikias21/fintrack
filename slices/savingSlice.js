@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // Initial state
 const initialState = {
   savings: [],
+  savingDeductions: [],
   loading: false,
   error: null,
 };
@@ -96,6 +97,45 @@ export const deductSaving = createAsyncThunk(
   }
 );
 
+// Async thunk to fetch saving deductions
+export const fetchSavingsDeductions = createAsyncThunk(
+  "savings/fetchSavingDeductions",
+  async (userID, thunkAPI) => {
+    try {
+      const response = await fetch(
+        `https://fintrack-api-gmpu.onrender.com/api/v1/saving/deduct/${userID}`
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Async thunk to delete a deduction
+export const deleteDeduction = createAsyncThunk(
+  "savings/deleteDeduction",
+  async ({ deductionID, userID }, thunkAPI) => {
+    try {
+      const response = await fetch(
+        `https://fintrack-api-gmpu.onrender.com/api/v1/saving/deduct/${userID}/${deductionID}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete deduction");
+      }
+
+      return deductionID;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const savingSlice = createSlice({
   name: "savings",
   initialState,
@@ -114,8 +154,23 @@ const savingSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(fetchSavingsDeductions.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSavingsDeductions.fulfilled, (state, action) => {
+        state.loading = false;
+        state.savingDeductions = action.payload;
+      })
+      .addCase(fetchSavingsDeductions.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       .addCase(addSaving.fulfilled, (state, action) => {
         state.savings.push(action.payload);
+      })
+      .addCase(deductSaving.fulfilled, (state, action) => {
+        state.savingDeductions.push(action.payload);
       })
       .addCase(deleteSaving.pending, (state) => {
         state.loading = true;
@@ -129,6 +184,21 @@ const savingSlice = createSlice({
         state.loading = false;
       })
       .addCase(deleteSaving.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteDeduction.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteDeduction.fulfilled, (state, action) => {
+        const deductionID = action.payload;
+        state.savingDeductions = state.savingDeductions.filter(
+          (deduction) => deduction._id !== deductionID
+        );
+        state.loading = false;
+      })
+      .addCase(deleteDeduction.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
