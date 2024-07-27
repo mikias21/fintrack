@@ -306,7 +306,7 @@ export default function DebtActivityCard({ activity }) {
         </Text>
       ) : (
         <Text style={styles.text_two}>
-          Debt added {activity.debt_amount} from {activity.debt_from}
+          Debt added {activity.debt_amount}&#165; from {activity.debt_from}
         </Text>
       )}
       {showComment && (
@@ -314,8 +314,25 @@ export default function DebtActivityCard({ activity }) {
           {activity.debt_comment && (
             <Text style={styles.text_two}>{activity.debt_comment}</Text>
           )}
-          {!activity.debt_comment && (
-            <Text style={styles.text_two}>No comment</Text>
+
+          {activity?.debt_paid_details.length > 0 && (
+            <View style={styles.container_four}>
+              <Text style={styles.text_six}>Payment Details</Text>
+              {activity?.debt_paid_details.map((item) => (
+                <View style={styles.container_five} key={item._id}>
+                  <AntDesign
+                    name="calendar"
+                    size={13}
+                    color="black"
+                    style={{ marginRight: 5 }}
+                  />
+                  <Text style={styles.text_two}>
+                    On {item.paid_date} you have paid back {item.paid_amount}
+                    &#165;
+                  </Text>
+                </View>
+              ))}
+            </View>
           )}
         </>
       )}

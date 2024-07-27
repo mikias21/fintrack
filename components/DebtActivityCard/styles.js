@@ -163,4 +163,20 @@ export default styles = StyleSheet.create({
     fontSize: 14, // Reduced font size
     fontWeight: "bold",
   },
+
+  container_four: {
+    marginTop: 10,
+  },
+
+  text_six: {
+    fontSize: 13,
+    fontWeight: "bold",
+  },
+
+  container_five: {
+    marginTop: 5,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });
