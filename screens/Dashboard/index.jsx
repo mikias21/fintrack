@@ -158,7 +158,6 @@ export default function HomeScreen({ navigation }) {
 
   const renderHeader = () => (
     <>
-      <Navbar />
       <View style={styles.container_one}>
         <DashboardCard
           intro_text="Expenses as of"
@@ -199,10 +198,7 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.main_logo_container}>
         <View style={styles.logo_container}>
           <TouchableOpacity onPress={handleLogout}>
-            <Image
-              source={require("../../assets/icon.png")}
-              style={styles.logo_image}
-            />
+            <Navbar />
           </TouchableOpacity>
           <MaterialIcons
             name="settings"
