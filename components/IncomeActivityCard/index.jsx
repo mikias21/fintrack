@@ -48,7 +48,6 @@ export default function ActivityCard({ activity }) {
     dispatch(deleteIncome(deleteDetails))
       .unwrap()
       .then((res) => {
-        // console.log("deleted.");
         Toast.show({
           type: "success",
           text1: "Income has been deleted.",

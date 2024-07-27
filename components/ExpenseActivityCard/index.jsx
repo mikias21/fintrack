@@ -48,7 +48,6 @@ export default function ExpenseActivityCard({ activity }) {
     dispatch(deleteExpense(deleteDetails))
       .unwrap()
       .then((res) => {
-        // console.log("deleted.");
         Toast.show({
           type: "success",
           text1: "Expense has been deleted.",

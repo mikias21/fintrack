@@ -1,13 +1,19 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   View,
   Text,
   TouchableOpacity,
   ActivityIndicator,
   Modal,
+  TextInput,
+  Pressable,
 } from "react-native";
 import Toast from "react-native-toast-message";
+// import DateTimePicker from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import dayjs from "dayjs";
+import { useSelector } from "react-redux";
 
 // Icons
 import { AntDesign } from "@expo/vector-icons";
@@ -21,16 +27,17 @@ import styles from "./styles";
 import { formatDate } from "../../utils/utils";
 
 // Redux
-import { deleteExpense } from "../../slices/expenseSlice";
-import { deleteIncome } from "../../slices/incomeSlice";
+import { deleteDebt } from "../../slices/debtSlice";
+import { payDebt } from "../../slices/debtSlice";
+import { deleteDeduction } from "../../slices/savingSlice";
 
-export default function ActivityCard({ activity }) {
+export default function DeductionActvityCard({ activity }) {
   const user = useSelector((state) => state.user.user);
   const [showComment, setShowComment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [errMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
 
   const handleCommentSwitch = () => {
@@ -45,56 +52,32 @@ export default function ActivityCard({ activity }) {
     setIsModalVisible(false);
     setIsLoading(true);
 
-    if (activity.update_from === "EXP") {
-      const deleteDetails = { expenseID: activity._id, userID: user._id };
-      dispatch(deleteExpense(deleteDetails))
-        .unwrap()
-        .then((res) => {
-          Toast.show({
-            type: "success",
-            text1: "Expense has been deleted.",
-          });
-        })
-        .catch((err) => {
-          setIsError(true);
-          // setErrorMessage("There was a problem deleting the expense.");
-          Toast.show({
-            type: "error",
-            text1: "There was a problem deleting the expense.",
-          });
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
+    const deleteDetails = { deductionID: activity._id, userID: user._id };
 
-    if (activity.update_from === "INC") {
-      const deleteDetails = { incomeID: activity._id, userID: user._id };
-      dispatch(deleteIncome(deleteDetails))
-        .unwrap()
-        .then((res) => {
-          Toast.show({
-            type: "success",
-            text1: "Income has been deleted.",
-          });
-        })
-        .catch((err) => {
-          setIsError(true);
-          // setErrorMessage("There was a problem deleting the expense.");
-          Toast.show({
-            type: "error",
-            text1: "There was a problem deleting the income.",
-          });
-        })
-        .finally(() => {
-          setIsLoading(false);
+    dispatch(deleteDeduction(deleteDetails))
+      .unwrap()
+      .then((res) => {
+        Toast.show({
+          type: "success",
+          text1: "Saving expense has been deleted.",
         });
-    }
+      })
+      .catch((err) => {
+        setIsError(true);
+        Toast.show({
+          type: "error",
+          text1: "There was a problem deleting the saving expense.",
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
-    <View style={styles.container_one}>
+    <View style={[styles.container_one]}>
       <View style={styles.container_two}>
+        {/* Delete Deduction Modal */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -126,12 +109,7 @@ export default function ActivityCard({ activity }) {
           </View>
         </Modal>
 
-        {activity.update_from === "EXP" && (
-          <Text style={styles.text_one}>Expense Added</Text>
-        )}
-        {activity.update_from === "INC" && (
-          <Text style={styles.text_one}>Income Added</Text>
-        )}
+        <Text style={styles.text_one}>Expense from saving</Text>
         <View style={styles.container_three}>
           <TouchableOpacity onPress={handleCommentSwitch}>
             {showComment ? (
@@ -163,31 +141,22 @@ export default function ActivityCard({ activity }) {
         </View>
       </View>
       <Text style={styles.text_two}>
-        Added {activity.expense_amount || activity.income_amount} &#165; to{" "}
-        {activity.expense_reason || activity.income_reason}
+        {activity?.spending_amount}&#165; taken from your savings
       </Text>
       {showComment && (
         <>
-          {activity.expense_comment && (
-            <Text style={styles.text_two}>{activity.expense_comment}</Text>
+          {activity?.spending_comment && (
+            <Text style={styles.text_two}>{activity?.spending_comment}</Text>
           )}
-          {!activity.expense_comment && activity.income_comment && (
-            <Text style={styles.text_two}>{activity.income_comment}</Text>
-          )}
-          {!activity.expense_comment && !activity.income_comment && (
+          {!activity?.spending_comment && (
             <Text style={styles.text_two}>No comment</Text>
           )}
         </>
       )}
 
-      {activity.expense_date && (
+      {activity?.spending_date && (
         <Text style={styles.text_three}>
-          {formatDate(activity.expense_date)}
-        </Text>
-      )}
-      {activity.income_date && (
-        <Text style={styles.text_three}>
-          {formatDate(activity.income_date)}
+          {formatDate(activity?.spending_date)}
         </Text>
       )}
     </View>
