@@ -37,7 +37,6 @@ export default function IncomeSaving() {
   };
 
   const latestDeductions = getThreeLatestDeductions(savingDeductions);
-  console.log(latestDeductions);
 
   const currentMonthIncome = incomes.filter((income) => {
     const incomeDate = dayjs(income.income_date);

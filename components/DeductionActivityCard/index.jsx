@@ -141,22 +141,24 @@ export default function DeductionActvityCard({ activity }) {
         </View>
       </View>
       <Text style={styles.text_two}>
-        {activity.spending_amount}&#165; taken from your savings
+        {activity?.spending_amount}&#165; taken from your savings
       </Text>
       {showComment && (
         <>
-          {activity.spending_comment && (
-            <Text style={styles.text_two}>{activity.debt_comment}</Text>
+          {activity?.spending_comment && (
+            <Text style={styles.text_two}>{activity?.spending_comment}</Text>
           )}
-          {!activity.spending_comment && (
+          {!activity?.spending_comment && (
             <Text style={styles.text_two}>No comment</Text>
           )}
         </>
       )}
 
-      <Text style={styles.text_three}>
-        {formatDate(activity.spending_date)}
-      </Text>
+      {activity?.spending_date && (
+        <Text style={styles.text_three}>
+          {formatDate(activity?.spending_date)}
+        </Text>
+      )}
     </View>
   );
 }

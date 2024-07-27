@@ -80,7 +80,7 @@ function DeductSavingsForm() {
         setIsError(true);
         Toast.show({
           type: "error",
-          text1: "There was a problem deducting from you saving.",
+          text1: err,
         });
       })
       .finally(() => {
@@ -93,7 +93,6 @@ function DeductSavingsForm() {
       <View style={styles.container_two}>
         <Text style={styles.text_two}>Spending from your savings</Text>
         <View>
-          <Text style={styles.text_two}>Add Savings</Text>
           {errorMessage !== "" ? (
             <Text
               style={[styles.text_one, { color: isError ? "red" : "green" }]}

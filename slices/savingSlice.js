@@ -89,7 +89,11 @@ export const deductSaving = createAsyncThunk(
           body: JSON.stringify(spendingData),
         }
       );
+
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -128,7 +132,6 @@ export const deleteDeduction = createAsyncThunk(
       if (!response.ok) {
         throw new Error("Failed to delete deduction");
       }
-
       return deductionID;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
