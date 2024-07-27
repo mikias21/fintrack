@@ -11,7 +11,7 @@ export default styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     width: "100%",
-    zIndex: 1,
+    // zIndex: 1,
     backgroundColor: "#fff",
   },
 

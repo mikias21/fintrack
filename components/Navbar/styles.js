@@ -2,7 +2,7 @@ import { StyleSheet, Platform } from "react-native";
 
 export default styles = StyleSheet.create({
   container: {
-    marginTop: -70,
+    // marginTop: -70,
     padding: 18,
     display: "flex",
     flexDirection: "row",
@@ -27,13 +27,13 @@ export default styles = StyleSheet.create({
   },
 
   text_one: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "700",
     color: "gray",
   },
 
   text_two: {
-    fontSize: 18,
+    fontSize: 13,
     marginTop: 3,
     fontWeight: "900",
   },

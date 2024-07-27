@@ -34,6 +34,7 @@ export default function Table({ data }) {
   const [loadingItemID, setLoadingItemID] = useState(null);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
+  const [currentRowBgColor, setCurrentRowBgColor] = useState("");
   const [dataId, setDataId] = useState("");
   const [item, setItem] = useState(null);
   const dispatch = useDispatch();
@@ -82,16 +83,21 @@ export default function Table({ data }) {
     </View>
   );
 
+  const getItemLayout = (index) => {
+    const nextBgColor = index % 2 === 0 ? "#FFFFFF" : "#F0F8FF";
+    return nextBgColor;
+  };
+
   const renderItem = ({ item, index }) => {
     const truncatedReason =
       item.expense_reason.length > 6
         ? `${item.expense_reason.slice(0, 6)}...`
         : item.expense_reason;
 
-    const nextBgColor = index % 2 === 0 ? "'#FFFFFF'" : "#F0F8FF";
-
     return (
-      <View style={[styles.rowContainer, { backgroundColor: nextBgColor }]}>
+      <View
+        style={[styles.rowContainer, { backgroundColor: getItemLayout(index) }]}
+      >
         <Text style={[styles.rowText, { flex: 2 }]}>
           {formatDateForTable(item.expense_date)}
         </Text>
