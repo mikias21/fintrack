@@ -150,7 +150,7 @@ export default function AddItem() {
         keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
       />
-      <StatusBar style="auto" />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true}/>
     </SafeAreaView>
   );
 }

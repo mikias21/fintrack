@@ -107,8 +107,6 @@ export default function HomeScreen({ navigation }) {
     dispatch(fetchSavingsDeductions(user?._id));
   }, [dispatch]);
 
-  const recentActivities = mergeAndSortItems(expenses, incomes, debts);
-
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -131,7 +129,7 @@ export default function HomeScreen({ navigation }) {
       const expenseDate = parseISO(item.expense_date);
       if (isWithinInterval(expenseDate, { start: weekStart, end: weekEnd })) {
         const dayIndex = expenseDate.getDay() - 1;
-        aggregatedData[dayIndex] += item.expense_amount;
+        aggregatedData[dayIndex] += item.expense_amount * 0.01;
       }
     });
 
@@ -143,58 +141,23 @@ export default function HomeScreen({ navigation }) {
         <Text
           style={{
             color: "#3E3232",
-            fontSize: 10,
+            fontSize: 8,
             marginBottom: 2,
-            fontWeight: "800",
+            fontWeight: "900",
           }}
         >
-          {value}
+          {value * 100} &#165;
         </Text>
       ),
     }));
   };
 
   const barData = aggregateWeeklyExpenses(expenses);
+  const allValuesAreZero = barData.every((data) => data.value === 0);
 
   const renderHeader = () => (
     <>
-      <View style={styles.container_one}>
-        <DashboardCard
-          intro_text="Expenses as of"
-          amount={totalAmountOfExpense}
-          image={require("../../assets/costs.png")}
-          color="#FC819E"
-        />
-      </View>
-      <View style={styles.container_two}>
-        <DashboardCard
-          intro_text="Income as of"
-          amount={totalAmountOfIncome}
-          image={require("../../assets/income.png")}
-          color="#00A9FF"
-        />
-      </View>
-      <Text style={styles.text_one}>Weekly expense Summary</Text>
-      <View style={styles.bar_chart_container}>
-        <BarChart
-          barWidth={22}
-          noOfSections={3}
-          barBorderRadius={4}
-          frontColor="lightgray"
-          data={barData}
-          yAxisThickness={0}
-          xAxisThickness={0}
-          hideRules
-          hideYAxisText
-          initialSpacing={10}
-        />
-      </View>
-      <Text style={styles.text_one}>Recent Activities</Text>
-    </>
-  );
 
-  return (
-    <SafeAreaView style={styles.container}>
       <View style={styles.main_logo_container}>
         <View style={styles.logo_container}>
           <TouchableOpacity onPress={handleLogout}>
@@ -208,6 +171,51 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
       </View>
+
+      <View style={styles.container_one}>
+        <DashboardCard
+          intro_text="Expenses as of"
+          amount={totalAmountOfExpense}
+          image={require("../../assets/costs.png")}
+          color="#FC819E"
+        />
+      </View>
+
+      <View style={styles.container_two}>
+        <DashboardCard
+          intro_text="Income as of"
+          amount={totalAmountOfIncome}
+          image={require("../../assets/income.png")}
+          color="#00A9FF"
+        />
+      </View>
+
+      {!allValuesAreZero ? (
+        <>
+           <Text style={styles.text_one}>Weekly expense Summary</Text>
+           <View style={styles.bar_chart_container}>
+            <BarChart
+              barWidth={22}
+              noOfSections={3}
+              barBorderRadius={4}
+              frontColor="lightgray"
+              data={barData}
+              yAxisThickness={0}
+              xAxisThickness={0}
+              hideRules
+              hideYAxisText
+              initialSpacing={10}
+            />
+          </View>
+        </>
+      ) : (<></>)}
+      <Text style={styles.text_one}>Recent Activities</Text>
+
+    </>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={combinedLatestInfo}
         renderItem={({ item }) => {
@@ -224,6 +232,7 @@ export default function HomeScreen({ navigation }) {
         contentContainerStyle={styles.list_one}
         showsVerticalScrollIndicator={false}
       />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true}/>
     </SafeAreaView>
   );
 }

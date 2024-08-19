@@ -108,7 +108,7 @@ export default function IncomeSaving() {
         <DeductSavingsForm />
       </View>
 
-      <Text style={styles.text_two}>Recent Savings</Text>
+      <Text style={styles.text_two_one}>Recent Savings</Text>
       <FlatList
         data={savings}
         renderItem={({ item }) => <SavingActivityCard activity={item} />}
@@ -124,16 +124,15 @@ export default function IncomeSaving() {
   const renderFooter = () => (
     <>
       {latestDeductions && (
-        <>
-          <Text style={styles.text_two}>Recent Saving Expenses</Text>
+        <View style={styles.final_list}>
+          <Text style={[styles.text_two, {marginTop: 10}]}>Recent Saving Expenses</Text>
           <FlatList
             data={latestDeductions}
             renderItem={({ item }) => <DeductionActvityCard activity={item} />}
             keyExtractor={(item) => item._id}
-            contentContainerStyle={styles.list_two}
             showsVerticalScrollIndicator={false}
           />
-        </>
+        </View>
       )}
     </>
   );
@@ -149,7 +148,7 @@ export default function IncomeSaving() {
         contentContainerStyle={styles.list_two}
         showsVerticalScrollIndicator={false}
       />
-      <StatusBar style="auto" />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true}/>
     </SafeAreaView>
   );
 }

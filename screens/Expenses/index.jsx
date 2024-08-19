@@ -40,21 +40,7 @@ export default function Expenses() {
 
   const renderHeader = () => (
     <>
-      <View style={styles.container_two}>
-        <DashboardCard
-          intro_text="Expenses as of"
-          amount={totalAmountOfExpense}
-          image={require("../../assets/costs.png")}
-          color="#FC819E"
-        />
-      </View>
-      <Table data={sortedExpenses} />
-      <CalendarChart data={sortedExpenses} />
-    </>
-  );
-
-  return (
-    <SafeAreaView style={styles.container}>
+      
       <View style={styles.container_one_main}>
         <View style={styles.container_one}>
           <Image
@@ -64,13 +50,32 @@ export default function Expenses() {
           <Text style={styles.text_one}>Expenses</Text>
         </View>
       </View>
+
+      <View style={styles.container_two}>
+        <DashboardCard
+          intro_text="Expenses as of"
+          amount={totalAmountOfExpense}
+          image={require("../../assets/costs.png")}
+          color="#FC819E"
+        />
+      </View>
+      
+      <Table data={sortedExpenses} />
+      
+      <CalendarChart data={sortedExpenses} />
+    </>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      
       <FlatList
         data={[{ key: "header" }]}
         renderItem={() => renderHeader()}
         keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
       />
-      <StatusBar style="auto" />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true}/>
     </SafeAreaView>
   );
 }

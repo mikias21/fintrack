@@ -53,6 +53,16 @@ export default function Debt() {
 
   const renderHeader = () => (
     <>
+      <View style={styles.container_main_one}>
+        <View style={styles.container_one}>
+          <Image
+            source={require("../../assets/credit-card-payment.png")}
+            style={styles.header_image}
+          />
+          <Text style={styles.text_one}>Your Debts</Text>
+        </View>
+      </View>
+      
       <View style={styles.card_container}>
         <View style={styles.container_two}>
           <DashboardCard
@@ -71,21 +81,13 @@ export default function Debt() {
           />
         </View>
       </View>
+      
       <Text style={styles.text_two}>Recent Debts</Text>
     </>
   );
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.container_main_one}>
-        <View style={styles.container_one}>
-          <Image
-            source={require("../../assets/credit-card-payment.png")}
-            style={styles.header_image}
-          />
-          <Text style={styles.text_one}>Your Debts</Text>
-        </View>
-      </View>
       <FlatList
         data={[{ key: "header" }]}
         renderItem={() => renderHeader()}
@@ -101,7 +103,7 @@ export default function Debt() {
           </View>
         )}
       />
-      <StatusBar style="auto" />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true}/>
     </SafeAreaView>
   );
 }

@@ -2,16 +2,12 @@ import { StyleSheet } from "react-native";
 
 export default styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
     flex: 1,
     backgroundColor: "#fff",
   },
 
   container_main_one: {
-    position: "absolute",
-    top: 10,
     width: "100%",
-    // zIndex: 1,
     backgroundColor: "#fff",
   },
 
@@ -21,10 +17,6 @@ export default styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 10,
-  },
-
-  card_container: {
-    marginTop: 70,
   },
 
   container_two: {

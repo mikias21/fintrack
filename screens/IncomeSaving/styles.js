@@ -1,17 +1,13 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet} from "react-native";
 
 export default styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
     flex: 1,
     backgroundColor: "#fff",
   },
 
   container_main_one: {
-    position: "absolute",
-    top: -30,
     width: "100%",
-    zIndex: 1,
     backgroundColor: "#fff",
   },
 
@@ -20,11 +16,7 @@ export default styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 20,
-  },
-
-  container_two_main: {
-    marginTop: 70,
+    marginTop: 10,
   },
 
   container_two: {
@@ -42,10 +34,20 @@ export default styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
+  text_two_one: {
+    padding: 18,
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+
   text_two: {
     fontSize: 24,
     fontWeight: "bold",
-    // marginVertical: 10,
-    padding: 18,
+    paddingLeft: 18,
+    paddingBottom: 3,
   },
+
+  final_list: {
+    marginBottom: 20,
+  }
 });
