@@ -24,20 +24,25 @@ export default styles = StyleSheet.create({
   },
 
   header_image: {
-    height: 40,
-    width: 40,
+    height: 30,
+    width: 30,
     marginRight: 10,
   },
 
   text_one: {
-    fontSize: 24,
+    fontSize: 19,
     fontWeight: "bold",
   },
 
   text_two: {
-    fontSize: 24,
+    fontSize: 15,
     fontWeight: "bold",
-    // marginVertical: 10,
-    padding: 18,
+    paddingLeft: 18,
+    paddingBottom: 3,
+    marginTop: 10,
   },
+
+  final_list: {
+    marginBottom: 20,
+  }
 });

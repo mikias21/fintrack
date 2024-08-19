@@ -86,14 +86,21 @@ export default function Debt() {
     </>
   );
 
+  const renderFooter = () => (
+    <>
+      <View style={styles.final_list}></View>
+    </>
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={[{ key: "header" }]}
-        renderItem={() => renderHeader()}
+        ListHeaderComponent={renderHeader}
+        ListFooterComponent={renderFooter}
         keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
-        ListFooterComponent={() => (
+        renderItem={() => (
           <View style={styles.list_two}>
             <FlatList
               data={debts}
