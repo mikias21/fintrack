@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   View,
@@ -49,9 +49,9 @@ import {
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const expenses = useSelector((state) => state.expenses.expenses);
-  const incomes = useSelector((state) => state.incomes.incomes);
-  const debts = useSelector((state) => state.debts.debts);
+  const expenses = useSelector((state) => state.expenses?.expenses || []);
+  const incomes = useSelector((state) => state.incomes?.incomes || []);
+  const debts = useSelector((state) => state.debts?.debts || []);
   const currentMonth = dayjs().month();
   const currentYear = dayjs().year();
 
@@ -100,15 +100,21 @@ export default function HomeScreen({ navigation }) {
       : incomeCalculated - totalAmountOfExpense;
 
   useEffect(() => {
-    dispatch(fetchExpenses(user?._id));
-    dispatch(fetchIncomes(user?._id));
-    dispatch(fetchDebts(user?._id));
-    dispatch(fetchSavings(user?._id));
-    dispatch(fetchSavingsDeductions(user?._id));
-  }, [dispatch]);
+    if(user?.token){
+      try{
+        dispatch(fetchExpenses(user?.token));
+        dispatch(fetchIncomes(user?.token));
+        dispatch(fetchDebts(user?.token));
+        dispatch(fetchSavings(user?.token));
+        dispatch(fetchSavingsDeductions(user?.token));
+      }catch(error){
+        navigation.push('Login')
+      }
+    }
+  }, [dispatch, user?.token]);
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logout())
   };
 
   const getFrontColor = (amount) => {

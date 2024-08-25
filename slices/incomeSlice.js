@@ -10,10 +10,15 @@ const initialState = {
 // Async thunk to fetch incomes
 export const fetchIncomes = createAsyncThunk(
   "incomes/fetchIncomes",
-  async (user_id, thunkAPI) => {
+  async (token, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/incomes/${user_id}`
+        `https://fintrack-api-gmpu.onrender.com/api/v1/incomes`, 
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          }
+        }
       );
       const data = await response.json();
       return data;
@@ -26,7 +31,7 @@ export const fetchIncomes = createAsyncThunk(
 // Async thunk to add an income
 export const addIncome = createAsyncThunk(
   "incomes/addIncome",
-  async (income, thunkAPI) => {
+  async ({income, token}, thunkAPI) => {
     try {
       const response = await fetch(
         "https://fintrack-api-gmpu.onrender.com/api/v1/incomes/",
@@ -34,6 +39,7 @@ export const addIncome = createAsyncThunk(
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
           },
           body: JSON.stringify(income),
         }
@@ -49,12 +55,15 @@ export const addIncome = createAsyncThunk(
 // Async thunk to delete an income
 export const deleteIncome = createAsyncThunk(
   "incomes/deleteIncome",
-  async ({ incomeID, userID }, thunkAPI) => {
+  async ({ incomeID, token }, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/incomes/${incomeID}/${userID}`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/incomes/${incomeID}`,
         {
           method: "DELETE",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          }
         }
       );
 

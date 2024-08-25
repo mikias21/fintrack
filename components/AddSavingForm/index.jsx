@@ -67,7 +67,7 @@ export default function AddSavingsForm() {
       user_id: user._id,
     };
 
-    dispatch(addSaving(newSaving))
+    dispatch(addSaving({saving: newSaving, token: user.token}))
       .unwrap()
       .then((res) => {
         setSavingAmount("");

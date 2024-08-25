@@ -46,7 +46,7 @@ export default function ActivityCard({ activity }) {
     setIsLoading(true);
 
     if (activity.update_from === "EXP") {
-      const deleteDetails = { expenseID: activity._id, userID: user._id };
+      const deleteDetails = { expenseID: activity._id, token: user.token };
       dispatch(deleteExpense(deleteDetails))
         .unwrap()
         .then((res) => {
@@ -69,7 +69,7 @@ export default function ActivityCard({ activity }) {
     }
 
     if (activity.update_from === "INC") {
-      const deleteDetails = { incomeID: activity._id, userID: user._id };
+      const deleteDetails = { incomeID: activity._id, token: user.token };
       dispatch(deleteIncome(deleteDetails))
         .unwrap()
         .then((res) => {

@@ -74,7 +74,7 @@ export default function AddIncomeForm() {
       user_id: user._id,
     };
 
-    dispatch(addIncome(newIncome))
+    dispatch(addIncome({income: newIncome, token: user.token}))
       .unwrap()
       .then((res) => {
         setIncomeAmount("");

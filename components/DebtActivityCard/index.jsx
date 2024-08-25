@@ -79,7 +79,7 @@ export default function DebtActivityCard({ activity }) {
     setIsModalVisible(false);
     setIsLoading(true);
 
-    const deleteDetails = { debtID: activity._id, userID: user._id };
+    const deleteDetails = { debtID: activity._id, token: user.token };
 
     dispatch(deleteDebt(deleteDetails))
       .unwrap()
@@ -109,7 +109,7 @@ export default function DebtActivityCard({ activity }) {
       debtID: activity._id,
       debt_paid_amount: parseFloat(payAmount),
       debt_paid_date: payDateReal,
-      user_id: user._id,
+      token: user.token,
     };
 
     dispatch(payDebt(paymentDetails))

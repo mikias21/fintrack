@@ -44,7 +44,7 @@ export default function SavingActivityCard({ activity }) {
     setIsModalVisible(false);
     setIsLoading(true);
 
-    const deleteDetails = { savingID: activity._id, userID: user?._id };
+    const deleteDetails = { savingID: activity._id, token: user?.token };
     dispatch(deleteSaving(deleteDetails))
       .unwrap()
       .then((res) => {

@@ -10,10 +10,17 @@ const initialState = {
 // Async thunk to fetch debts
 export const fetchDebts = createAsyncThunk(
   "debts/fetchDebts",
-  async (id, thunkAPI) => {
+  async (token, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/debts/${id}`
+        `https://fintrack-api-gmpu.onrender.com/api/v1/debts`,
+        {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify(debt),
+        }
       );
       const data = await response.json();
       return data;
@@ -26,14 +33,15 @@ export const fetchDebts = createAsyncThunk(
 // Async thunk to add an debt
 export const addDebt = createAsyncThunk(
   "debts/addDebt",
-  async (debt, thunkAPI) => {
+  async ({debt, token}, thunkAPI) => {
     try {
       const response = await fetch(
-        "https://fintrack-api-gmpu.onrender.com/api/v1/debts/",
+        "https://fintrack-api-gmpu.onrender.com/api/v1/debts",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
           },
           body: JSON.stringify(debt),
         }
@@ -49,12 +57,15 @@ export const addDebt = createAsyncThunk(
 // Async thunk to delete an debt
 export const deleteDebt = createAsyncThunk(
   "debts/deleteDebt",
-  async ({ debtID, userID }, thunkAPI) => {
+  async ({ debtID, token }, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/debts/${debtID}/${userID}`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/debts/${debtID}`,
         {
           method: "DELETE",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
         }
       );
 
@@ -72,14 +83,15 @@ export const deleteDebt = createAsyncThunk(
 // Async thunk to pay off a debt
 export const payDebt = createAsyncThunk(
   "debts/payDebt",
-  async ({ debtID, debt_paid_amount, debt_paid_date, user_id }, thunkAPI) => {
+  async ({ debtID, debt_paid_amount, debt_paid_date, token }, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/debts/pay/${debtID}/${user_id}`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/debts/pay/${debtID}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
           },
           body: JSON.stringify({ debt_paid_amount, debt_paid_date }),
         }

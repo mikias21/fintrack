@@ -44,7 +44,7 @@ export default function ActivityCard({ activity }) {
     setIsModalVisible(false);
     setIsLoading(true);
 
-    const deleteDetails = { incomeID: activity._id, userID: user._id };
+    const deleteDetails = { incomeID: activity._id, token: user.token };
     dispatch(deleteIncome(deleteDetails))
       .unwrap()
       .then((res) => {

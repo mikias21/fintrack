@@ -52,7 +52,7 @@ export default function DeductionActvityCard({ activity }) {
     setIsModalVisible(false);
     setIsLoading(true);
 
-    const deleteDetails = { deductionID: activity._id, userID: user._id };
+    const deleteDetails = { deductionID: activity._id, token: user.token };
 
     dispatch(deleteDeduction(deleteDetails))
       .unwrap()

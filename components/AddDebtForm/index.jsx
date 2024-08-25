@@ -63,7 +63,7 @@ export default function AddDebtForm() {
       user_id: user._id,
     };
 
-    dispatch(addDebt(newDebt))
+    dispatch(addDebt({debt: newDebt, token: user.token}))
       .unwrap()
       .then((res) => {
         setDebtAmount("");

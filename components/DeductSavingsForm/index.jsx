@@ -54,7 +54,7 @@ function DeductSavingsForm() {
       spending_amount: parseFloat(spendingAmount),
       spending_date: spendingDateReal,
       spending_comment: spendingReason,
-      user_id: user._id,
+      token: user.token,
     };
 
     dispatch(deductSaving(newSpending))

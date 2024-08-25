@@ -72,7 +72,7 @@ export default function AddNewExpense() {
       user_id: user._id,
     };
 
-    dispatch(addExpense(newExpense))
+    dispatch(addExpense({expense: newExpense, token: user.token}))
       .unwrap()
       .then((res) => {
         setExpenseAmount("");

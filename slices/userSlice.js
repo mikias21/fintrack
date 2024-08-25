@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { storeToken } from "../utils/storage";
 
 // Initial state
 const initialState = {
   user: null,
+  token: null,
   loading: false,
   error: null,
 };
@@ -46,6 +48,30 @@ export const signinUser = createAsyncThunk(
         }
       );
       const data = await response.json();
+      storeToken(data.token); // Save token to local storage
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Async thunk to signIn a user
+export const verifyToken = createAsyncThunk(
+  "user/verifyToken",
+  async (token, thunkAPI) => {
+    try {
+      const response = await fetch(
+        "https://fintrack-api-gmpu.onrender.com/api/v1/auth/verify",
+        {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        }
+      );
+      let userData = await response.json();
+      const data = [...userData, token];
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -65,9 +91,13 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(signupUser.fulfilled, (state, action) => {
-      state.user = action.payload;
+      state.user = {user_name: action.payload.user_name, _id: action.payload.id};
+      state.token = action.payload.token;
     });
     builder.addCase(signinUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
+    builder.addCase(verifyToken.fulfilled, (state, action) => {
       state.user = action.payload;
     });
   },

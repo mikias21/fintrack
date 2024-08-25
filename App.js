@@ -1,7 +1,7 @@
 import { Provider } from "react-redux";
 import { StyleSheet } from "react-native";
 import Toast from "react-native-toast-message";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -19,7 +19,13 @@ import SignupScreen from "./screens/Signup";
 
 // Redux
 import store from "./store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+// Local storage
+import { getToken } from "./utils/storage";
+
+// Redux
+import { verifyToken } from "./slices/userSlice";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -73,11 +79,39 @@ const MainTabs = () => (
 );
 
 const AppNavigator = () => {
+  const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try{
+        const savedToken = await getToken('token');
+        setToken(savedToken);
+      }catch(error){
+        setToken(null);
+      }finally{
+        setLoading(false);
+      }
+    }
+
+    fetchToken();
+  }, [])
+
+  useEffect(() => {
+    if(token){
+      dispatch(verifyToken(token))
+        .unwrap()
+        .then(res => {})
+        .catch(err => {})
+    }
+  }, [dispatch, token]);
+
   const user = useSelector((state) => state.user.user);
   // const [user, setUser] = useState(null);
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {user?._id ? (
+      {user?.id ? (
         <>
           <Stack.Screen name="Main" component={MainTabs} />
         </>

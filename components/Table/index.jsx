@@ -151,7 +151,7 @@ export default function Table({ data }) {
     setIsLoading(true);
     setLoadingItemID(dataId);
 
-    const deleteDetails = { expenseID: dataId, userID: user._id };
+    const deleteDetails = { expenseID: dataId, token: user.token };
     dispatch(deleteExpense(deleteDetails))
       .unwrap()
       .then((res) => {
