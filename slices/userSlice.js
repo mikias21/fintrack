@@ -48,7 +48,7 @@ export const signinUser = createAsyncThunk(
         }
       );
       const data = await response.json();
-      storeToken(data.token); // Save token to local storage
+      storeToken(data.token);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -71,8 +71,8 @@ export const verifyToken = createAsyncThunk(
         }
       );
       let userData = await response.json();
-      const data = [...userData, token];
-      return data;
+      userData = {...userData, 'token': token}
+      return userData
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -87,6 +87,7 @@ const userSlice = createSlice({
       state.user = null;
       state.loading = false;
       state.error = null;
+      state.token = null;
     },
   },
   extraReducers: (builder) => {

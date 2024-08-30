@@ -18,4 +18,14 @@ const getToken = async () => {
     }
 }
 
-export {storeToken, getToken};
+const deleteToken = async () => {
+    try{
+        const token = await AsyncStorage.removeItem('token');
+        return token;
+    }catch(error){
+        console.log(error);
+        return null;
+    }
+}
+
+export {storeToken, getToken, deleteToken};

@@ -38,6 +38,8 @@ import { logout } from "../../slices/userSlice";
 // Util
 import { mergeAndSortItems } from "../../utils/utils";
 
+import { deleteToken } from "../../utils/storage";
+
 import {
   startOfWeek,
   endOfWeek,
@@ -113,7 +115,8 @@ export default function HomeScreen({ navigation }) {
     }
   }, [dispatch, user?.token]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await deleteToken();
     dispatch(logout())
   };
 

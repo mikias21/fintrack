@@ -16,6 +16,7 @@ import IncomeSaving from "./screens/IncomeSaving";
 import Debt from "./screens/Debt";
 import LoginScreen from "./screens/Login";
 import SignupScreen from "./screens/Signup";
+import LoadingScreen from "./screens/Loading";
 
 // Redux
 import store from "./store";
@@ -79,38 +80,35 @@ const MainTabs = () => (
 );
 
 const AppNavigator = () => {
-  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
-    const fetchToken = async () => {
+    const initializeApp = async () => {
+      setLoading(true);
       try{
         const savedToken = await getToken('token');
-        setToken(savedToken);
+        if(savedToken){
+          const res = await dispatch(verifyToken(savedToken)).unwrap();
+          if(res.token){
+            setLoading(false);
+          }
+        }
       }catch(error){
-        setToken(null);
+        setLoading(false);
       }finally{
         setLoading(false);
       }
     }
 
-    fetchToken();
-  }, [])
-
-  useEffect(() => {
-    if(token){
-      dispatch(verifyToken(token))
-        .unwrap()
-        .then(res => {})
-        .catch(err => {})
-    }
-  }, [dispatch, token]);
-
-  const user = useSelector((state) => state.user.user);
-  // const [user, setUser] = useState(null);
+    initializeApp();
+  }, [dispatch])
+  
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {loading && (<Stack.Screen name="Loading" component={LoadingScreen} />)}
+
       {user?.id ? (
         <>
           <Stack.Screen name="Main" component={MainTabs} />
