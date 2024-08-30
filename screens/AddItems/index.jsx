@@ -20,24 +20,43 @@ import AddIncomeForm from "../../components/AddIncomeForm";
 import AddSavingsForm from "../../components/AddSavingForm";
 import AddDebtForm from "../../components/AddDebtForm";
 import ActivityCard from "../../components/ActivityCard";
+import DebtActivityCard from "../../components/DebtActivityCard";
+import ExpenseActivityCard from "../../components/ExpenseActivityCard";
+import IncomeAcivityCard from "../../components/IncomeActivityCard";
+import SavingActivityCard from "../../components/SavingsActivityCard";
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function AddItem() {
   const expenses = useSelector((state) => state.expenses.expenses);
   const incomes = useSelector((state) => state.incomes.incomes);
+  const debts = useSelector((state) => state.debts?.debts || []);
+  const savings = useSelector((state) => state.savings?.savings || []);
   const [currentPage, setCurrentPage] = useState(0);
   const flatListRef = useRef(null);
 
   const sortedExpenses = expenses.slice().sort((a, b) => {
-    return new Date(b.expense_date_time) - new Date(a.expense_date_time);
+    return new Date(a.expense_date_time) - new Date(b.expense_date_time);
   });
 
   const sortedIncomes = incomes.slice().sort((a, b) => {
-    return new Date(b.income_date_time) - new Date(a.income_date_time);
+    return new Date(a.income_date_time) - new Date(b.income_date_time);
   });
 
-  const recentActivities = sortedExpenses.slice(0, 3);
+  const sortedDebts = debts.slice().sort((a, b) => {
+    return new Date(a.debt_date_time) - new Date(b.debt_date_time);
+  });
+
+  const sortedSavings = savings.slice().sort((a, b) => {
+    return new Date(a.saving_date_time) - new Date(b.saving_date_time);
+  });
+
+  const latestExpense = sortedExpenses[sortedExpenses.length - 1];
+  const latestIncome = sortedIncomes[sortedIncomes.length - 1];
+  const latestSaving = sortedSavings[sortedSavings.length - 1];
+  const latestDebt = sortedDebts[sortedDebts.length - 1];
+
+  let recentActivities = [latestExpense, latestIncome, latestSaving, latestDebt];
 
   const handlePagination = (page) => {
     setCurrentPage(page);
@@ -138,8 +157,20 @@ export default function AddItem() {
                 <Text style={styles.text_two}>Recent Activities</Text>
                 <FlatList
                   data={recentActivities}
-                  renderItem={renderRecentActivity}
-                  keyExtractor={(item) => item._id}
+                  renderItem={({ item }) => {
+                    if (item?.update_from === "EXP") {
+                      return <ExpenseActivityCard activity={item} />;
+                    } else if (item?.update_from === "INC") {
+                      return <IncomeAcivityCard activity={item} />;
+                    } else if (item?.update_from === "DEBT"){
+                      return <DebtActivityCard activity={item}/>
+                    } else if (item?.update_from === "SAVE"){
+                      return <SavingActivityCard activity={item} />
+                    } else {
+                      return null;
+                    }
+                  }}
+                  keyExtractor={(item) => item?._id}
                   contentContainerStyle={styles.list_two}
                 />
               </>
