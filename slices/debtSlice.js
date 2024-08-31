@@ -13,13 +13,11 @@ export const fetchDebts = createAsyncThunk(
   async (token, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/debts`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/debts/`,
         {
-          method: "POST",
           headers: {
             "Authorization": `Bearer ${token}`,
-          },
-          body: JSON.stringify(debt),
+          }
         }
       );
       const data = await response.json();

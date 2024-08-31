@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,7 +10,10 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 import ToastManager, { Toast } from "toastify-react-native";
+import ModalSelector from "react-native-modal-selector";
 import { useSelector } from "react-redux";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import dayjs from "dayjs";
 
 // Icons
 import { AntDesign } from "@expo/vector-icons";
@@ -24,9 +27,13 @@ import { deleteExpense } from "../../slices/expenseSlice";
 
 import { formatDateForTable } from "../../utils/utils";
 
+import { reasonData } from "../../utils/constants";
+
 const ITEMS_PER_PAGE = 5;
 
 export default function Table({ data }) {
+  const [originalPaginatedData, setOriginalPaginatedData] = useState([]);
+  const [paginatedData, setPaginatedData] = useState([]);
   const user = useSelector((state) => state.user.user);
   const [currentPage, setCurrentPage] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
@@ -38,6 +45,48 @@ export default function Table({ data }) {
   const [dataId, setDataId] = useState("");
   const [item, setItem] = useState(null);
   const dispatch = useDispatch();
+  // Filters
+  const [show, setShow] = useState(false);
+  const [expenseDate, setExpenseDate] = useState(new Date());
+  const [expenseDateReal, setExpenseDateReal] = useState("");
+  const [mode, setMode] = useState("date");
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const paginated = data
+        .slice()
+        .reverse()
+        .slice(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE);
+      
+      setOriginalPaginatedData(paginated);
+      setPaginatedData(paginated);
+    }
+  }, [data, currentPage]);
+
+  // Date picker functions
+  const handleDatePickedAndFilter = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setExpenseDate(currentDate);
+    
+    const formattedDate = dayjs(currentDate).format("YYYY-MM-DD");
+    setExpenseDateReal(formattedDate);
+
+    const filteredData = originalPaginatedData.filter(
+      (item) => dayjs(item.expense_date).format("YYYY-MM-DD") === formattedDate
+    );
+
+    setPaginatedData(filteredData);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
 
   const showSuccessDeleteToast = () => {
     Toast.success("Successfully deleted!");
@@ -140,11 +189,6 @@ export default function Table({ data }) {
     );
   };
 
-  const paginatedData = data
-    .slice()
-    .reverse()
-    .slice(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE);
-
   const handleDelete = () => {
     setIsDeleteModalVisible(false);
     setDataId("");
@@ -164,6 +208,18 @@ export default function Table({ data }) {
         setIsLoading(false);
       });
   };
+
+  // Filter functions
+  const filterTableDataByReason = (reason) => {
+    if (!reason) {
+      setPaginatedData(originalPaginatedData);
+    } else {
+      const filteredData = originalPaginatedData.filter(
+        (item) => item.expense_reason === reason
+      );
+      setPaginatedData(filteredData);
+    }
+  }
 
   return (
     <View style={styles.tableContainer}>
@@ -256,6 +312,37 @@ export default function Table({ data }) {
       </Modal>
 
       <Text style={styles.text_one}>Expense Table</Text>
+
+      {/* Filters */}
+      <View style={styles.filter_container}>
+        <TouchableOpacity style={styles.filter_item} onPress={showDatepicker}>
+          <Text style={styles.filter_text}>Date
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={expenseDate}
+                mode={mode}
+                onChange={handleDatePickedAndFilter}
+              />
+            )}
+          </Text>
+        </TouchableOpacity>
+        {/* Select reason modal */}
+      <ModalSelector
+          data={reasonData}
+          initValue="Reason"
+          onChange={(option) => filterTableDataByReason(option.label)}
+          initValueTextStyle={{ color: "#000" }}
+          selectTextStyle={{ endFillColor: "#000" }}
+        >
+          <TouchableOpacity style={styles.filter_item}>
+            <Text style={styles.filter_text}>Reason</Text>
+          </TouchableOpacity>
+        </ModalSelector>
+        <TouchableOpacity style={styles.filter_item} onPress={() => setPaginatedData(originalPaginatedData)}>
+            <Text style={styles.filter_text}>All</Text>
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         data={paginatedData}

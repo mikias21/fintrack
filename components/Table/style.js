@@ -195,4 +195,31 @@ export default styles = StyleSheet.create({
     textAlign: "center",
     color: "#555",
   },
+
+  filter_container: {
+    marginTop: -10,
+    marginBottom: 10,
+    paddingLeft: 7,
+    flexDirection: "row",
+    // justifyContent: "space-around"
+  },
+
+  filter_item: {
+    borderColor: "#ccc",
+    borderWidth: 0.2,
+    padding: 5,
+    borderRadius: 10,
+    width: 60,
+    shadowColor: "#ccc",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
+    marginLeft: 5,
+  },
+
+  filter_text: {
+    textAlign: "center",
+    fontWeight: "600"
+  }
 });
