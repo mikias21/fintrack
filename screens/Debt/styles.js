@@ -44,5 +44,27 @@ export default styles = StyleSheet.create({
 
   final_list: {
     marginBottom: 20,
+  },
+
+  subheader_container:{
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+  },
+
+  checkboxContainer:{
+    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "flex-end",
+    paddingRight: 10,
+    marginTop: -20,
+    marginBottom: -30,
+  },
+
+  checkbox:{
+    padding: 0,
+    marginRight: 5,
   }
+
 });

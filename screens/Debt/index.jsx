@@ -8,7 +8,9 @@ import {
   Text,
   FlatList,
 } from "react-native";
+import CheckBox from 'react-native-check-box'
 import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
 
 // Styles
 import styles from "./styles";
@@ -21,6 +23,8 @@ export default function Debt() {
   const debts = useSelector((state) => state.debts.debts);
   const currentMonth = dayjs().month();
   const currentYear = dayjs().year();
+  const [isSelected, setSelection] = useState(false);
+  const [filteredData, setFilteredData] = useState(debts)
 
   const currentMonthDebt = debts.filter((debt) => {
     const debtDate = dayjs(debt.debt_date);
@@ -50,6 +54,16 @@ export default function Debt() {
   const totalAmountOfDebt = debts.reduce((sum, expense) => {
     return sum + expense.debt_amount;
   }, 0);
+
+  const filterDebtData = () => {
+    setSelection(!isSelected);
+    if(!isSelected){
+      const data = debts.filter(item => item.debt_paid === true);
+      setFilteredData(data);
+    }else{
+      setFilteredData(debts);
+    }
+  }
 
   const renderHeader = () => (
     <>
@@ -82,7 +96,19 @@ export default function Debt() {
         </View>
       </View>
       
-      <Text style={styles.text_two}>Recent Debts</Text>
+      <View style={styles.subheader_container}>
+        <Text style={styles.text_two}>Recent Debts</Text>
+        <View style={styles.checkboxContainer}>
+          <CheckBox
+              onClick={filterDebtData}
+              isChecked={isSelected}
+              leftText={"CheckBox"}
+              style={styles.checkbox}
+              checkedCheckBoxColor="#00A9FF"
+          />
+          <Text style={styles.label}>Unpaid debts only?</Text>
+        </View>
+      </View>
     </>
   );
 
@@ -103,7 +129,7 @@ export default function Debt() {
         renderItem={() => (
           <View style={styles.list_two}>
             <FlatList
-              data={debts}
+              data={filteredData}
               renderItem={({ item }) => <DebtActivityCard activity={item} />}
               keyExtractor={(item) => item._id}
             />

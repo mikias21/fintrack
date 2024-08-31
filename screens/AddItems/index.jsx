@@ -170,7 +170,7 @@ export default function AddItem() {
                       return null;
                     }
                   }}
-                  keyExtractor={(item) => item?._id}
+                  keyExtractor={(item, index) => (item?._id ? item._id.toString() : index.toString())}
                   contentContainerStyle={styles.list_two}
                 />
               </>
