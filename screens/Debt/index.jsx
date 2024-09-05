@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import CheckBox from 'react-native-check-box'
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Styles
 import styles from "./styles";
@@ -24,7 +24,12 @@ export default function Debt() {
   const currentMonth = dayjs().month();
   const currentYear = dayjs().year();
   const [isSelected, setSelection] = useState(false);
-  const [filteredData, setFilteredData] = useState(debts)
+  const [filteredData, setFilteredData] = useState();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setFilteredData(debts);
+  }, [])
 
   const currentMonthDebt = debts.filter((debt) => {
     const debtDate = dayjs(debt.debt_date);
@@ -56,9 +61,16 @@ export default function Debt() {
   }, 0);
 
   const filterDebtData = () => {
+    // setSelection(!isSelected);
+    // if(!isSelected){
+    //   const data = debts.filter(item => item.debt_paid === true);
+    //   setFilteredData(data);
+    // }else{
+    //   setFilteredData(debts);
+    // }
     setSelection(!isSelected);
     if(!isSelected){
-      const data = debts.filter(item => item.debt_paid === true);
+      const data = debts.filter(item => item.debt_paid === false);
       setFilteredData(data);
     }else{
       setFilteredData(debts);

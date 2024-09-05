@@ -126,7 +126,7 @@ const debtSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(addDebt.fulfilled, (state, action) => {
-        state.debts.push(action.payload);
+        state.debts = [...state.debts, action.payload];
       })
       .addCase(deleteDebt.pending, (state) => {
         state.loading = true;
