@@ -57,6 +57,8 @@ function DeductSavingsForm() {
       token: user.token,
     };
 
+    console.log(newSpending);
+
     dispatch(deductSaving(newSpending))
       .unwrap()
       .then((res) => {
