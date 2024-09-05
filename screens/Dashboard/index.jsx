@@ -158,6 +158,26 @@ export default function HomeScreen({ navigation }) {
     return "#F7418F";
   };
 
+  const formatNumber = (value) => {
+    if (value === 0) return '0';
+    if (value >= 1_000_000) return (value / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (value >= 1_000) return (value / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+    return value.toString();
+  };
+  
+  const scaleNumber = (value) => {
+    if (value >= 100 && value <= 999) {
+      return value * 0.007;
+    } else if (value >= 1000 && value <= 9999) {
+      return value * 0.005;
+    } else if (value >= 10000 && value <= 99999) {
+      return value * 0.00066;
+    } else if (value > 100000) {
+      return value * 0.0000094;
+    }
+    return value;
+  };  
+
   const aggregateWeeklyExpenses = (data) => {
     const now = new Date();
     const weekStart = startOfWeek(now, { weekStartsOn: 0 }); // Week starts on Sunday
@@ -176,19 +196,19 @@ export default function HomeScreen({ navigation }) {
   
     return aggregatedData.map((value, index) => {
       return {
-        value: value,
+        value: scaleNumber(value),
         label: daysOfWeek[index],
-        frontColor: getFrontColor(value),
+        frontColor: "#F0ABFC",
         topLabelComponent: () => (
           <Text
             style={{
               color: "#3E3232",
-              fontSize: 8,
+              fontSize: 7,
               marginBottom: 2,
               fontWeight: "900",
             }}
           >
-            {value} &#165;
+            {formatNumber(value)} &#165;
           </Text>
         ),
       };
@@ -237,18 +257,40 @@ export default function HomeScreen({ navigation }) {
         <>
            <Text style={styles.text_one}>Weekly expense Summary</Text>
            <View style={styles.bar_chart_container}>
-           <BarChart
-              barWidth={22}
-              noOfSections={3}
-              barBorderRadius={4}
-              frontColor="lightgray"
-              data={barData}
-              yAxisThickness={0}
-              xAxisThickness={0}
-              hideRules
-              hideYAxisText
-              initialSpacing={10}
-            />
+            {/* <Image
+                source={require("../../assets/graph-bg-1.jpg")}
+                style={{
+                  position: 'absolute',
+                  opacity: 0.6,
+                  top: -60,
+                  height: 320,
+                  width: 330,
+                  borderRadius: 40,
+                  overflow: "hidden"
+                }}
+            /> */}
+            <BarChart
+                data={barData}
+                barWidth={17}
+                spacing={22.5}
+                roundedTop
+                roundedBottom
+                // hideRules
+                xAxisThickness={0}
+                yAxisThickness={0}
+                yAxisTextStyle={{color: 'gray'}}
+                hideYAxisText
+                showGradient
+                gradientColor={"#DBEAFE"}
+                showLine
+                lineConfig={{
+                  color: '#FBCFE8',
+                  thickness: 2,
+                  curved: true,
+                  hideDataPoints: true,
+                  shiftY: -.5,
+                }}    
+              />
           </View>
         </>
       ) : (<></>)}
