@@ -35,16 +35,19 @@ export default styles = StyleSheet.create({
   },
 
   text_two_one: {
-    padding: 18,
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
+    paddingHorizontal: 18,
+    paddingTop: 20,
+    paddingBottom: 7,
   },
 
   text_two: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
-    paddingLeft: 18,
-    paddingBottom: 3,
+    paddingHorizontal: 18,
+    paddingTop: 20,
+    paddingBottom: 7,
   },
 
   final_list: {

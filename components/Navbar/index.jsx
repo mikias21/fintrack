@@ -4,7 +4,7 @@ import { View, Text, SafeAreaView } from "react-native";
 // Styles
 import styles from "./styles";
 
-export default function Navbar() {
+export default function Navbar({user}) {
   let focused = true;
 
   function getTimeOfDay() {
@@ -15,6 +15,8 @@ export default function Navbar() {
       ? "Afternoon"
       : "Evening";
   }
+
+  const upperCaseName = user?.user_name[0].toUpperCase() + user?.user_name.slice(1, user?.user_name.length);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,7 +32,7 @@ export default function Navbar() {
         />
         <View style={styles.container_two}>
           <Text style={styles.text_one}>Good {getTimeOfDay()},</Text>
-          <Text style={styles.text_two}>Mikias! Welcome back</Text>
+          <Text style={styles.text_two}>{upperCaseName}! Welcome back</Text>
         </View>
       </View>
     </SafeAreaView>

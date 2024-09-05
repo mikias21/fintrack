@@ -46,9 +46,11 @@ export default styles = StyleSheet.create({
   },
 
   text_one: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
-    padding: 18,
+    paddingHorizontal: 18,
+    paddingTop: 20,
+    paddingBottom: 7,
   },
 
   bar_chart_container: {

@@ -142,6 +142,10 @@ export default function Table({ data }) {
       item.expense_reason.length > 6
         ? `${item.expense_reason.slice(0, 6)}...`
         : item.expense_reason;
+    
+    const truncatedAmount = item.expense_amount.length > 5 ?
+      `${item.expense_amount.slice(0, 6)}...`
+        : item.expense_amount;
 
     return (
       <View
@@ -150,8 +154,8 @@ export default function Table({ data }) {
         <Text style={[styles.rowText, { flex: 2 }]}>
           {formatDateForTable(item.expense_date)}
         </Text>
-        <Text style={[styles.rowText, { flex: 1, fontSize: 12 }]}>
-          {item.expense_amount.toFixed(2)}
+        <Text style={[styles.rowText, { flex: 1, fontSize: 12, marginLeft: 10 }]}>
+          {truncatedAmount}..&#165;
         </Text>
         <Text style={[styles.rowText, { flex: 3, fontSize: 12 }]}>
           {truncatedReason}

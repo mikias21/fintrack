@@ -35,11 +35,11 @@ export default styles = StyleSheet.create({
   },
 
   text_two: {
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: "bold",
-    paddingLeft: 18,
-    paddingBottom: 3,
-    marginTop: 10,
+    paddingHorizontal: 18,
+    paddingTop: 20,
+    paddingBottom: 7,
   },
 
   final_list: {

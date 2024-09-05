@@ -160,37 +160,39 @@ export default function HomeScreen({ navigation }) {
 
   const aggregateWeeklyExpenses = (data) => {
     const now = new Date();
-    const weekStart = startOfWeek(now, { weekStartsOn: 1 }); // Week starts on Monday
-    const weekEnd = endOfWeek(now, { weekStartsOn: 1 });
-
-    const daysOfWeek = ["Mon", "Thu", "Wed", "Thur", "Fri", "Sat", "Sun"];
+    const weekStart = startOfWeek(now, { weekStartsOn: 0 }); // Week starts on Sunday
+    const weekEnd = endOfWeek(now, { weekStartsOn: 0 });
+  
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const aggregatedData = Array(7).fill(0);
-
+  
     data.forEach((item) => {
       const expenseDate = parseISO(item.expense_date);
       if (isWithinInterval(expenseDate, { start: weekStart, end: weekEnd })) {
-        const dayIndex = expenseDate.getDay() - 1;
-        aggregatedData[dayIndex] += item.expense_amount * 0.01;
+        const dayIndex = expenseDate.getDay(); 
+        aggregatedData[dayIndex] += item.expense_amount;
       }
     });
-
-    return aggregatedData.map((value, index) => ({
-      value,
-      label: daysOfWeek[index],
-      frontColor: getFrontColor(value),
-      topLabelComponent: () => (
-        <Text
-          style={{
-            color: "#3E3232",
-            fontSize: 8,
-            marginBottom: 2,
-            fontWeight: "900",
-          }}
-        >
-          {value * 100} &#165;
-        </Text>
-      ),
-    }));
+  
+    return aggregatedData.map((value, index) => {
+      return {
+        value: value,
+        label: daysOfWeek[index],
+        frontColor: getFrontColor(value),
+        topLabelComponent: () => (
+          <Text
+            style={{
+              color: "#3E3232",
+              fontSize: 8,
+              marginBottom: 2,
+              fontWeight: "900",
+            }}
+          >
+            {value} &#165;
+          </Text>
+        ),
+      };
+    });
   };
 
   const barData = aggregateWeeklyExpenses(expenses);
@@ -202,7 +204,7 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.main_logo_container}>
         <View style={styles.logo_container}>
           <TouchableOpacity onPress={handleLogout}>
-            <Navbar />
+            <Navbar user={user}/>
           </TouchableOpacity>
           <MaterialIcons
             name="settings"
@@ -235,7 +237,7 @@ export default function HomeScreen({ navigation }) {
         <>
            <Text style={styles.text_one}>Weekly expense Summary</Text>
            <View style={styles.bar_chart_container}>
-            <BarChart
+           <BarChart
               barWidth={22}
               noOfSections={3}
               barBorderRadius={4}

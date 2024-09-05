@@ -24,8 +24,8 @@ export default styles = StyleSheet.create({
   },
 
   header_image: {
-    height: 40,
-    width: 40,
+    height: 30,
+    width: 30,
     marginRight: 10,
   },
 
@@ -38,6 +38,10 @@ export default styles = StyleSheet.create({
     marginBottom: 20,
   },
 
+  list_two_footer: {
+    marginBottom: 20,
+  },
+
   text_one: {
     fontSize: 24,
     fontWeight: "bold",
@@ -45,11 +49,11 @@ export default styles = StyleSheet.create({
   },
 
   text_two: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
-    // marginVertical: 10,
-    paddingTop: 18,
     paddingHorizontal: 18,
+    paddingTop: 20,
+    paddingBottom: 7,
   },
 
   scrollView: {

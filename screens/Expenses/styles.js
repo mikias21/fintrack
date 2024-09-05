@@ -22,8 +22,8 @@ export default styles = StyleSheet.create({
   },
   
   header_image: {
-    height: 40,
-    width: 40,
+    height: 30,
+    width: 30,
     marginRight: 10,
   },
 

@@ -173,6 +173,7 @@ export default function AddItem() {
                   keyExtractor={(item, index) => (item?._id ? item._id.toString() : index.toString())}
                   contentContainerStyle={styles.list_two}
                 />
+                <View style={styles.list_two_footer}></View>
               </>
             );
           }

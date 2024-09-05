@@ -123,7 +123,7 @@ export default function IncomeSaving() {
 
   const renderFooter = () => (
     <>
-      {latestDeductions && (
+      {latestDeductions.length > 0 ? (
         <View style={styles.final_list}>
           <Text style={[styles.text_two, {marginTop: 10}]}>Recent Saving Expenses</Text>
           <FlatList
@@ -133,6 +133,8 @@ export default function IncomeSaving() {
             showsVerticalScrollIndicator={false}
           />
         </View>
+      ) : (
+        <View style={{marginBottom: 20}}></View>
       )}
     </>
   );
