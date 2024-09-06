@@ -81,22 +81,17 @@ export const deleteSaving = createAsyncThunk(
 
 export const deductSaving = createAsyncThunk(
   "savings/deductSaving",
-  async ({spending, token}, thunkAPI) => {
+  async ({spending_amount, spending_date, spending_comment, token}, thunkAPI) => {
     try {
-      const spendingData = {
-        spending_amount: spending.spending_amount,
-        spending_date: spending.spending_date,
-        spending_comment: spending.spending_comment,
-      };
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/saving/deduct/${spending.user_id}`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/deduct/`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
           },
-          body: JSON.stringify(spendingData),
+          body: JSON.stringify({spending_amount, spending_date, spending_comment}),
         }
       );
 
@@ -117,7 +112,7 @@ export const fetchSavingsDeductions = createAsyncThunk(
   async (token, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/saving/deduct`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/deduct/`,
         {
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -138,7 +133,7 @@ export const deleteDeduction = createAsyncThunk(
   async ({ deductionID, token }, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://fintrack-api-gmpu.onrender.com/api/v1/saving/deduct/${deductionID}`,
+        `https://fintrack-api-gmpu.onrender.com/api/v1/deduct/${deductionID}`,
         {
           method: "DELETE",
           headers: {
