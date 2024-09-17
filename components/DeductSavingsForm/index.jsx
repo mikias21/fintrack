@@ -3,7 +3,6 @@ import {
   View,
   SafeAreaView,
   ActivityIndicator,
-  Image,
   Text,
   Pressable,
   TextInput,
@@ -26,8 +25,6 @@ function DeductSavingsForm() {
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isError, setIsError] = useState(false);
   const dispatch = useDispatch();
 
   const handleDatePicked = (event, selectedDate) => {
@@ -63,7 +60,6 @@ function DeductSavingsForm() {
         setSpendingAmount("");
         setSpendingDateReal("");
         setSpendingReason("");
-        setIsError(false);
         if (res.message) {
           Toast.show({
             type: "error",
@@ -77,7 +73,6 @@ function DeductSavingsForm() {
         }
       })
       .catch((err) => {
-        setIsError(true);
         Toast.show({
           type: "error",
           text1: err,
@@ -93,15 +88,6 @@ function DeductSavingsForm() {
       <View style={styles.container_two}>
         <Text style={styles.text_two}>Spending from your savings</Text>
         <View>
-          {errorMessage !== "" ? (
-            <Text
-              style={[styles.text_one, { color: isError ? "red" : "green" }]}
-            >
-              {errorMessage}
-            </Text>
-          ) : (
-            ""
-          )}
           <TextInput
             style={styles.input}
             placeholder="Spending Amount *"

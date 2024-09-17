@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   TextInput,
@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Toast from "react-native-toast-message";
-// import DateTimePicker from "react-native-modal-datetime-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
@@ -29,10 +28,7 @@ export default function AddDebtForm() {
   const [show, setShow] = useState(false);
   const [debtFrom, setDebtFrom] = useState("");
   const [debtComment, setDebtComment] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDateTimePickerVisible, setisDateTimePickerVisible] = useState(false);
   const dispatch = useDispatch();
 
   const handleDatePicked = (event, selectedDate) => {
@@ -67,20 +63,15 @@ export default function AddDebtForm() {
       .unwrap()
       .then((res) => {
         setDebtAmount("");
-        // setDebtDate(new Date(date));
         setDebtDateReal("");
         setDebtFrom("");
         setDebtComment("");
-        setIsError(false);
-        // setErrorMessage("Debt added successfully.");
         Toast.show({
           type: "success",
           text1: "Debt added successfully.",
         });
       })
       .catch((err) => {
-        setIsError(true);
-        // setErrorMessage("There was a problem adding the debt.");
         Toast.show({
           type: "error",
           text1: "There was a problem adding the debt.",
@@ -94,13 +85,6 @@ export default function AddDebtForm() {
     <>
       <View style={styles.container_two}>
         <Text style={styles.text_two}>Add your debts</Text>
-        {errorMessage !== "" ? (
-          <Text style={[styles.text_one, { color: isError ? "red" : "green" }]}>
-            {errorMessage}
-          </Text>
-        ) : (
-          ""
-        )}
         <TextInput
           style={styles.input}
           placeholder="Debt Amount *"

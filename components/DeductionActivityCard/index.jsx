@@ -6,13 +6,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Modal,
-  TextInput,
-  Pressable,
 } from "react-native";
 import Toast from "react-native-toast-message";
-// import DateTimePicker from "react-native-modal-datetime-picker";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 
 // Icons
@@ -27,8 +22,6 @@ import styles from "./styles";
 import { formatDate } from "../../utils/utils";
 
 // Redux
-import { deleteDebt } from "../../slices/debtSlice";
-import { payDebt } from "../../slices/debtSlice";
 import { deleteDeduction } from "../../slices/savingSlice";
 
 export default function DeductionActvityCard({ activity }) {
@@ -36,8 +29,6 @@ export default function DeductionActvityCard({ activity }) {
   const [showComment, setShowComment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
 
   const handleCommentSwitch = () => {
@@ -63,7 +54,6 @@ export default function DeductionActvityCard({ activity }) {
         });
       })
       .catch((err) => {
-        setIsError(true);
         Toast.show({
           type: "error",
           text1: "There was a problem deleting the saving expense.",

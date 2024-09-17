@@ -28,8 +28,6 @@ export default function ActivityCard({ activity }) {
   const [showComment, setShowComment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [errMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
 
   const handleCommentSwitch = () => {
@@ -54,7 +52,6 @@ export default function ActivityCard({ activity }) {
         });
       })
       .catch((err) => {
-        setIsError(true);
         Toast.show({
           type: "error",
           text1: "There was a problem deleting the income.",

@@ -83,8 +83,8 @@ export default styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "rgba(0, 0, 0, 0.1)",
     borderWidth: 1,
-    width: "90%", // Adjust the width for both iOS and Android
-    maxWidth: 500, // Limit the maximum width
+    width: "90%",
+    maxWidth: 500,
   },
 
   detailsModalHeader: {
@@ -103,21 +103,21 @@ export default styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10,
-    flexWrap: "wrap", // Ensure text wraps to next line if too long
+    flexWrap: "wrap",
   },
 
   detailsModalExpenseLabelText: {
     fontSize: 16,
     fontWeight: "bold",
-    flex: 1, // Allow the label text to take up available space
+    flex: 1,
   },
 
   detailsModalExpenseLabelValue: {
     fontSize: 16,
     color: "#333",
-    flex: 1, // Allow the value text to take up available space
-    textAlign: "right", // Align the value text to the right
-    flexWrap: "wrap", // Ensure text wraps to next line if too long
+    flex: 1,
+    textAlign: "right",
+    flexWrap: "wrap",
   },
 
   detailsModalButtonContainer: {
@@ -201,7 +201,6 @@ export default styles = StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 7,
     flexDirection: "row",
-    // justifyContent: "space-around"
   },
 
   filter_item: {

@@ -28,8 +28,6 @@ export default function ExpenseActivityCard({ activity }) {
   const [showComment, setShowComment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [errMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
 
   const handleCommentSwitch = () => {
@@ -54,8 +52,6 @@ export default function ExpenseActivityCard({ activity }) {
         });
       })
       .catch((err) => {
-        setIsError(true);
-        // setErrorMessage("There was a problem deleting the expense.");
         Toast.show({
           type: "error",
           text1: "There was a problem deleting the expense.",

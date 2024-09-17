@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Toast from "react-native-toast-message";
-// import DateTimePicker from "react-native-modal-datetime-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
@@ -26,15 +25,12 @@ import { reasonData } from "../../utils/constants";
 export default function AddNewExpense() {
   const user = useSelector((state) => state.user.user);
   const [expenseAmount, setExpenseAmount] = useState("");
-  let date = Date.now();
   const [expenseDate, setExpenseDate] = useState(new Date());
   const [expenseDateReal, setExpenseDateReal] = useState("");
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
   const [expenseReason, setExpenseReason] = useState("");
   const [expenseComment, setExpenseComment] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -76,20 +72,15 @@ export default function AddNewExpense() {
       .unwrap()
       .then((res) => {
         setExpenseAmount("");
-        // setExpenseDate(new Date(date));
         setExpenseDateReal("");
         setExpenseReason("");
         setExpenseComment("");
-        setIsError(false);
-        // setErrorMessage("Expense added successfully.");
         Toast.show({
           type: "success",
           text1: "Expense added successfully.",
         });
       })
       .catch((err) => {
-        setIsError(true);
-        // setErrorMessage("There was a problem adding the expense.");
         Toast.show({
           type: "error",
           text1: "There was a problem adding the expense.",
@@ -105,15 +96,6 @@ export default function AddNewExpense() {
       <View style={styles.formContainer}>
         <View style={styles.container_two}>
           <Text style={styles.text_two}>Add Expense</Text>
-          {errorMessage !== "" ? (
-            <Text
-              style={[styles.text_one, { color: isError ? "red" : "green" }]}
-            >
-              {errorMessage}
-            </Text>
-          ) : (
-            ""
-          )}
           <TextInput
             style={styles.input}
             placeholder="Expense Amount *"

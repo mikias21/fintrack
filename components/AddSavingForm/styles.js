@@ -37,8 +37,6 @@ export default styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 8,
     borderRadius: 5,
-    // borderWidth: 1,
-    // borderColor: "#e0e0e0",
     width: 300,
     color: "#000",
   },

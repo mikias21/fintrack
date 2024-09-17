@@ -7,10 +7,8 @@ import {
   Text,
   Pressable,
   ActivityIndicator,
-  Platform,
 } from "react-native";
 import Toast from "react-native-toast-message";
-// import DateTimePicker from "react-native-modal-datetime-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
@@ -34,10 +32,7 @@ export default function AddIncomeForm() {
   const [show, setShow] = useState(false);
   const [incomeReason, setIncomeReason] = useState("");
   const [incomeComment, setIncomeComment] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDateTimePickerVisible, setisDateTimePickerVisible] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -81,16 +76,12 @@ export default function AddIncomeForm() {
         setIncomeDateReal("");
         setIncomeReason("");
         setIncomeComment("");
-        setIsError(false);
-        // setErrorMessage("Income added successfully.");
         Toast.show({
           type: "success",
           text1: "Income added successfully.",
         });
       })
       .catch((err) => {
-        setIsError(true);
-        // setErrorMessage("There was a problem adding the income.");
         Toast.show({
           type: "error",
           text1: "There was a problem adding the income.",
@@ -105,13 +96,6 @@ export default function AddIncomeForm() {
     <>
       <View style={styles.container_two}>
         <Text style={styles.text_two}>Add your incomes</Text>
-        {errorMessage !== "" ? (
-          <Text style={[styles.text_one, { color: isError ? "red" : "green" }]}>
-            {errorMessage}
-          </Text>
-        ) : (
-          ""
-        )}
         <TextInput
           style={styles.input}
           placeholder="Income Amount *"
@@ -126,11 +110,6 @@ export default function AddIncomeForm() {
           onFocus={showDatepicker}
           onPress={showDatepicker}
         />
-        {/* <DateTimePicker
-          isVisible={isDateTimePickerVisible}
-          onConfirm={handleDatePicked}
-          onCancel={hideDateTimePicker}
-        /> */}
         {show && (
           <DateTimePicker
             testID="dateTimePicker"

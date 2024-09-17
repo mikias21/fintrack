@@ -10,7 +10,6 @@ import {
   Pressable,
 } from "react-native";
 import Toast from "react-native-toast-message";
-// import DateTimePicker from "react-native-modal-datetime-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
@@ -37,8 +36,6 @@ export default function DebtActivityCard({ activity }) {
   const [isPayLoading, setIsPayLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPayDebtModalVisible, setIsPayDebtModalVisible] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const [payAmount, setPayAmount] = useState("");
   let date = Date.now();
@@ -90,8 +87,6 @@ export default function DebtActivityCard({ activity }) {
         });
       })
       .catch((err) => {
-        setIsError(true);
-        // setErrorMessage("There was a problem deleting the debt.");
         Toast.show({
           type: "success",
           text1: "There was a problem deleting the debt.",
@@ -123,7 +118,6 @@ export default function DebtActivityCard({ activity }) {
         });
       })
       .catch((err) => {
-        setIsError(true);
         Toast.show({
           type: "error",
           text1: "There was a problem updating your debt.",
@@ -185,18 +179,6 @@ export default function DebtActivityCard({ activity }) {
             <View style={styles.modalContent}>
               <Text>Put some details about the payment</Text>
               <View style={styles.container_two_form}>
-                {errorMessage !== "" ? (
-                  <Text
-                    style={[
-                      styles.text_one,
-                      { color: isError ? "red" : "green" },
-                    ]}
-                  >
-                    {errorMessage}
-                  </Text>
-                ) : (
-                  ""
-                )}
                 <TextInput
                   style={styles.input}
                   placeholder="Payment Amount *"

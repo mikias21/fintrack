@@ -252,7 +252,6 @@ export default function HomeScreen({ navigation }) {
           color="#00A9FF"
         />
       </View>
-
       {!allValuesAreZero ? (
         <>
            <Text style={styles.text_one}>Weekly expense Summary</Text>

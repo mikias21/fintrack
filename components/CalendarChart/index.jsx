@@ -1,4 +1,4 @@
-import { View, Dimensions, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 
 // Style
 import styles from "./styles";

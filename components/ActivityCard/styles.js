@@ -88,7 +88,7 @@ export default styles = StyleSheet.create({
 
   deleteButton: {
     backgroundColor: "#FC819E",
-    paddingVertical: 8, // Reduced padding
+    paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,
     marginHorizontal: 10,
@@ -96,7 +96,7 @@ export default styles = StyleSheet.create({
 
   cancelButton: {
     backgroundColor: "#afaeae",
-    paddingVertical: 8, // Reduced padding
+    paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,
     marginHorizontal: 10,
@@ -104,7 +104,7 @@ export default styles = StyleSheet.create({
 
   modalButtonText: {
     color: "#FFFFFF",
-    fontSize: 14, // Reduced font size
+    fontSize: 14,
     fontWeight: "bold",
   },
 });

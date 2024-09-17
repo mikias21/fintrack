@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 
 export default styles = StyleSheet.create({
   scrollContainer: {
-    // padding: 10,
     margin: 18,
   },
 
@@ -12,10 +11,6 @@ export default styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: "#ccc",
     shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.1,
-    // shadowRadius: 3,
-    // elevation: 5,
-    // backgroundColor: "#fff",
     padding: 7,
   },
 
@@ -23,7 +18,6 @@ export default styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     flexWrap: "wrap",
-    // height: 1,
   },
 
   row_last: {

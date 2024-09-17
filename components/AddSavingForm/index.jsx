@@ -6,10 +6,8 @@ import {
   Text,
   Pressable,
   ActivityIndicator,
-  Platform,
 } from "react-native";
 import Toast from "react-native-toast-message";
-// import DateTimePicker from "react-native-modal-datetime-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
@@ -29,8 +27,6 @@ export default function AddSavingsForm() {
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
   const [savingComment, setSavingComment] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -71,19 +67,14 @@ export default function AddSavingsForm() {
       .unwrap()
       .then((res) => {
         setSavingAmount("");
-        // setSavingDate(new Date(date));
         setSavingDateReal("");
         setSavingComment("");
-        setIsError(false);
-        // setErrorMessage("Income added successfully.");
         Toast.show({
           type: "success",
           text1: "Saving added successfully.",
         });
       })
       .catch((err) => {
-        setIsError(true);
-        // setErrorMessage("There was a problem adding the income.");
         Toast.show({
           type: "error",
           text1: "There was a problem adding the saving.",
@@ -98,13 +89,6 @@ export default function AddSavingsForm() {
     <>
       <View style={styles.container_two}>
         <Text style={styles.text_two}>Add Savings</Text>
-        {errorMessage !== "" ? (
-          <Text style={[styles.text_one, { color: isError ? "red" : "green" }]}>
-            {errorMessage}
-          </Text>
-        ) : (
-          ""
-        )}
         <TextInput
           style={styles.input}
           placeholder="Saving Amount *"
