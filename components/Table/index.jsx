@@ -4,30 +4,27 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Pressable,
-  Modal,
-  ActivityIndicator,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import ToastManager, { Toast } from "toastify-react-native";
+import { Toast } from "toastify-react-native";
 import ModalSelector from "react-native-modal-selector";
 import { useSelector } from "react-redux";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
-
-// Icons
-import { AntDesign } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Style
 import styles from "./style";
 
 // Redux
 import { deleteExpense } from "../../slices/expenseSlice";
-
-import { formatDateForTable } from "../../utils/utils";
-
 import { reasonData } from "../../utils/constants";
+
+// Components
+import HeaderComponent from "./HeaderComponent";
+import TableRowComponent from "./TableRowComponent";
+import PaginationControlComponent from "./PaginationControlComponent";
+import DetailsModalComponent from "./DetailsModalComponent";
+import DeleteModalComponent from "./DeleteModalComponent";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -36,12 +33,10 @@ export default function Table({ data }) {
   const [paginatedData, setPaginatedData] = useState([]);
   const user = useSelector((state) => state.user.user);
   const [currentPage, setCurrentPage] = useState(0);
-  const [showDetails, setShowDetails] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingItemID, setLoadingItemID] = useState(null);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
-  const [currentRowBgColor, setCurrentRowBgColor] = useState("");
   const [dataId, setDataId] = useState("");
   const [item, setItem] = useState(null);
   const dispatch = useDispatch();
@@ -123,81 +118,6 @@ export default function Table({ data }) {
     }
   };
 
-  const renderHeader = () => (
-    <View style={styles.headerContainer}>
-      <Text style={styles.headerText}>Date</Text>
-      <Text style={styles.headerText}>Amount</Text>
-      <Text style={styles.headerText}>Reason</Text>
-      <Text style={styles.headerText}></Text>
-    </View>
-  );
-
-  const getItemLayout = (index) => {
-    const nextBgColor = index % 2 === 0 ? "#FFFFFF" : "#F0F8FF";
-    return nextBgColor;
-  };
-
-  const formatNumber = (value) => {
-    if (value === 0) return '0';
-    if (value >= 1_000_000) return (value / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-    if (value >= 1_000) return (value / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
-    return value.toString();
-  };
-
-  const renderItem = ({ item, index }) => {
-    const truncatedReason =
-      item.expense_reason.length > 6
-        ? `${item.expense_reason.slice(0, 6)}...`
-        : item.expense_reason;
-    
-    const formattedAmount = formatNumber(item.expense_amount);
-
-    return (
-      <View
-        style={[styles.rowContainer, { backgroundColor: getItemLayout(index) }]}
-      >
-        <Text style={[styles.rowText, { flex: 2 }]}>
-          {formatDateForTable(item.expense_date)}
-        </Text>
-        <Text style={[styles.rowText, { flex: 1, fontSize: 12, marginLeft: 10 }]}>
-          {formattedAmount}&#165;
-        </Text>
-        <Text style={[styles.rowText, { flex: 3, fontSize: 12 }]}>
-          {truncatedReason}
-        </Text>
-        <View style={styles.container_three}>
-          <TouchableOpacity onPress={() => toggleDetailsModal(item)}>
-            {showDetails ? (
-              <MaterialIcons name="details" size={18} color="#00A9FF" />
-            ) : (
-              <MaterialCommunityIcons
-                name="details"
-                size={18}
-                color="#00A9FF"
-              />
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => toggleDeleteModal(item._id)}>
-            {loadingItemID === item._id ? (
-              <ActivityIndicator
-                size={15}
-                color="#FC819E"
-                style={{ marginLeft: 15 }}
-              />
-            ) : (
-              <AntDesign
-                name="delete"
-                size={15}
-                color="#FC819E"
-                style={{ marginLeft: 15 }}
-              />
-            )}
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
-
   const handleDelete = () => {
     setIsDeleteModalVisible(false);
     setDataId("");
@@ -232,93 +152,18 @@ export default function Table({ data }) {
 
   return (
     <View style={styles.tableContainer}>
-      {/* Delete modal */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isDeleteModalVisible}
-        onRequestClose={() => toggleDeleteModal("")}
-      >
-        <View style={styles.modalContainer}>
-          <ToastManager />
-          <View style={styles.modalContent}>
-            <Text style={styles.modalHeader}>
-              Are you sure you want to delete?
-            </Text>
-            <View style={styles.modalButtonContainer}>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={handleDelete}
-              >
-                <Text style={styles.modalButtonText}>Delete</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => toggleDeleteModal("")}
-              >
-                <Text style={styles.modalButtonText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
 
-      {/* View details modal */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isDetailsModalVisible}
-        onRequestClose={() => toggleDetailsModal("")}
-      >
-        <View style={styles.detailsModalContainer}>
-          <ToastManager />
-          <View style={styles.detailsModalContent}>
-            <Text style={styles.detailsModalHeader}>Expense Details</Text>
-            <View style={styles.detailsModalDetailsContainer}>
-              <View style={styles.detailsModalExpenseLabel}>
-                <Text style={styles.detailsModalExpenseLabelText}>
-                  Expense Date:
-                </Text>
-                <Text style={styles.detailsModalExpenseLabelValue}>
-                  {item?.expense_date}
-                </Text>
-              </View>
-              <View style={styles.detailsModalExpenseLabel}>
-                <Text style={styles.detailsModalExpenseLabelText}>
-                  Expense Reason:
-                </Text>
-                <Text style={styles.detailsModalExpenseLabelValue}>
-                  {item?.expense_reason}
-                </Text>
-              </View>
-              <View style={styles.detailsModalExpenseLabel}>
-                <Text style={styles.detailsModalExpenseLabelText}>
-                  Expense Amount:
-                </Text>
-                <Text style={styles.detailsModalExpenseLabelValue}>
-                  {item?.expense_amount}
-                </Text>
-              </View>
-              <View style={styles.detailsModalExpenseLabel}>
-                <Text style={styles.detailsModalExpenseLabelText}>
-                  Comment:
-                </Text>
-                <Text style={styles.detailsModalExpenseLabelValue}>
-                  {item?.expense_comment}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.detailsModalButtonContainer}>
-              <TouchableOpacity
-                onPress={() => toggleDetailsModal(null)}
-                style={styles.detailsCloseButton}
-              >
-                <Text style={styles.detailsModalButtonText}>Close</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <DeleteModalComponent 
+        isVisible={isDeleteModalVisible} 
+        toggleDeleteModal={toggleDeleteModal} 
+        handleDelete={handleDelete} 
+      />
+
+      <DetailsModalComponent
+        isVisible={isDetailsModalVisible}
+        toggleDetailsModal={toggleDetailsModal}
+        item={item}
+      />
 
       <Text style={styles.text_one}>Expense Table</Text>
 
@@ -337,7 +182,7 @@ export default function Table({ data }) {
           </Text>
         </TouchableOpacity>
         {/* Select reason modal */}
-      <ModalSelector
+        <ModalSelector
           data={reasonData}
           initValue="Reason"
           onChange={(option) => filterTableDataByReason(option.label)}
@@ -355,39 +200,25 @@ export default function Table({ data }) {
 
       <FlatList
         data={paginatedData}
-        renderItem={renderItem}
+        renderItem={({ item, index }) => (
+          <TableRowComponent
+            item={item}
+            index={index}
+            toggleDetailsModal={toggleDetailsModal}
+            toggleDeleteModal={toggleDeleteModal}
+            loadingItemID={loadingItemID}
+          />
+        )}
         keyExtractor={(item) => item._id}
-        ListHeaderComponent={renderHeader}
+        ListHeaderComponent={<HeaderComponent />}
       />
 
-      <View style={styles.paginationContainer}>
-        <Pressable onPress={handlePrevPage} disabled={currentPage === 0}>
-          <Text
-            style={[
-              styles.paginationText,
-              currentPage === 0 && styles.disabledText,
-            ]}
-          >
-            <AntDesign name="arrowleft" size={24} />
-          </Text>
-        </Pressable>
-        <Text style={styles.paginationText}>
-          {currentPage + 1} of {totalPages}
-        </Text>
-        <Pressable
-          onPress={handleNextPage}
-          disabled={currentPage >= totalPages - 1}
-        >
-          <Text
-            style={[
-              styles.paginationText,
-              currentPage >= totalPages - 1 && styles.disabledText,
-            ]}
-          >
-            <AntDesign name="arrowright" size={24} />
-          </Text>
-        </Pressable>
-      </View>
+      <PaginationControlComponent 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handleNextPage={handleNextPage}
+        handlePrevPage={handlePrevPage}
+      />
     </View>
   );
 }
