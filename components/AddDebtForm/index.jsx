@@ -48,7 +48,6 @@ export default function AddDebtForm() {
   };
 
   const handleAddDebt = () => {
-    setErrorMessage("");
     setIsLoading(true);
 
     const newDebt = {

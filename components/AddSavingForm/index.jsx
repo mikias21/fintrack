@@ -30,12 +30,6 @@ export default function AddSavingsForm() {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    return () => {
-      setErrorMessage("");
-    };
-  }, []);
-
   const handleDatePicked = (event, selectedDate) => {
     const currentDate = selectedDate;
     setShow(false);
@@ -53,7 +47,6 @@ export default function AddSavingsForm() {
   };
 
   const handleAddSaving = () => {
-    setErrorMessage("");
     setIsLoading(true);
 
     const newSaving = {

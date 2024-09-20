@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { useDispatch } from "react-redux";
 import ModalSelector from "react-native-modal-selector";
 import {
@@ -34,12 +34,6 @@ export default function AddNewExpense() {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    return () => {
-      setErrorMessage("");
-    };
-  }, []);
-
   const handleDatePicked = (event, selectedDate) => {
     const currentDate = selectedDate;
     setShow(false);
@@ -57,7 +51,6 @@ export default function AddNewExpense() {
   };
 
   const handleAddExpense = () => {
-    setErrorMessage("");
     setIsLoading(true);
 
     const newExpense = {

@@ -45,7 +45,6 @@ function DeductSavingsForm() {
 
   const handleDeductSaving = () => {
     setIsLoading(true);
-    setErrorMessage("");
 
     const newSpending = {
       spending_amount: parseFloat(spendingAmount),

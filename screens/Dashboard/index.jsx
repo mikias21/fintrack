@@ -1,14 +1,12 @@
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   View,
   FlatList,
   SafeAreaView,
   Text,
-  Image,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { BarChart } from "react-native-gifted-charts";
@@ -18,12 +16,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 // Components
 import Navbar from "../../components/Navbar";
-import ActivityCard from "../../components/ActivityCard";
 import DashboardCard from "../../components/DashboardCard";
 import DebtActivityCard from "../../components/DebtActivityCard";
 import ExpenseActivityCard from "../../components/ExpenseActivityCard";
 import IncomeAcivityCard from "../../components/IncomeActivityCard";
 import SavingActivityCard from "../../components/SavingsActivityCard";
+import AggregateWeeklyExpenses from "./AggregateWeeklyExpenses";
 
 // Style
 import styles from "./styles";
@@ -35,19 +33,10 @@ import { fetchDebts } from "../../slices/debtSlice";
 import { fetchSavings } from "../../slices/savingSlice";
 import { fetchSavingsDeductions } from "../../slices/savingSlice";
 import { logout } from "../../slices/userSlice";
-
-// Util
-import { mergeAndSortItems } from "../../utils/utils";
-
 import { deleteToken } from "../../utils/storage";
 
-import {
-  startOfWeek,
-  endOfWeek,
-  parseISO,
-  format,
-  isWithinInterval,
-} from "date-fns";
+// Util functions
+import {getTwoLatestExpenses, getTwoLatestIncomes, getTwoLatestDebts, getTwoLatestSavings} from "../../utils/dashboardUtils";
 
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -58,46 +47,6 @@ export default function HomeScreen({ navigation }) {
   const savings = useSelector((state) => state.savings?.savings || []);
   const currentMonth = dayjs().month();
   const currentYear = dayjs().year();
-
-  const getTwoLatestExpenses = (expenses) => {
-    if (expenses.length <= 2) {
-      return expenses;
-    }
-  
-    return [...expenses]
-      .sort((a, b) => new Date(b.expense_date) - new Date(a.expense_date))
-      .slice(0, 2);
-  };
-  
-  const getTwoLatestIncomes = (incomes) => {
-    if (incomes.length <= 2) {
-      return incomes;
-    }
-  
-    return [...incomes]
-      .sort((a, b) => new Date(b.income_date) - new Date(a.income_date))
-      .slice(0, 2);
-  };
-  
-  const getTwoLatestDebts = (debts) => {
-    if (debts.length <= 2) {
-      return debts;
-    }
-  
-    return [...debts]
-      .sort((a, b) => new Date(b?.debt_date) - new Date(a?.debt_date))
-      .slice(0, 2);
-  };
-
-  const getTwoLatestSavings = (savings) => {
-    if (savings.length <= 2) {
-      return savings;
-    }
-  
-    return [...savings]
-      .sort((a, b) => new Date(b?.saving_date) - new Date(a?.saving_date))
-      .slice(0, 2);
-  };
 
   const latestExpenses = getTwoLatestExpenses(expenses);
   const latestIncomes = getTwoLatestIncomes(incomes);
@@ -128,10 +77,6 @@ export default function HomeScreen({ navigation }) {
   }, 0);
 
   const totalAmountOfIncome = incomeCalculated < 0 ? 0 : incomeCalculated;
-  const reduced_income =
-    incomeCalculated - totalAmountOfExpense < 0
-      ? 0
-      : incomeCalculated - totalAmountOfExpense;
 
   useEffect(() => {
     if(user?.token){
@@ -152,70 +97,7 @@ export default function HomeScreen({ navigation }) {
     dispatch(logout())
   };
 
-  const getFrontColor = (amount) => {
-    if (amount <= 100) return "#9FBB73";
-    if (amount <= 300) return "#FB8B24";
-    return "#F7418F";
-  };
-
-  const formatNumber = (value) => {
-    if (value === 0) return '0';
-    if (value >= 1_000_000) return (value / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-    if (value >= 1_000) return (value / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
-    return value.toString();
-  };
-  
-  const scaleNumber = (value) => {
-    if (value >= 100 && value <= 999) {
-      return value * 0.007;
-    } else if (value >= 1000 && value <= 9999) {
-      return value * 0.005;
-    } else if (value >= 10000 && value <= 99999) {
-      return value * 0.00066;
-    } else if (value > 100000) {
-      return value * 0.0000094;
-    }
-    return value;
-  };  
-
-  const aggregateWeeklyExpenses = (data) => {
-    const now = new Date();
-    const weekStart = startOfWeek(now, { weekStartsOn: 0 }); // Week starts on Sunday
-    const weekEnd = endOfWeek(now, { weekStartsOn: 0 });
-  
-    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const aggregatedData = Array(7).fill(0);
-  
-    data.forEach((item) => {
-      const expenseDate = parseISO(item.expense_date);
-      if (isWithinInterval(expenseDate, { start: weekStart, end: weekEnd })) {
-        const dayIndex = expenseDate.getDay(); 
-        aggregatedData[dayIndex] += item.expense_amount;
-      }
-    });
-  
-    return aggregatedData.map((value, index) => {
-      return {
-        value: scaleNumber(value),
-        label: daysOfWeek[index],
-        frontColor: "#F0ABFC",
-        topLabelComponent: () => (
-          <Text
-            style={{
-              color: "#3E3232",
-              fontSize: 7,
-              marginBottom: 2,
-              fontWeight: "900",
-            }}
-          >
-            {formatNumber(value)} &#165;
-          </Text>
-        ),
-      };
-    });
-  };
-
-  const barData = aggregateWeeklyExpenses(expenses);
+  const barData = AggregateWeeklyExpenses(expenses);
   const allValuesAreZero = barData.every((data) => data.value === 0);
 
   const renderHeader = () => (
@@ -256,25 +138,12 @@ export default function HomeScreen({ navigation }) {
         <>
            <Text style={styles.text_one}>Weekly expense Summary</Text>
            <View style={styles.bar_chart_container}>
-            {/* <Image
-                source={require("../../assets/graph-bg-1.jpg")}
-                style={{
-                  position: 'absolute',
-                  opacity: 0.6,
-                  top: -60,
-                  height: 320,
-                  width: 330,
-                  borderRadius: 40,
-                  overflow: "hidden"
-                }}
-            /> */}
             <BarChart
                 data={barData}
                 barWidth={17}
                 spacing={22.5}
                 roundedTop
                 roundedBottom
-                // hideRules
                 xAxisThickness={0}
                 yAxisThickness={0}
                 yAxisTextStyle={{color: 'gray'}}
