@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-image: url("data:image/svg+xml,%3Csvg class='border shadow-md' viewBox='0 0 678.1866666666667 508.64' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' style='width: 678.187px; height: 508.64px;'%3E%3Crect class='bg' id='bg' x='0' y='0' width='678.1866666666667' height='508.64' fill='%23f1f1f1'%3E%3C/rect%3E%3Cg transform='translate(-317.9 -317.9)'%3E%3Cpath d='M490,404Q417,490,301,519.5Q185,549,135,433.5Q85,318,141,213Q197,108,312.5,118Q428,128,495.5,223Q563,318,490,404Z' fill='%23938EF9' stroke='none' stroke-width='10'%3E%3C/path%3E%3C/g%3E%3Cg transform='translate(-317.9 190.74)'%3E%3Cpath d='M487,441.5Q460,565,319,562.5Q178,560,114,439Q50,318,126,217.5Q202,117,311,129Q420,141,467,229.5Q514,318,487,441.5Z' fill='%23938EF9' stroke='none' stroke-width='10'%3E%3C/path%3E%3C/g%3E%3Cg transform='translate(360.28666666666675 -317.9)'%3E%3Cpath d='M476.5,411.5Q426,505,318,505Q210,505,106.5,411.5Q3,318,99.5,212Q196,106,305.5,128Q415,150,471,234Q527,318,476.5,411.5Z' fill='%23938EF9' stroke='none' stroke-width='10'%3E%3C/path%3E%3C/g%3E%3Cg transform='translate(360.28666666666675 190.74)'%3E%3Cpath d='M524.5,453.5Q475,589,346,541Q217,493,168.5,405.5Q120,318,161.5,218.5Q203,119,327.5,102Q452,85,513,201.5Q574,318,524.5,453.5Z' fill='%23938EF9' stroke='none' stroke-width='10'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
