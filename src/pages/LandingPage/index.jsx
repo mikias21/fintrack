@@ -3,9 +3,9 @@ import NavbarComponent from "../../components/Navbar";
 
 const LandingPage = () => {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <NavbarComponent />
-      <HeroComponent />
+      <HeroComponent className="flex-grow" />
     </div>
   );
 };
