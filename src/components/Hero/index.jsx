@@ -17,7 +17,8 @@ const LandingPage = () => {
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = '/fintrack_v1.0.0.apk';
+    link.href = 'https://drive.google.com/uc?export=download&id=1XKESfKqwZ57EddoGIjBl8u2GUEr4C7_Y';
+    link.target = "blank"
     link.download = 'fintrack_v1.0.0.apk';
     document.body.appendChild(link);
     link.click();
