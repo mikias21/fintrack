@@ -47,6 +47,7 @@ export const addExpense = createAsyncThunk(
       const data = await response.json();
       return data;
     } catch (error) {
+      console.log(error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -71,7 +72,7 @@ export const deleteExpense = createAsyncThunk(
         throw new Error("Failed to delete expense");
       }
 
-      return expenseID; // Return the deleted expense ID for potential UI updates
+      return expenseID;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
